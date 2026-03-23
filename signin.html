@@ -114,10 +114,8 @@ button{
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwrwJOWtdhgYXq68exQ_g3ilaEwtsePumDBPiBbQzr5hGgcFmtUrfNRzAx4ho8dYjQKyw/exec";
 
-// get from login
 const docNo = localStorage.getItem("mcl_doc_no");
 
-// block access if not login
 if(!docNo){
   alert("Please login first");
   window.location.href = "index.html";
@@ -125,35 +123,44 @@ if(!docNo){
 
 async function submitSignIn(){
 
-  const voucher = document.getElementById("voucher").value;
+  const voucher = document.getElementById("voucher").value.trim();
   const shift = document.getElementById("shift").value;
   const dept = document.getElementById("dept").value;
   const status = document.getElementById("status");
 
+  // ✅ validation
   if(!voucher || !shift || !dept){
     status.innerText = "Complete all fields";
+    status.style.color = "red";
     return;
   }
 
   status.innerText = "Submitting...";
+  status.style.color = "#555";
 
   try{
-    const res = await fetch(`${APPS_SCRIPT_URL}?action=signIn&doc_no=${docNo}&voucher=${voucher}&shift=${shift}&dept=${dept}`);
+
+    const res = await fetch(
+      `${APPS_SCRIPT_URL}?action=signIn&doc_no=${docNo}&voucher=${voucher}&shift=${shift}&dept=${dept}`
+    );
+
     const data = await res.json();
 
     if(data.ok){
-      status.innerText = "Sign In recorded";
+      status.innerText = "Sign in recorded";
+      status.style.color = "green";
 
-      // optional: clear form
-      document.getElementById("voucher").value = "";
-      document.getElementById("shift").value = "";
-      document.getElementById("dept").value = "";
+      // OPTIONAL: disable button after success
+      document.querySelector("button").disabled = true;
+
     }else{
       status.innerText = data.message || "Error";
+      status.style.color = "red";
     }
 
   }catch(err){
     status.innerText = "Connection error";
+    status.style.color = "red";
   }
 }
 </script>
