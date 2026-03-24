@@ -22,11 +22,11 @@
     .hero img{
       width:160px;
       filter:brightness(0) invert(1);
+      margin:0 auto;
     }
 
     .cardWrap{
-      max-width:357px ;
-            text-align:inline;
+      max-width:357px;
       margin:-580px auto 0;
     }
 
@@ -143,9 +143,7 @@
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwrwJOWtdhgYXq68exQ_g3ilaEwtsePumDBPiBbQzr5hGgcFmtUrfNRzAx4ho8dYjQKyw/exec";
 
     function normalizePhone(value) {
-      let phone = String(value || "").replace(/[^\d]/g, "").trim();
-      if (phone.startsWith("+")) phone = phone.substring(1);
-      return phone;
+      return String(value || "").replace(/[^\d]/g, "").trim();
     }
 
     async function handleLogin() {
@@ -166,19 +164,22 @@
         const res = await fetch(url);
         const data = await res.json();
 
-        if (data && data.ok && data.exists) {
+        if (data && data.ok && data.exists && data.record) {
           msg.style.color = "#027a48";
           msg.textContent = "Login successful";
 
-          localStorage.setItem("mitecWorkerRecord", JSON.stringify(data.record || {}));
+          localStorage.setItem("mitecWorkerRecord", JSON.stringify(data.record));
+          localStorage.setItem("mcl_doc_no", docNo);
+          localStorage.setItem("mcl_phone", phone);
 
           setTimeout(() => {
             window.location.href = "https://clcmitec.github.io/casualmitec/dashboard.html";
           }, 600);
         } else {
-          msg.textContent = "No worker record found.";
+          msg.textContent = data && data.message ? data.message : "No worker record found.";
         }
       } catch (err) {
+        console.error(err);
         msg.textContent = "Server connection failed.";
       }
     }
