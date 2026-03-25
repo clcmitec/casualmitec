@@ -1031,7 +1031,7 @@
         <div class="submenu">
           <a href="#">My MITEC-ID</a>
           <a href="dashboard.html">My Dashboard</a>
-          <a href="https://clcmitec.github.io/bank-details/" target="_blank" rel="noopener noreferrer">First Time Application</a>
+          <a href="129.html" target="_blank" rel="noopener noreferrer">First Time Application</a>
         </div>
       </div>
 
@@ -1115,7 +1115,7 @@
           const text = link.textContent.toLowerCase();
           const visible = text.includes(filter) || btnText.includes(filter);
           link.style.display = visible ? "" : "none";
-          if (visible) anyChildVisible = true;
+          if (visible) anyChildVisible = false;
         });
 
         const showGroup = btnText.includes(filter) || anyChildVisible || filter === "";
