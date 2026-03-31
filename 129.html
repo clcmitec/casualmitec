@@ -1154,14 +1154,9 @@
       const payload = await buildPayload();
 
       const response = await fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const result = await response.json();
+  method: "POST",
+  body: JSON.stringify(payload)
+});
 
       if (result.ok) {
         showSubmitMessage(
