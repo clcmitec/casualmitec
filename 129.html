@@ -1150,44 +1150,48 @@
     submitBtn.disabled = true;
     submitBtn.textContent = formMode.value === "update" ? "Updating..." : "Submitting...";
 
-    try {
-      const payload = await buildPayload();
+     try {
+    const payload = await buildPayload();
 
-      const response = await fetch(WEB_APP_URL, {
-  method: "POST",
-  body: JSON.stringify(payload)
-});
+    const response = await fetch(WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
 
-      if (result.ok) {
-        showSubmitMessage(
-          result.message || (formMode.value === "update" ? "Record updated successfully." : "Record submitted successfully."),
-          true
-        );
+    const result = await response.json();
 
-        form.reset();
-        document.getElementById("icList").innerHTML = "";
-        document.getElementById("gambarList").innerHTML = "";
-        document.getElementById("sejarahOtherWrap").style.display = "none";
-        updateDocTypeUI("MYKAD");
-        applyEntryMode("create");
-        existingRow.value = "";
-        setLookupStatus("The system will determine whether this is a new submission or an update.");
+    if (result.ok) {
+      showSubmitMessage(
+        result.message || (formMode.value === "update"
+          ? "Record updated successfully."
+          : "Record submitted successfully."),
+        true
+      );
 
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 1200);
-      } else {
-        showSubmitMessage("Submission failed: " + (result.message || "Unknown error"));
-      }
+      form.reset();
+      document.getElementById("icList").innerHTML = "";
+      document.getElementById("gambarList").innerHTML = "";
+      document.getElementById("sejarahOtherWrap").style.display = "none";
+      updateDocTypeUI("MYKAD");
+      applyEntryMode("create");
+      existingRow.value = "";
+      setLookupStatus("The system will determine whether this is a new submission or an update.");
 
-    } catch (error) {
-      console.error(error);
-      showSubmitMessage("Unable to submit the form: " + error.message);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = formMode.value === "update" ? "Update Form" : "Submit Form";
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1200);
+    } else {
+      showSubmitMessage("Submission failed: " + (result.message || "Unknown error"));
     }
-  });
+
+  } catch (error) {
+    console.error(error);
+    showSubmitMessage("Unable to submit the form: " + error.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = formMode.value === "update" ? "Update Form" : "Submit Form";
+  }
+});
 
   updateHeader();
   updateDocTypeUI("MYKAD");
