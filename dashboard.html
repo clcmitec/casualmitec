@@ -522,28 +522,133 @@
         <span class="rowTitle">FAQ - CasualMITEC</span>
         <span class="rowSub">Important information and guidance</span>
       </span>
-      <span class="arrow">›</span>
-    </button>
+<body>
+  <div class="shell">
 
-    <button class="rowLink" onclick="goToPage('feedback-form.html')">
-      <span>
-        <span class="rowTitle">Feedback</span>
-        <span class="rowSub">Submit feedback or report issues</span>
-      </span>
-      <span class="arrow">›</span>
-    </button>
+    <div class="topbar">
+      <div class="topbarRow">
+        <img
+          class="brandLogoLarge"
+          src="https://mitec.com.my/static/img/logos/mitec-new-logo.png"
+          alt="MITEC Logo"
+        >
 
-  </div>
-</div>
+        <h1 class="brandTitleSingle">MITEC Casual Labour</h1>
 
-<div class="card">
-  <button class="logoutBtn" onclick="logout()">Logout</button>
-</div>
+        <img
+          id="headerPhoto"
+          class="headerPhoto"
+          src="https://ui-avatars.com/api/?name=Worker&background=0f4a82&color=fff&size=200"
+          alt="Profile"
+          onclick="goToPage('profile.html')"
+        >
+      </div>
+    </div>
 
-<div class="footerNote">
-  MITEC Casual Labour Attendance System<br>
-  Human Resources Department
-</div>
+    <div class="liveCard">
+      <div class="liveRow">
+        <div>
+          <div class="liveLabel">Today</div>
+          <div class="liveDate" id="liveDate">-</div>
+        </div>
+        <div class="liveTimeWrap">
+          <div class="liveLabel">Current Time</div>
+          <div class="liveTime" id="liveTime">-</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="heroContent">
+        <p class="welcome">Welcome,</p>
+        <h2 class="heroTitle" id="heroName">WORKER NAME</h2>
+        <p class="heroText">
+          This dashboard centralises your bookings, attendance, and records into one streamlined workspace.
+        </p>
+
+        <div class="heroActions">
+          <button class="heroBtn" onclick="goToPage('signin.html')">
+            <span class="icon">☐</span>
+            <span>Sign In</span>
+          </button>
+
+          <button class="heroBtn" onclick="goToPage('https://forms.gle/cE6wDc2has6qvPhj7')">
+            <span class="icon">▣</span>
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="card">
+      <h3 class="sectionTitle">Today Summary</h3>
+      <div class="miniGrid">
+        <div class="miniBox">
+          <span class="miniLabel">Sign In Time</span>
+          <span class="miniValue" id="dashSignIn">-</span>
+        </div>
+        <div class="miniBox">
+          <span class="miniLabel">Sign Out Time</span>
+          <span class="miniValue" id="dashSignOut">-</span>
+        </div>
+        <div class="miniBox">
+          <span class="miniLabel">Voucher No</span>
+          <span class="miniValue" id="dashVoucher">-</span>
+        </div>
+        <div class="miniBox">
+          <span class="miniLabel">Hours Worked</span>
+          <span class="miniValue" id="dashHours">-</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="sectionTitle">Records & Services</h3>
+
+      <div class="rowList">
+
+        <button class="rowLink" onclick="goToPage('signin.html')">
+          <span>
+            <span class="rowTitle">Sign In</span>
+            <span class="rowSub">Record your attendance and voucher number</span>
+          </span>
+          <span class="arrow">›</span>
+        </button>
+
+        <button class="rowLink" onclick="goToPage('129.html')">
+          <span>
+            <span class="rowTitle">Attendance</span>
+            <span class="rowSub">Submit clock in / clock out information</span>
+          </span>
+          <span class="arrow">›</span>
+        </button>
+
+        <button class="rowLink" onclick="goToPage('profile.html')">
+          <span>
+            <span class="rowTitle">My Profile</span>
+            <span class="rowSub">View your worker registration information</span>
+          </span>
+          <span class="arrow">›</span>
+        </button>
+
+        <button class="rowLink" onclick="goToPage('faq.html')">
+          <span>
+            <span class="rowTitle">FAQ - CasualMITEC</span>
+            <span class="rowSub">Important information and guidance</span>
+          </span>
+          <span class="arrow">›</span>
+        </button>
+
+        <button class="rowLink" onclick="goToPage('feedback-form.html')">
+          <span>
+            <span class="rowTitle">Feedback</span>
+            <span class="rowSub">Submit feedback or report issues</span>
+          </span>
+          <span class="arrow">›</span>
+        </button>
+
+      </div>
+    </div>
 
     <div class="card">
       <button class="logoutBtn" onclick="logout()">Logout</button>
@@ -553,6 +658,7 @@
       MITEC Casual Labour Attendance System<br>
       Human Resources Department
     </div>
+
   </div>
 
   <nav class="bottomNav">
@@ -580,7 +686,8 @@
       <span class="navIcon">◉</span>
       <span class="navText">Profile</span>
     </button>
-  </nav>
+
+
 
   <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwrwJOWtdhgYXq68exQ_g3ilaEwtsePumDBPiBbQzr5hGgcFmtUrfNRzAx4ho8dYjQKyw/exec";
