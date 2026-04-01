@@ -489,28 +489,62 @@
 
     <div class="card">
       <h3 class="sectionTitle">Quick Access</h3>
-      <div class="tileGrid">
-        <button class="tile primary" onclick="goToPage('129.html')">
-          <span class="tileTitle">Clock / Form</span>
-          <span class="tileSub">Open worker form or clock page</span>
-        </button>
+    <div class="card">
+  <h3 class="sectionTitle">Records & Services</h3>
 
-        <button class="tile" onclick="goToPage('signin.html')">
-          <span class="tileTitle">Sign In Page</span>
-          <span class="tileSub">Open attendance sign in page</span>
-        </button>
+  <div class="rowList">
 
-        <button class="tile" onclick="goToPage('profile.html')">
-          <span class="tileTitle">Profile</span>
-          <span class="tileSub">View your worker details</span>
-        </button>
+    <button class="rowLink" onclick="goToPage('signin.html')">
+      <span>
+        <span class="rowTitle">Sign In</span>
+        <span class="rowSub">Record your attendance and voucher number</span>
+      </span>
+      <span class="arrow">›</span>
+    </button>
 
-        <button class="tile" onclick="goToPage('feedback-form.html')">
-          <span class="tileTitle">Feedback / Docs</span>
-          <span class="tileSub">Open linked service page</span>
-        </button>
-      </div>
-    </div>
+    <button class="rowLink" onclick="goToPage('129.html')">
+      <span>
+        <span class="rowTitle">Attendance</span>
+        <span class="rowSub">Submit clock in / clock out information</span>
+      </span>
+      <span class="arrow">›</span>
+    </button>
+
+    <button class="rowLink" onclick="goToPage('profile.html')">
+      <span>
+        <span class="rowTitle">My Profile</span>
+        <span class="rowSub">View your worker registration information</span>
+      </span>
+      <span class="arrow">›</span>
+    </button>
+
+    <button class="rowLink" onclick="goToPage('faq.html')">
+      <span>
+        <span class="rowTitle">FAQ - CasualMITEC</span>
+        <span class="rowSub">Important information and guidance</span>
+      </span>
+      <span class="arrow">›</span>
+    </button>
+
+    <button class="rowLink" onclick="goToPage('feedback-form.html')">
+      <span>
+        <span class="rowTitle">Feedback</span>
+        <span class="rowSub">Submit feedback or report issues</span>
+      </span>
+      <span class="arrow">›</span>
+    </button>
+
+  </div>
+</div>
+
+<div class="card">
+  <button class="logoutBtn" onclick="logout()">Logout</button>
+</div>
+
+<div class="footerNote">
+  MITEC Casual Labour Attendance System<br>
+  Human Resources Department
+</div>
 
     <div class="card">
       <button class="logoutBtn" onclick="logout()">Logout</button>
