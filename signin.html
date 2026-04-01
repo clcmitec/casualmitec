@@ -12,6 +12,7 @@ body{
   justify-content:center;
   align-items:center;
   height:100vh;
+  margin:0;
 }
 
 .card{
@@ -32,6 +33,7 @@ input,select{
   margin-bottom:12px;
   border-radius:10px;
   border:1px solid #ddd;
+  box-sizing:border-box;
 }
 
 button{
@@ -42,11 +44,18 @@ button{
   color:#fff;
   border-radius:10px;
   font-weight:bold;
+  cursor:pointer;
+}
+
+button:disabled{
+  opacity:.7;
+  cursor:not-allowed;
 }
 
 .status{
   margin-top:10px;
   font-size:14px;
+  line-height:1.5;
 }
 </style>
 </head>
@@ -59,58 +68,54 @@ button{
   <input id="voucher" placeholder="Voucher No">
 
   <select id="shift">
-  <option value="">Select Shift</option>
-
-  <!-- Day start -->
-  <option value="0700">07:00</option>
-  <option value="0800">08:00</option>
-  <option value="0900">09:00</option>
-  <option value="1000">10:00</option>
-  <option value="1100">11:00</option>
-  <option value="1200">12:00</option>
-  <option value="1300">13:00</option>
-  <option value="1400">14:00</option>
-  <option value="1500">15:00</option>
-  <option value="1600">16:00</option>
-  <option value="1700">17:00</option>
-  <option value="1800">18:00</option>
-  <option value="1900">19:00</option>
-  <option value="2000">20:00</option>
-  <option value="2100">21:00</option>
-  <option value="2200">22:00</option>
-  <option value="2300">23:00</option>
-
-  <!-- Next day -->
-  <option value="0000">00:00</option>
-  <option value="0100">01:00</option>
-  <option value="0200">02:00</option>
-  <option value="0300">03:00</option>
-  <option value="0400">04:00</option>
-  <option value="0500">05:00</option>
-  <option value="0600">06:00</option>
-
-</select>
+    <option value="">Select Shift</option>
+    <option value="0700">07:00</option>
+    <option value="0800">08:00</option>
+    <option value="0900">09:00</option>
+    <option value="1000">10:00</option>
+    <option value="1100">11:00</option>
+    <option value="1200">12:00</option>
+    <option value="1300">13:00</option>
+    <option value="1400">14:00</option>
+    <option value="1500">15:00</option>
+    <option value="1600">16:00</option>
+    <option value="1700">17:00</option>
+    <option value="1800">18:00</option>
+    <option value="1900">19:00</option>
+    <option value="2000">20:00</option>
+    <option value="2100">21:00</option>
+    <option value="2200">22:00</option>
+    <option value="2300">23:00</option>
+    <option value="0000">00:00</option>
+    <option value="0100">01:00</option>
+    <option value="0200">02:00</option>
+    <option value="0300">03:00</option>
+    <option value="0400">04:00</option>
+    <option value="0500">05:00</option>
+    <option value="0600">06:00</option>
+  </select>
 
   <select id="dept">
-  <option value="">Select Department</option>
-  <option value="AV">AV</option>
-  <option value="CAT">CAT</option>
-  <option value="EXH">EXH</option>
-  <option value="FIN">FIN</option>
-  <option value="GCC">GCC</option>
-  <option value="GS">GS</option>
-  <option value="HK">HK</option>
-  <option value="HR">HR</option>
-  <option value="KIT">KIT</option>
-  <option value="LINEN">LINEN</option>
-  <option value="OPERATION">OPERATION</option>
-  <option value="PUR">PUR</option>
-  <option value="QA">QA</option>
-  <option value="SC">SC</option>
-  <option value="SETUP">SETUP</option>
-  <option value="STWD">STWD</option>
-</select>
-  <button onclick="submitSignIn()">Submit</button>
+    <option value="">Select Department</option>
+    <option value="AV">AV</option>
+    <option value="CAT">CAT</option>
+    <option value="EXH">EXH</option>
+    <option value="FIN">FIN</option>
+    <option value="GCC">GCC</option>
+    <option value="GS">GS</option>
+    <option value="HK">HK</option>
+    <option value="HR">HR</option>
+    <option value="KIT">KIT</option>
+    <option value="LINEN">LINEN</option>
+    <option value="OPERATION">OPERATION</option>
+    <option value="PUR">PUR</option>
+    <option value="QA">QA</option>
+    <option value="SC">SC</option>
+    <option value="SETUP">SETUP</option>
+    <option value="STWD">STWD</option>
+  </select>
+
+  <button id="submitBtn" onclick="submitSignIn()">Submit</button>
 
   <div class="status" id="status"></div>
 </div>
@@ -119,54 +124,93 @@ button{
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwrwJOWtdhgYXq68exQ_g3ilaEwtsePumDBPiBbQzr5hGgcFmtUrfNRzAx4ho8dYjQKyw/exec";
 
 const docNo = localStorage.getItem("mcl_doc_no");
+const voucherInput = document.getElementById("voucher");
+const shiftInput = document.getElementById("shift");
+const deptInput = document.getElementById("dept");
+const statusBox = document.getElementById("status");
+const submitBtn = document.getElementById("submitBtn");
 
-if(!docNo){
+if (!docNo) {
   alert("Please login first");
   window.location.href = "index.html";
 }
 
-async function submitSignIn(){
+voucherInput.addEventListener("input", () => {
+  voucherInput.value = voucherInput.value.replace(/[^\d]/g, "");
+});
 
-  const voucher = document.getElementById("voucher").value.trim();
-  const shift = document.getElementById("shift").value;
-  const dept = document.getElementById("dept").value;
-  const status = document.getElementById("status");
+[voucherInput, shiftInput, deptInput].forEach(el => {
+  el.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+      e.preventDefault();
+      submitSignIn();
+    }
+  });
+});
 
-  // ✅ validation
-  if(!voucher || !shift || !dept){
-    status.innerText = "Complete all fields";
-    status.style.color = "red";
+function setStatus(text, color) {
+  statusBox.innerText = text || "";
+  statusBox.style.color = color || "#555";
+}
+
+async function submitSignIn() {
+  const voucher = voucherInput.value.trim();
+  const shift = shiftInput.value;
+  const dept = deptInput.value;
+
+  if (!voucher || !shift || !dept) {
+    setStatus("Complete all fields", "red");
     return;
   }
 
-  status.innerText = "Submitting...";
-  status.style.color = "#555";
+  setStatus("Submitting...", "#555");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
 
-  try{
-
+  try {
     const res = await fetch(
-      `${APPS_SCRIPT_URL}?action=signIn&doc_no=${docNo}&voucher=${voucher}&shift=${shift}&dept=${dept}`
+      `${APPS_SCRIPT_URL}?action=signIn&doc_no=${encodeURIComponent(docNo)}&voucher=${encodeURIComponent(voucher)}&shift=${encodeURIComponent(shift)}&dept=${encodeURIComponent(dept)}`
     );
 
     const data = await res.json();
 
-    if(data.ok){
-      status.innerText = "✅ Sign in recorded";
-      status.style.color = "green";
+    if (data.ok) {
+      const workerName = data.name || "worker";
+      const signedAt = data.timestamp || "";
 
-      // OPTIONAL: disable button after success
-      document.querySelector("button").disabled = true;
+      if (signedAt) {
+        setStatus(`Sign in recorded for ${workerName} at ${signedAt}`, "green");
+      } else {
+        setStatus(`Sign in recorded for ${workerName}`, "green");
+      }
 
-    }else{
-      status.innerText = data.message || "Error";
-      status.style.color = "red";
+      setTimeout(() => {
+        voucherInput.value = "";
+        shiftInput.value = "";
+        deptInput.value = "";
+        setStatus("", "#555");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit";
+        voucherInput.focus();
+      }, 3000);
+
+    } else {
+      setStatus(data.message || "Error", "red");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit";
     }
 
-  }catch(err){
-    status.innerText = "Connection error";
-    status.style.color = "red";
+  } catch (err) {
+    console.error(err);
+    setStatus("Connection error", "red");
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit";
   }
 }
+
+window.addEventListener("load", () => {
+  voucherInput.focus();
+});
 </script>
 
 </body>
