@@ -175,15 +175,7 @@ async function submitSignIn() {
     const data = await res.json();
 
     if (data.ok) {
-      const workerName = data.name || "worker";
-      const signedAt = data.timestamp || "";
-
-      if (signedAt) {
-        setStatus(`Sign in recorded for ${workerName} at ${signedAt}`, "green");
-      } else {
-        setStatus(`Sign in recorded for ${workerName}`, "green");
-      }
-
+     setStatus(data.message || "Sign in recorded.", "green");
       setTimeout(() => {
         voucherInput.value = "";
         shiftInput.value = "";
