@@ -13,481 +13,160 @@
       --line:#e5e7eb;
       --primary:#0f4a82;
       --primary-dark:#0b3d6c;
-      --soft:#f8fafc;
-      --danger:#b42318;
-      --success:#027a48;
       --shadow:0 10px 28px rgba(2,18,34,.08);
     }
 
-    *{
-      box-sizing:border-box;
-    }
+    *{ box-sizing:border-box; -webkit-font-smoothing: antialiased; }
 
     html,body{
-      margin:0;
-      padding:0;
-      min-height:100%;
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-      background:var(--bg);
-      color:var(--text);
+      margin:0; padding:0; min-height:100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:var(--bg); color:var(--text);
     }
 
-    body{
-      padding:14px 12px 92px;
-    }
+    body{ padding:14px 12px 100px; }
 
-    .shell{
-      width:100%;
-      max-width:430px;
-      margin:0 auto;
-    }
+    .shell{ width:100%; max-width:430px; margin:0 auto; }
 
     .topbar{
-      background:#fff;
-      border-radius:20px;
-      box-shadow:var(--shadow);
-      padding:10px 14px;
-      margin-bottom:12px;
+      background:#fff; border-radius:20px; box-shadow:var(--shadow);
+      padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between;
     }
 
-    .topbarRow{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .brandLogoLarge{
-      width:52px;
-      height:auto;
-      object-fit:contain;
-      flex-shrink:0;
-    }
-
-    .brandTitleSingle{
-      margin:0;
-      flex:1;
-      min-width:0;
-      font-size:16px;
-      font-weight:900;
-      color:var(--primary);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
+    .brandLogoLarge{ width:100px; height:auto; object-fit:contain; }
 
     .headerPhoto{
-      width:36px;
-      height:36px;
-      object-fit:cover;
-      border-radius:50%;
-      border:1px solid #e5e7eb;
-      box-shadow:0 4px 10px rgba(2,18,34,.10);
-      background:#f8fafc;
-      display:none;
-      flex-shrink:0;
-      cursor:pointer;
+      width:40px; height:40px; border-radius:50%; object-fit:cover;
+      border:2px solid var(--line); display:none;
     }
 
     .statusMsg{
-      margin:0 0 12px;
-      padding:12px 14px;
-      border-radius:16px;
-      font-size:13px;
-      font-weight:700;
-      display:none;
-      box-shadow:var(--shadow);
-      background:#fff;
+      margin-bottom:12px; padding:12px; border-radius:14px; font-size:13px; font-weight:700;
+      display:none; text-align:center;
     }
+    .statusMsg.success{ display:block; background:#ecfdf5; color:#065f46; }
+    .statusMsg.error{ display:block; background:#fef2f2; color:#991b1b; }
 
-    .statusMsg.success{
-      display:block;
-      color:var(--success);
-    }
+    .card{ background:var(--card); border-radius:24px; box-shadow:var(--shadow); padding:20px; margin-bottom:12px; }
 
-    .statusMsg.error{
-      display:block;
-      color:var(--danger);
-    }
+    .pageTitle{ margin:0 0 4px; font-size:22px; font-weight:800; color:var(--primary); }
+    .pageCopy{ margin:0; font-size:13px; color:var(--muted); }
 
-    .card{
-      background:var(--card);
-      border-radius:24px;
-      box-shadow:var(--shadow);
-      padding:16px;
-      margin-bottom:12px;
-    }
+    .sectionTitle{ margin:0 0 12px; font-size:14px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:var(--primary); border-bottom: 2px solid var(--bg); padding-bottom: 8px; }
 
-    .pageTitle{
-      margin:0 0 6px;
-      font-size:20px;
-      line-height:1.15;
-      font-weight:900;
-      color:var(--primary);
-    }
+    .photoWrap{ display:flex; justify-content:center; padding:10px 0; }
+    .profilePhotoPreview{ width:140px; height:140px; object-fit:cover; border-radius:20px; border:1px solid var(--line); background:#f8fafc; display:none; }
+    .emptyPhoto{ text-align:center; color:var(--muted); font-size:13px; font-style:italic; }
 
-    .pageCopy{
-      margin:0;
-      font-size:13px;
-      line-height:1.55;
-      color:var(--muted);
-    }
+    .infoList{ display:grid; gap:0; }
+    .infoRow{ display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--line); }
+    .infoRow:last-child{ border-bottom:none; }
+    .infoLabel{ color:var(--muted); font-size:12px; font-weight:600; text-transform:uppercase; flex:0 0 40%; }
+    .infoValue{ color:var(--text); font-weight:700; text-align:right; font-size:13px; flex:1; word-break:break-word; }
 
-    .sectionTitle{
-      margin:0 0 10px;
-      font-size:16px;
-      font-weight:900;
-      color:var(--primary);
-    }
+    .fileLink{ color:var(--primary); font-weight:800; text-decoration:none; background: var(--bg); padding: 4px 10px; border-radius: 8px; font-size: 11px; }
 
-    .sectionCopy{
-      margin:0 0 14px;
-      font-size:13px;
-      line-height:1.55;
-      color:var(--muted);
-    }
+    .logoutBtn{ width:100%; height:50px; border:none; border-radius:16px; background:var(--danger); color:#fff; font-size:14px; font-weight:800; cursor:pointer; margin-top:10px; }
 
-    .photoWrap{
-      display:flex;
-      justify-content:center;
-    }
-
-    .profilePhotoPreview{
-      width:160px;
-      height:160px;
-      object-fit:cover;
-      border-radius:24px;
-      border:1px solid #e5e7eb;
-      box-shadow:0 10px 24px rgba(2,18,34,.12);
-      background:#f8fafc;
-      display:none;
-    }
-
-    .emptyPhoto{
-      text-align:center;
-      color:#667085;
-      font-size:14px;
-      padding:10px 0 2px;
-    }
-
-    .infoList{
-      display:grid;
-      gap:0;
-    }
-
-    .infoRow{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-      padding:12px 0;
-      border-bottom:1px solid var(--line);
-    }
-
-    .infoRow:last-child{
-      border-bottom:none;
-      padding-bottom:0;
-    }
-
-    .infoLabel{
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.4;
-      flex:0 0 38%;
-    }
-
-    .infoValue{
-      color:var(--text);
-      font-weight:700;
-      text-align:right;
-      word-break:break-word;
-      line-height:1.4;
-      flex:1;
-    }
-
-    .fileLink{
-      color:var(--primary);
-      font-weight:800;
-      text-decoration:none;
-    }
-
-    .fileLink:hover{
-      text-decoration:underline;
-    }
-
-    .logoutBtn{
-      width:100%;
-      height:48px;
-      border:none;
-      border-radius:16px;
-      background:var(--danger);
-      color:#fff;
-      font-size:14px;
-      font-weight:800;
-      cursor:pointer;
-    }
-
-    .footerNote{
-      text-align:center;
-      font-size:11px;
-      color:#8b9099;
-      line-height:1.55;
-      padding-top:2px;
-    }
-
-    .loadingScreen{
-      position:fixed;
-      inset:0;
-      background:rgba(243,244,246,.96);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:9999;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .spinner{
-      width:42px;
-      height:42px;
-      border:4px solid #dbe5ef;
-      border-top-color:var(--primary);
-      border-radius:999px;
-      animation:spin .9s linear infinite;
-    }
-
-    @keyframes spin{
-      to{transform:rotate(360deg)}
-    }
-
-    .bottomNav{
-      position:fixed;
-      left:50%;
-      bottom:14px;
-      transform:translateX(-50%);
-      width:calc(100% - 24px);
-      max-width:430px;
-      background:rgba(255,255,255,.96);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      border-radius:22px;
-      box-shadow:0 12px 30px rgba(2,18,34,.14);
-      display:grid;
-      grid-template-columns:repeat(5, 1fr);
-      gap:4px;
-      padding:8px 6px;
-      z-index:999;
-    }
-
-    .bottomNavItem{
-      border:none;
-      background:transparent;
-      border-radius:16px;
-      min-height:58px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:3px;
-      color:#667085;
-      cursor:pointer;
-      font:inherit;
-      padding:6px 4px;
-    }
-
-    .bottomNavItem.active{
-      background:#edf4fb;
-      color:var(--primary);
-    }
-
-    .navIcon{
-      font-size:18px;
-      line-height:1;
-    }
-
-    .navText{
-      font-size:11px;
-      font-weight:800;
-      line-height:1.1;
-    }
+    /* Bottom Nav Styles */
+    .bottomNav{ position:fixed; left:50%; bottom:14px; transform:translateX(-50%); width:calc(100% - 24px); max-width:430px; background:rgba(0,0,0,0.9); backdrop-filter:blur(10px); border-radius:22px; display:grid; grid-template-columns:repeat(3, 1fr); gap:4px; padding:8px; z-index:999; }
+    .bottomNavItem{ border:none; background:transparent; display:flex; flex-direction:column; align-items:center; color:#fff; opacity: 0.5; cursor:pointer; padding:8px; }
+    .bottomNavItem.active{ opacity:1; }
+    .navIcon{ font-size:20px; margin-bottom: 2px;}
+    .navText{ font-size:10px; font-weight:700; }
 
     @media (max-width:380px){
-      .brandLogoLarge{
-        width:46px;
-      }
-
-      .brandTitleSingle{
-        font-size:15px;
-      }
-
-      .bottomNav{
-        width:calc(100% - 18px);
-        bottom:10px;
-      }
-
-      .navText{
-        font-size:10px;
-      }
-
-      .infoRow{
-        flex-direction:column;
-        gap:6px;
-      }
-
-      .infoLabel,
-      .infoValue{
-        flex:none;
-        text-align:left;
-      }
+      .infoRow{ flex-direction:column; gap:4px; }
+      .infoValue{ text-align:left; }
     }
   </style>
 </head>
 <body>
 
-  
   <div class="shell">
-
     <div class="topbar">
-      <div class="topbarRow">
-        <img
-          class="brandLogoLarge"
-          src="https://mitec.com.my/static/img/logos/mitec-new-logo.png"
-          alt="MITEC Logo"
-        >
-
-        <h1 class="brandTitleSingle">MITEC Casual Labour</h1>
-
-        <img
-          id="headerPhoto"
-          class="headerPhoto"
-          src=""
-          alt="Profile"
-          onclick="goToPage('profile.html')"
-        >
-      </div>
+      <img class="brandLogoLarge" src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC">
+      <img id="headerPhoto" class="headerPhoto" src="" alt="Profile">
     </div>
 
     <div id="statusMsg" class="statusMsg"></div>
 
     <div class="card">
-      <h2 class="pageTitle" id="pageTitle">Casual Labour Details</h2>
-      <p class="pageCopy">
-        Review your submitted application details, uploaded records, and personal information here.
-      </p>
+      <h2 class="pageTitle" id="pageTitle">Worker Profile</h2>
+      <p class="pageCopy">Verified information from your MITEC application.</p>
     </div>
 
     <div class="card">
-      <h3 class="sectionTitle">Profile Picture</h3>
-      <p class="sectionCopy">Photo submitted in your application record.</p>
-
+      <h3 class="sectionTitle">Identification</h3>
       <div class="photoWrap">
-        <img
-          id="profilePhotoPreview"
-          class="profilePhotoPreview"
-          src=""
-          alt="Profile Picture"
-        />
+        <img id="profilePhotoPreview" class="profilePhotoPreview" src="" alt="Profile">
+        <div id="profilePhotoEmpty" class="emptyPhoto">No photo available</div>
       </div>
-
-      <div id="profilePhotoEmpty" class="emptyPhoto">
-        No profile picture available.
+      <div class="infoList">
+        <div class="infoRow"><div class="infoLabel">Full Name</div><div class="infoValue" id="profileName">-</div></div>
+        <div class="infoRow"><div class="infoLabel">Doc Type</div><div class="infoValue" id="profileDocType">-</div></div>
+        <div class="infoRow"><div class="infoLabel">IC/Passport</div><div class="infoValue" id="profileDocNo">-</div></div>
       </div>
     </div>
 
     <div class="card">
-      <h3 class="sectionTitle">My Account</h3>
-      <p class="sectionCopy">Basic profile info from your submitted application record.</p>
-
+      <h3 class="sectionTitle">Contact & Personal</h3>
       <div class="infoList">
-        <div class="infoRow"><div class="infoLabel">Name</div><div class="infoValue" id="profileName">-</div></div>
         <div class="infoRow"><div class="infoLabel">Email</div><div class="infoValue" id="profileEmail">-</div></div>
-        <div class="infoRow"><div class="infoLabel">Document No.</div><div class="infoValue" id="profileDocNo">-</div></div>
         <div class="infoRow"><div class="infoLabel">Phone</div><div class="infoValue" id="profilePhone">-</div></div>
-        <div class="infoRow"><div class="infoLabel">Document Type</div><div class="infoValue" id="profileDocType">-</div></div>
         <div class="infoRow"><div class="infoLabel">Gender</div><div class="infoValue" id="profileGender">-</div></div>
         <div class="infoRow"><div class="infoLabel">Address</div><div class="infoValue" id="profileAlamat">-</div></div>
         <div class="infoRow"><div class="infoLabel">Marital Status</div><div class="infoValue" id="profileStatusKahwin">-</div></div>
-        <div class="infoRow"><div class="infoLabel">Bank</div><div class="infoValue" id="profileBank">-</div></div>
-        <div class="infoRow"><div class="infoLabel">Bank Account</div><div class="infoValue" id="profileAccountNo">-</div></div>
-        <div class="infoRow"><div class="infoLabel">Account Name</div><div class="infoValue" id="profileAccountName">-</div></div>
       </div>
     </div>
 
     <div class="card">
-      <h3 class="sectionTitle">Additional Details</h3>
-      <p class="sectionCopy">Important submitted details for quick checking.</p>
-
+      <h3 class="sectionTitle">Emergency Contact</h3>
       <div class="infoList">
-        <div class="infoRow"><div class="infoLabel">Emergency Contact</div><div class="infoValue" id="profileWaris">-</div></div>
+        <div class="infoRow"><div class="infoLabel">Next of Kin</div><div class="infoValue" id="profileWaris">-</div></div>
         <div class="infoRow"><div class="infoLabel">Relationship</div><div class="infoValue" id="profileHubungan">-</div></div>
         <div class="infoRow"><div class="infoLabel">Emergency No.</div><div class="infoValue" id="profileEmergencyNo">-</div></div>
-        <div class="infoRow"><div class="infoLabel">Skills</div><div class="infoValue" id="profileKebolehan">-</div></div>
-        <div class="infoRow"><div class="infoLabel">Typhoid</div><div class="infoValue" id="profileTyphoid">-</div></div>
-        <div class="infoRow"><div class="infoLabel">Transportation</div><div class="infoValue" id="profileTransport">-</div></div>
-        <div class="infoRow"><div class="infoLabel">Medical History</div><div class="infoValue" id="profileSejarah">-</div></div>
-        <div class="infoRow"><div class="infoLabel">Medical Details</div><div class="infoValue" id="profileSejarahOther">-</div></div>
       </div>
     </div>
 
     <div class="card">
-      <h3 class="sectionTitle">Uploaded Records</h3>
-      <p class="sectionCopy">Quick access to what was submitted in the application.</p>
-
+      <h3 class="sectionTitle">Banking & Work</h3>
       <div class="infoList">
-        <div class="infoRow"><div class="infoLabel">IC Copy</div><div class="infoValue" id="profileIcLink">-</div></div>
-        <div class="infoRow"><div class="infoLabel">photoLink</div><div class="infoValue" id="profilePhotoLink">-</div></div>
+        <div class="infoRow"><div class="infoLabel">Bank Name</div><div class="infoValue" id="profileBank">-</div></div>
+        <div class="infoRow"><div class="infoLabel">Account No.</div><div class="infoValue" id="profileAccountNo">-</div></div>
+        <div class="infoRow"><div class="infoLabel">Skills</div><div class="infoValue" id="profileKebolehan">-</div></div>
       </div>
     </div>
 
     <div class="card">
-      <button class="logoutBtn" id="logoutBtn" type="button">Logout</button>
+      <h3 class="sectionTitle">Documents</h3>
+      <div class="infoList">
+        <div class="infoRow"><div class="infoLabel">IC/Passport Copy</div><div class="infoValue" id="profileIcLink">-</div></div>
+        <div class="infoRow"><div class="infoLabel">Photo Upload</div><div class="infoValue" id="profilePhotoLink">-</div></div>
+      </div>
     </div>
 
-    <div class="footerNote">
-      MITEC Casual Labour Attendance System<br>
-      Human Resources Department
-    </div>
+    <button class="logoutBtn" onclick="logout()">Sign Out</button>
+    <div style="height:20px;"></div>
   </div>
 
   <nav class="bottomNav">
     <button class="bottomNavItem" onclick="goToPage('dashboard.html')">
-      <span class="navIcon">⌂</span>
-      <span class="navText">Home</span>
+      <span class="navIcon">🏠</span><span class="navText">Home</span>
     </button>
-
     <button class="bottomNavItem" onclick="goToPage('attendance.html')">
-      <span class="navIcon">◷</span>
-      <span class="navText">Attendance</span>
+      <span class="navIcon">📊</span><span class="navText">History</span>
     </button>
-
-    <button class="bottomNavItem" onclick="goToPage('my-record.html')">
-      <span class="navIcon">☰</span>
-      <span class="navText">Record</span>
-    </button>
-
-    <button class="bottomNavItem" onclick="goToPage('documents.html')">
-      <span class="navIcon">▣</span>
-      <span class="navText">Docs</span>
-    </button>
-
     <button class="bottomNavItem active" onclick="goToPage('profile.html')">
-      <span class="navIcon">◉</span>
-      <span class="navText">Profile</span>
+      <span class="navIcon">👤</span><span class="navText">Profile</span>
     </button>
   </nav>
 
   <script>
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwrwJOWtdhgYXq68exQ_g3ilaEwtsePumDBPiBbQzr5hGgcFmtUrfNRzAx4ho8dYjQKyw/exec";
 
-    const loadingScreen = document.getElementById("loadingScreen");
-    const loadingText = document.getElementById("loadingText");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const pageTitle = document.getElementById("pageTitle");
-    const statusMsg = document.getElementById("statusMsg");
-    const profilePhotoPreview = document.getElementById("profilePhotoPreview");
-    const profilePhotoEmpty = document.getElementById("profilePhotoEmpty");
-    const headerPhoto = document.getElementById("headerPhoto");
-
-    const ids = {
+    // Maps local display IDs to your Google Sheet keys
+    const fieldMap = {
       profileName: "name_mykad",
       profileEmail: "email",
       profileDocNo: "mykad_passport_no",
@@ -498,196 +177,77 @@
       profileStatusKahwin: "status_perkahwinan",
       profileBank: "bank",
       profileAccountNo: "account_no",
-      profileAccountName: "account_name",
       profileWaris: "nama_waris",
       profileHubungan: "hubungan",
       profileEmergencyNo: "emergency_no",
-      profileKebolehan: "kebolehan",
-      profileTyphoid: "typhoid",
-      profileTransport: "transportation",
-      profileSejarah: "sejarah",
-      profileSejarahOther: "sejarah_other"
+      profileKebolehan: "kebolehan"
     };
 
-    function setStatus(message = "", type = "") {
-      statusMsg.textContent = message;
-      statusMsg.className = "statusMsg";
-      if (type) statusMsg.classList.add(type);
-      if (!message) statusMsg.style.display = "none";
-      else statusMsg.style.display = "block";
+    function setStatus(msg, type) {
+      const el = document.getElementById("statusMsg");
+      el.textContent = msg;
+      el.className = "statusMsg " + type;
     }
 
-    function showLoader(message = "Loading...") {
-      loadingText.textContent = message;
-      loadingScreen.style.display = "flex";
-    }
-
-    function hideLoader() {
-      loadingScreen.style.display = "none";
-    }
-
-    function redirectToLogin() {
-      window.location.href = "index.html";
-    }
-
-    function logoutProfile() {
-      localStorage.removeItem("mcl_doc_no");
-      localStorage.removeItem("mcl_phone");
-      localStorage.removeItem("mitecWorkerRecord");
-      redirectToLogin();
-    }
-
-    function goToPage(page) {
-      window.location.href = page;
-    }
-
-    function getSavedDocNo() {
-      return (localStorage.getItem("mcl_doc_no") || "").trim();
-    }
-
-    function safeValue(value) {
-      if (value === null || value === undefined || value === "") return "-";
-      return String(value);
-    }
-
-    function convertDriveViewToDirect(url) {
-      const str = String(url || "").trim();
-      if (!str) return "";
-
-      const fileMatch = str.match(/\/file\/d\/([^/]+)/);
-      if (fileMatch && fileMatch[1]) {
-        return "https://drive.google.com/uc?export=view&id=" + fileMatch[1];
-      }
-
-      const openIdMatch = str.match(/[?&]id=([^&]+)/);
-      if (openIdMatch && openIdMatch[1] && str.includes("drive.google.com")) {
-        return "https://drive.google.com/uc?export=view&id=" + openIdMatch[1];
-      }
-
-      return str;
-    }
-
-    function createFileLink(url, label) {
-      if (!url) return "-";
-      const cleanUrl = String(url).trim();
-      if (!cleanUrl) return "-";
-      return '<a class="fileLink" href="' + cleanUrl + '" target="_blank" rel="noopener noreferrer">' + label + '</a>';
-    }
-
-    function setText(id, value) {
-      const el = document.getElementById(id);
-      if (el) el.textContent = safeValue(value);
-    }
-
-    function setPhoto(photoUrl) {
-      const cleanPhoto = convertDriveViewToDirect(photoUrl || "");
-
-      profilePhotoPreview.style.display = "none";
-      profilePhotoEmpty.style.display = "block";
-      headerPhoto.style.display = "none";
-
-      if (!cleanPhoto) return;
-
-      profilePhotoPreview.onerror = function() {
-        profilePhotoPreview.style.display = "none";
-        profilePhotoEmpty.style.display = "block";
-      };
-
-      profilePhotoPreview.onload = function() {
-        profilePhotoPreview.style.display = "block";
-        profilePhotoEmpty.style.display = "none";
-      };
-
-      headerPhoto.onerror = function() {
-        headerPhoto.style.display = "none";
-      };
-
-      headerPhoto.onload = function() {
-        headerPhoto.style.display = "block";
-      };
-
-      profilePhotoPreview.src = cleanPhoto;
-      headerPhoto.src = cleanPhoto;
+    function convertDriveLink(url) {
+      if (!url) return "";
+      const str = String(url);
+      const match = str.match(/\/file\/d\/([^/?]+)/);
+      return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : str;
     }
 
     function fillProfile(record) {
-      if (!record || typeof record !== "object") {
-        pageTitle.textContent = "Casual Labour Details";
-        setStatus("No matching application record was found.", "error");
-        return;
-      }
-
-      Object.keys(ids).forEach(domId => {
-        const fieldName = ids[domId];
-        setText(domId, record[fieldName]);
+      Object.keys(fieldMap).forEach(id => {
+        const val = record[fieldMap[id]];
+        document.getElementById(id).textContent = val || "-";
       });
 
-      const displayName = safeValue(record.name_mykad);
-      pageTitle.textContent = displayName !== "-" ? displayName : "Casual Labour Details";
+      // Handle Photos
+      const photoUrl = convertDriveLink(record.photo_link || "");
+      if (photoUrl) {
+        const preview = document.getElementById("profilePhotoPreview");
+        const header = document.getElementById("headerPhoto");
+        preview.src = photoUrl;
+        header.src = photoUrl;
+        preview.style.display = "block";
+        header.style.display = "block";
+        document.getElementById("profilePhotoEmpty").style.display = "none";
+      }
 
-      const photoUrl = record.photo_url || record.photo || record.foto || "";
-      setPhoto(photoUrl);
-
-      const icUrl = convertDriveViewToDirect(record.ic_copy_url || record.ic_url || record.ic_copy || "");
-      const rawPhotoFileUrl = convertDriveViewToDirect(record.photo_file_url || record.photo_upload_url || photoUrl || "");
-
-      document.getElementById("profileIcLink").innerHTML = createFileLink(icUrl, "Open File");
-      document.getElementById("profilePhotoLink").innerHTML = createFileLink(rawPhotoFileUrl, "Open File");
-
-      localStorage.setItem("mitecWorkerRecord", JSON.stringify(record));
-
-      setStatus("Profile loaded successfully.", "success");
+      // Handle Document Links
+      const icUrl = record.ic_link || "";
+      document.getElementById("profileIcLink").innerHTML = icUrl ? `<a href="${icUrl}" target="_blank" class="fileLink">View IC</a>` : "-";
+      document.getElementById("profilePhotoLink").innerHTML = photoUrl ? `<a href="${photoUrl}" target="_blank" class="fileLink">View Photo</a>` : "-";
     }
 
-    async function loadProfileData() {
+    async function loadData() {
+      const docNo = localStorage.getItem("mcl_doc_no");
+      if (!docNo) { window.location.href = "index.html"; return; }
+
       try {
-        showLoader("Loading profile...");
-        setStatus("");
+        const url = `${APPS_SCRIPT_URL}?action=check_existing&doc_no=${encodeURIComponent(docNo)}`;
+        const res = await fetch(url);
+        const data = await res.json();
 
-        const docNo = getSavedDocNo();
-
-        if (!docNo) {
-          setStatus("No saved login session found.", "error");
-          hideLoader();
-          setTimeout(() => redirectToLogin(), 900);
-          return;
+        if (data.ok && data.record) {
+          fillProfile(data.record);
+          localStorage.setItem("mitecWorkerRecord", JSON.stringify(data.record));
+        } else {
+          setStatus("Record not found.", "error");
         }
-
-        const url = `${APPS_SCRIPT_URL}?action=getProfile&docNo=${encodeURIComponent(docNo)}`;
-        const response = await fetch(url, {
-          method: "GET",
-          cache: "no-store"
-        });
-
-        if (!response.ok) {
-          throw new Error("Network response was not OK");
-        }
-
-        const data = await response.json();
-        console.log("Profile response:", data);
-
-        if (!data || data.success !== true || !data.record) {
-          setStatus(data && data.message ? data.message : "Unable to load profile record.", "error");
-          hideLoader();
-          return;
-        }
-
-        fillProfile(data.record);
-        hideLoader();
-      } catch (error) {
-        console.error(error);
-        setStatus("Failed to load profile data.", "error");
-        hideLoader();
+      } catch (e) {
+        setStatus("Connection failed.", "error");
       }
     }
 
-    logoutBtn.addEventListener("click", logoutProfile);
-    profilePhotoPreview.addEventListener("error", () => {
-      profilePhotoPreview.style.display = "none";
-      profilePhotoEmpty.style.display = "block";
-    });
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
 
-    loadProfileData();
+    function goToPage(p) { window.location.href = p; }
+
+    window.addEventListener("load", loadData);
   </script>
 </body>
 </html>
