@@ -671,7 +671,7 @@
     </button>
   </nav>
 
-  <script>
+    <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwrwJOWtdhgYXq68exQ_g3ilaEwtsePumDBPiBbQzr5hGgcFmtUrfNRzAx4ho8dYjQKyw/exec";
 
     function getStoredWorker() {
@@ -700,8 +700,12 @@
       const worker = getStoredWorker();
       const docNo = worker.mykad_passport_no || localStorage.getItem("mcl_doc_no"); 
 
-      // Safely pull the name and photo matching the exact database keys
-      const name = worker.name_mykad || worker.name || worker.full_name || worker.worker_name || "WORKER NAME";
+      // --- DIAGNOSTIC POPUP ---
+      // This will show you exactly what data the dashboard thinks it has!
+      alert("Diagnostic Check! Name found: " + worker.name_mykad + " | DocNo: " + docNo);
+
+      // Pull the name
+      const name = worker.name_mykad || worker.name || "WORKER NAME";
       const photo = worker.photo_link || worker.photo || "";
 
       const headerImg = document.getElementById("headerPhoto");
@@ -713,7 +717,7 @@
       if (headerImg) setImageWithFallback(headerImg, photo, fallbackImg);
       if (heroImg) setImageWithFallback(heroImg, photo, fallbackImg);
 
-      // Fetch Today's Summary Data from Google Apps Script
+      // Fetch Today's Summary
       if (docNo) {
         try {
           const response = await fetch(`${WEB_APP_URL}?action=get_today_summary&doc_no=${encodeURIComponent(docNo)}`);
@@ -743,7 +747,6 @@
     function logout() {
       localStorage.removeItem("mitecWorkerRecord");
       localStorage.removeItem("mcl_doc_no");
-      localStorage.removeItem("mcl_phone");
       window.location.href = "index.html";
     }
 
@@ -756,7 +759,6 @@
       fillWorkerData();
     }
 
-    // Close the dropdown menu if the user clicks anywhere else on the screen
     document.addEventListener("click", function(e) {
       const menu = document.getElementById("dropdownMenu");
       const menuBtn = document.getElementById("menuBtn");
@@ -768,5 +770,6 @@
 
     window.addEventListener("load", checkLogin);
   </script>
+
 </body>
 </html>
