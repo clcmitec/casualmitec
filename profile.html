@@ -230,24 +230,115 @@
         const data = await res.json();
 
         if (data.ok && data.record) {
-          fillProfile(data.record);
-          localStorage.setItem("mitecWorkerRecord", JSON.stringify(data.record));
-        } else {
-          setStatus("Record not found.", "error");
-        }
-      } catch (e) {
-        setStatus("Connection failed.", "error");
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwrwJOWtdhgYXq68exQ_g3ilaEwtsePumDBPiBbQzr5hGgcFmtUrfNRzAx4ho8dYjQKyw/exec";
+
+  const fieldMap = {
+    profileName: "name_mykad",
+    profileEmail: "email",
+    profileDocNo: "mykad_passport_no",
+    profilePhone: "phone",
+    profileDocType: "doc_type",
+    profileGender: "gender",
+    profileAlamat: "alamat",
+    profileStatusKahwin: "status_perkahwinan",
+    profileBank: "bank",
+    profileAccountNo: "account_no",
+    profileWaris: "nama_waris",
+    profileHubungan: "hubungan",
+    profileEmergencyNo: "emergency_no",
+    profileKebolehan: "kebolehan"
+  };
+
+  function setStatus(msg, type) {
+    const el = document.getElementById("statusMsg");
+    if (!el) return;
+    el.textContent = msg;
+    el.className = "statusMsg " + type;
+  }
+
+  // AGGRESSIVE DRIVE CONVERTER
+  function convertDriveLink(url) {
+    if (!url) return "";
+    let str = String(url).trim();
+    
+    // If it's already a direct link or base64, leave it
+    if (str.startsWith("data:") || str.includes("drive.google.com/uc")) return str;
+
+    // Extract ID from any Google Drive link format
+    const match = str.match(/\/file\/d\/([^/?]+)|id=([^&]+)/);
+    const fileId = match ? (match[1] || match[2]) : null;
+
+    if (fileId) {
+      return `https://drive.google.com/uc?export=view&id=${fileId}`;
+    }
+    return str;
+  }
+
+  function fillProfile(record) {
+    // Fill text fields
+    Object.keys(fieldMap).forEach(id => {
+      const val = record[fieldMap[id]];
+      const el = document.getElementById(id);
+      if (el) el.textContent = val || "-";
+    });
+
+    // Handle Photos with the new converter
+    const rawPhotoUrl = record.photo_link || "";
+    const directPhotoUrl = convertDriveLink(rawPhotoUrl);
+    
+    const preview = document.getElementById("profilePhotoPreview");
+    const header = document.getElementById("headerPhoto");
+    const emptyMsg = document.getElementById("profilePhotoEmpty");
+
+    if (directPhotoUrl && directPhotoUrl.length > 10) {
+      preview.src = directPhotoUrl;
+      header.src = directPhotoUrl;
+      preview.style.display = "block";
+      header.style.display = "block";
+      if (emptyMsg) emptyMsg.style.display = "none";
+    }
+
+    // Handle Document Links
+    const icUrl = record.ic_link || "";
+    const icEl = document.getElementById("profileIcLink");
+    if (icEl) icEl.innerHTML = icUrl ? `<a href="${icUrl}" target="_blank" class="fileLink">View IC</a>` : "-";
+    
+    const photoEl = document.getElementById("profilePhotoLink");
+    if (photoEl) photoEl.innerHTML = rawPhotoUrl ? `<a href="${rawPhotoUrl}" target="_blank" class="fileLink">View Photo</a>` : "-";
+  }
+
+  async function loadData() {
+    const docNo = localStorage.getItem("mcl_doc_no");
+    if (!docNo) { window.location.href = "index.html"; return; }
+
+    try {
+      // Using check_existing as it's already optimized for your sheet
+      const url = `${APPS_SCRIPT_URL}?action=check_existing&doc_no=${encodeURIComponent(docNo)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.ok && data.record) {
+        fillProfile(data.record);
+        // Refresh local cache
+        localStorage.setItem("mitecWorkerRecord", JSON.stringify(data.record));
+      } else {
+        setStatus("Record not found.", "error");
       }
+    } catch (e) {
+      console.error("Load error:", e);
+      setStatus("Connection failed.", "error");
     }
+  }
 
-    function logout() {
-      localStorage.clear();
-      window.location.href = "index.html";
-    }
+  function logout() {
+    localStorage.clear();
+    window.location.href = "index.html";
+  }
 
-    function goToPage(p) { window.location.href = p; }
+  function goToPage(p) { window.location.href = p; }
 
-    window.addEventListener("load", loadData);
+  window.addEventListener("load", loadData);
+
   </script>
 </body>
 </html>
