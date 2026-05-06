@@ -41,7 +41,9 @@
       padding: 48px 32px;
       text-align: center;
       box-shadow: var(--shadow-vip);
-      border: 1px solid rgba(0,0,0,0.02);
+      border: 1px solid rgba(0,0,0,0.02);/* ... existing styles ... */
+  border: 1px solid rgba(9, 34, 83, 0.08); /* Tiny touch of sapphire blue */
+    }
     }
 
     .brand { margin-bottom: 32px; }
@@ -134,28 +136,48 @@
 
     .footer {
   width: 100%;
-  ma.footer {
+  max-width: 320px; /* Keeps the text contained and elegant */
+  margin: 48px auto 24px;
   text-align: center;
-  margin-top: 48px;
-  padding-bottom: 24px;
+}
+
+.footer-brand {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--mitec-blue);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.footer-divider {
+  width: 40px;
+  height: 1.5px;
+  background: var(--mitec-blue);
+  margin: 12px auto;
+  opacity: 0.2; /* Subtle sapphire line */
+}
+
+.footer-system {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   line-height: 1.6;
 }
 
-.footer-main {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--mitec-blue);
-  letter-spacing: -0.01em;
+.version-tag {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 2px 8px;
+  background: #eef1f6;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
 }
 
-.footer-sub {
-  font-size: 7px;
-  font-weight: 400;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-top: 4px;
-}
 
 
   </style>
@@ -186,10 +208,16 @@
       <div id="loginMessage" class="msg"></div>
     </div>
 
-    <div class="footer">
-      Malaysia International Trade & Exhibition Centre<br>
-      Casual Labour Management & Coordination System
-    </div>
+    <footer class="footer">
+  <div class="footer-brand">Malaysia International Trade & Exhibition Centre</div>
+  <div class="footer-divider"></div>
+  <div class="footer-system">
+    Casual Labour Management <br> 
+    & Coordination System
+  </div>
+  <div class="version-tag">SYSTEM PROTOCOL V1.2.0</div>
+</footer>
+
   </div>
 
   <script>
