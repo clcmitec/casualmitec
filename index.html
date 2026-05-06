@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MITEC — Secure Portal</title>
+  <title>MITEC — Casual Labour Portal</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -132,8 +132,8 @@
         <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo">
       </div>
 
-      <h1 class="title">Worker Portal</h1>
-      <p class="sub">Secure access for casual labour.</p>
+      <h1 class="title">Casual Labour Access</h1>
+      <p class="sub">You may access the portal after registration.</p>
 
       <div class="input-group">
         <input id="docInput" class="input-control" type="text" placeholder=" " autocomplete="off">
@@ -148,7 +148,7 @@
     </div>
   </div>
 
-  <div class="footer">MITEC Shift Management System</div>
+  <div class="footer">MITEC Casual Labour Portal</div>
 
   <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq0EucoCN7Y1O1k2mik8Ne7bZbPDfPonyJ9ac73UkzpBMCxsBBhVJ__0ZAC-Fr6OT5/exec";
@@ -182,7 +182,7 @@
     async function handleLogin() {
       const docNo = docInput.value.trim();
       if (!docNo) {
-        showStatus("Please enter your ID.");
+        showStatus("Please enter your Personal Identification Number (Mykad/Passport).");
         return;
       }
 
