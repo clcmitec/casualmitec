@@ -3,230 +3,124 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MITEC Worker Portal</title>
+  <title>MITEC — Secure Portal</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   
   <style>
     :root {
-      /* Base Material 3 Palette */
-      --md-surface: #f0f4f9;
-      --md-surface-container: #ffffff;
-      --md-on-surface: #1f1f1f;
-      --md-on-surface-variant: #444746;
-      --md-outline: #747775; /* Default resting border color */
-      
-      /* MITEC Custom Branding */
-      --mitec-blue: #0f4a82;         /* Logo Blue for Buttons */
-      --mitec-blue-hover: #0b3d6c;   /* Slightly darker blue for hover */
-      --mitec-orange: #0f4a82;       /* Vibrant Orange for the Input Box */
-      
-      --md-error: #b3261e;
-      --md-success: #146c2e;
-      
-      --md-font: 'Trebuchet', sans-serif;
+      --mitec-blue: #092253;
+      --mitec-blue-hover: #07223f;
+      --mitec-accent: #0f4a82;
+      --bg-base: #f4f5f8;
+      --card-bg: #ffffff;
+      --text-main: #1d1d1f;
+      --text-muted: #86868b;
+      --error: #ff3b30;
+      --success: #34c759;
+      --radius: 24px;
+      --shadow: 0 20px 40px rgba(0,0,0,0.06);
     }
 
-    * {
-      box-sizing: border-box;
-      font-family: var(--md-font);
-    }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
-    html, body {
-      margin: 0;
-      padding: 0;
+    body {
+      margin: 0; padding: 0;
       min-height: 100vh;
-      background-color: var(--md-surface);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      background-color: var(--bg-base);
+      font-family: 'Inter', -apple-system, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-main);
     }
 
-    .shell {
-      width: 100%;
-      max-width: 448px;
-      padding: 24px;
-    }
+    .shell { width: 100%; max-width: 420px; padding: 20px; }
 
     .card {
-      background-color: var(--md-surface-container);
-      border-radius: 28px;
-      padding: 40px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 48px 32px;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,0.02);
     }
 
-    .brand {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 24px;
-    }
+    .brand { margin-bottom: 32px; }
+    .brand img { width: 130px; height: auto; object-fit: contain; }
 
-    .brand img {
-      width: 120px;
-      max-width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
+    .title { font-size: 24px; font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .sub { font-size: 15px; color: var(--text-muted); margin: 0 0 40px; }
 
-    .title {
-      font-size: 24px;
-      font-weight: 400;
-      line-height: 1.25;
-      color: var(--md-on-surface);
-      margin: 0 0 12px;
-    }
-
-    .sub {
-      margin: 0 0 40px;
-      font-size: 16px;
-      line-height: 1.5;
-      color: var(--md-on-surface);
-    }
-
-    /* Floating Label Input */
-    .input-group {
-      position: relative;
-      margin-bottom: 24px;
-      text-align: left;
-    }
+    /* Premium Floating Input */
+    .input-group { position: relative; margin-bottom: 24px; text-align: left; }
 
     .input-control {
-      width: 100%;
-      height: 56px;
-      padding: 16px;
-      font-size: 16px;
-      color: var(--md-on-surface);
-      border: 1px solid var(--md-outline);
-      border-radius: 4px;
-      background: transparent;
+      width: 100%; height: 58px; padding: 18px 16px;
+      font-size: 16px; font-weight: 500;
+      color: var(--text-main);
+      border: 1.5px solid #e5e7eb;
+      border-radius: 14px;
+      background: #f9fafb;
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Focus State: Changes box to Orange */
     .input-control:focus {
-      border: 2px solid var(--mitec-orange);
-      padding: 15px; /* Compensate for 2px border so text doesn't shift */
+      border-color: var(--mitec-accent);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(15, 74, 130, 0.1);
     }
 
     .input-label {
-      position: absolute;
-      left: 12px;
-      top: 18px;
-      background: var(--md-surface-container);
-      padding: 0 4px;
-      color: var(--md-on-surface-variant);
-      font-size: 16px;
+      position: absolute; left: 16px; top: 18px;
+      color: var(--text-muted);
+      font-size: 16px; font-weight: 500;
       transition: 0.2s ease all;
       pointer-events: none;
     }
 
-    /* When filled or focused, label floats and turns Orange */
     .input-control:focus ~ .input-label,
     .input-control:not(:placeholder-shown) ~ .input-label {
-      top: -9px;
-      font-size: 12px;
-      color: var(--mitec-orange);
+      top: -10px; left: 12px; font-size: 12px;
+      color: var(--mitec-accent);
+      background: #fff; padding: 0 6px;
+      font-weight: 700;
     }
 
-    /* When filled but NOT focused, label turns back to grey */
-    .input-control:not(:focus):not(:placeholder-shown) ~ .input-label {
-      color: var(--md-on-surface-variant);
+    /* Buttons */
+    .btn-primary {
+      width: 100%; height: 54px; border: none; border-radius: 16px;
+      background: var(--mitec-blue); color: #fff;
+      font-size: 16px; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; margin-top: 8px;
     }
+    .btn-primary:hover { background: var(--mitec-blue-hover); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { background: #d1d5db; cursor: not-allowed; }
 
-    /* Primary Button: MITEC Blue */
-    .btn {
-      width: 100%;
-      height: 50px;
-      border: none;
-      border-radius: 100px; /* Pill shape */
-      background-color: var(--mitec-blue);
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background-color 0.2s, box-shadow 0.2s;
-      margin-top: 16px;
+    .btn-link {
+      display: inline-block; margin-top: 24px;
+      font-size: 14px; font-weight: 600;
+      color: var(--mitec-accent); text-decoration: none;
+      padding: 10px 20px; border-radius: 12px;
+      transition: background 0.2s;
     }
-
-    .btn:hover {
-      background-color: var(--mitec-blue-hover);
-      box-shadow: 0 1px 3px rgba(15, 74, 130, 0.2);
-    }
-
-    .btn:active {
-      background-color: #082f54; /* Even darker blue for click */
-    }
-
-    .btn:disabled {
-      background-color: #e0e2e0;
-      color: #1f1f1f;
-      opacity: 0.5;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    .linkBtn {
-      display: block;
-      width: 100%;
-      text-align: center;
-      margin-top: 16px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--mitec-blue); /* Match button color */
-      text-decoration: none;
-      padding: 12px;
-      border-radius: 100px;
-      transition: background-color 0.2s;
-    }
-
-    .linkBtn:hover {
-      background-color: rgba(15, 74, 130, 0.05); /* Subtle blue highlight */
-      text-decoration: none;
-    }
+    .btn-link:hover { background: rgba(15, 74, 130, 0.05); }
 
     .msg {
-      min-height: 20px;
-      margin-top: 16px;
-      font-size: 13px;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      margin-top: 20px; font-size: 14px; font-weight: 500;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 24px;
     }
-
-    .msg.error {
-      color: var(--md-error);
-    }
-
-    .msg.success {
-      color: var(--md-success);
-    }
+    .msg.error { color: var(--error); }
+    .msg.success { color: var(--success); }
 
     .footer {
-      text-align: center;
-      font-size: 12px;
-      color: var(--md-on-surface-variant);
-      margin-top: 16px;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 480px) {
-      .shell {
-        padding: 16px;
-      }
-      .card {
-        padding: 32px;
-        border-radius: 22px;
-      }
-      .title {
-        font-size: 22px;
-      }
+      position: absolute; bottom: 24px;
+      font-size: 12px; color: var(--text-muted);
+      font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;
     }
   </style>
 </head>
@@ -235,34 +129,26 @@
   <div class="shell">
     <div class="card">
       <div class="brand">
-        <img src="https://hercules-cdn.com/file_G1cF6VttU3RSj2DksyB2vBX6" alt="MITEC Logo">
+        <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo">
       </div>
 
-      <h1 class="title">Portal Access</h1>
-      <p class="sub">Use your registered IC or passport number.</p>
+      <h1 class="title">Worker Portal</h1>
+      <p class="sub">Secure access for casual labour.</p>
 
       <div class="input-group">
-        <input
-          id="docInput"
-          class="input-control"
-          type="text"
-          placeholder=" "
-          autocomplete="off"
-        >
-        <label for="docInput" class="input-label">IC / Passport Number</label>
+        <input id="docInput" class="input-control" type="text" placeholder=" " autocomplete="off">
+        <label class="input-label">IC / Passport Number</label>
       </div>
 
-      <button id="loginBtn" class="btn" onclick="handleLogin()">Login</button>
+      <button id="loginBtn" class="btn-primary" onclick="handleLogin()">Authorize Access</button>
 
-      <a href="129c.html" class="linkBtn">First Time User? Sign Up / Register Here</a>
+      <a href="129c.html" class="btn-link">Register New Account</a>
 
       <div id="loginMessage" class="msg"></div>
     </div>
-
-    <div class="footer">
-      Malaysia International Trade & Exhibition Centre
-    </div>
   </div>
+
+  <div class="footer">MITEC Shift Management System</div>
 
   <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq0EucoCN7Y1O1k2mik8Ne7bZbPDfPonyJ9ac73UkzpBMCxsBBhVJ__0ZAC-Fr6OT5/exec";
@@ -271,76 +157,74 @@
     const loginBtn = document.getElementById("loginBtn");
     const msg = document.getElementById("loginMessage");
 
-    function setMessage(text, type = "error") {
-      msg.textContent = text || "";
-      msg.className = "msg " + type;
+    // --- POWER FEATURE: Fast-Pass Redirect ---
+    // If user is already logged in, skip this page entirely.
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedDoc = localStorage.getItem("mcl_doc_no");
+      const savedRecord = localStorage.getItem("mitecWorkerRecord");
       
-      // Material approach to error icons
-      if (type === "error" && text) {
+      if (savedDoc && savedRecord) {
+        // User exists locally, go straight to the exclusive dashboard
+        window.location.href = "dashboard.html";
+      } else {
+        docInput.focus();
+      }
+    });
+
+    function showStatus(text, isError = true) {
+      msg.textContent = text;
+      msg.className = isError ? "msg error" : "msg success";
+      if (isError && text) {
         msg.innerHTML = `<span class="material-symbols-outlined" style="font-size:18px;">warning</span> ${text}`;
       }
     }
 
-    function setLoading(isLoading) {
-      loginBtn.disabled = isLoading;
-      loginBtn.textContent = isLoading ? "Checking..." : "Login";
-    }
-
-    // Allow users to press "Enter" to submit
-    docInput.addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        handleLogin();
-      }
-    });
-
-    // Automatically focus the input field when the page loads
-    window.addEventListener("load", () => {
-      docInput.focus();
-    });
-
     async function handleLogin() {
       const docNo = docInput.value.trim();
-
-      setMessage("");
-
       if (!docNo) {
-        setMessage("Enter IC or Passport number", "error");
-        docInput.focus();
+        showStatus("Please enter your ID.");
         return;
       }
 
-      setLoading(true);
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Verifying...";
+      showStatus("");
 
       try {
+        // One-Shot Login: Gets Profile + Summary in one trip
         const url = `${WEB_APP_URL}?action=check_existing&doc_no=${encodeURIComponent(docNo)}`;
         const res = await fetch(url);
         const data = await res.json();
 
-        if (data && data.ok && data.exists && data.record) {
-          setMessage("Welcome back.", "success");
+        if (data.ok && data.exists) {
+          showStatus("Authorized. Entering...", false);
 
-          // Save worker data to local storage
+          // Store for Dashboard & Profile use
           localStorage.setItem("mitecWorkerRecord", JSON.stringify(data.record));
           localStorage.setItem("mcl_doc_no", docNo);
+          
+          // If the server sent a summary, store it to make dashboard load instant
+          if (data.summary) {
+            localStorage.setItem("mitecLastSummary", JSON.stringify(data.summary));
+          }
 
-          // Redirect to the dashboard
           setTimeout(() => {
             window.location.href = "dashboard.html";
-          }, 600);
+          }, 800);
         } else {
-          setMessage(
-            data && data.message ? data.message : "Couldn't find that record",
-            "error"
-          );
+          showStatus(data.message || "Access denied. ID not recognized.");
+          loginBtn.disabled = false;
+          loginBtn.textContent = "Authorize Access";
         }
       } catch (err) {
         console.error(err);
-        setMessage("Something went wrong. Try again.", "error");
-      } finally {
-        setLoading(false);
+        showStatus("System connection timeout. Try again.");
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Authorize Access";
       }
     }
+
+    docInput.addEventListener("keypress", (e) => { if(e.key === "Enter") handleLogin(); });
   </script>
 
 </body>
