@@ -132,7 +132,7 @@
     <div class="card">
       <h3 class="sectionTitle">Banking & Work</h3>
       <div class="infoList">
-        <div class="infoRow"><div class="infoLabel">Bank Name</div><div class="infoValue" id="Bank">-</div></div>
+        <div class="infoRow"><div class="infoLabel">Bank Name</div><div class="infoValue" id="profileBank">-</div></div>
         <div class="infoRow"><div class="infoLabel">Account No.</div><div class="infoValue" id="profileAccountNo">-</div></div>
         <div class="infoRow"><div class="infoLabel">Skills</div><div class="infoValue" id="profileKebolehan">-</div></div>
       </div>
@@ -162,98 +162,97 @@
     </button>
   </nav>
 
-   <script>
-  // FIXED: Added the closing quotation mark
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyq0EucoCN7Y1O1k2mik8Ne7bZbPDfPonyJ9ac73UkzpBMCxsBBhVJ__0ZAC-Fr6OT5/exec";
-  
-  const fieldMap = {
-    profileName: "name_mykad",
-    profileEmail: "email",
-    profileDocNo: "mykad_passport_no",
-    profilePhone: "phone",
-    profileDocType: "doc_type",
-    profileGender: "gender",
-    profileAlamat: "alamat",
-    profileStatusKahwin: "status_perkahwinan",
-    profileBank: "bank",
-    profileAccountNo: "accountNo",
-    profileWaris: "nama_waris",
-    profileHubungan: "hubungan",
-    profileEmergencyNo: "emergency_no",
-    profileKebolehan: "kebolehan"
-  };
+   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyq0EucoCN7Y1O1k2mik8Ne7bZbPDfPonyJ9ac73UkzpBMCxsBBhVJ__0ZAC-Fr6OT5/exec";
 
-  function fillProfile(record) {
-    if (!record) return;
+// Updated to match your Application Form payload exactly
+const fieldMap = {
+  profileName: "name_mykad",
+  profileEmail: "email",
+  profileDocNo: "mykad_passport_no",
+  profilePhone: "phone",
+  profileDocType: "doc_type",
+  profileGender: "gender",
+  profileAlamat: "alamat",
+  profileStatusKahwin: "status_perkahwinan",
+  profileBank: "bank",
+  profileAccountNo: "account_no", // Fixed: Matches form 'account_no'
+  profileWaris: "nama_waris",
+  profileHubungan: "hubungan",
+  profileEmergencyNo: "emergency_no",
+  profileKebolehan: "kebolehan"
+};
 
-    // 1. Batch Text Updates
-    Object.keys(fieldMap).forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = record[fieldMap[id]] || "-";
-    });
+function fillProfile(record) {
+  if (!record) return;
 
-    // 2. Optimized Photo Handling
-    const photoUrl = record.photo_link || "";
-    const preview = document.getElementById("profilePhotoPreview");
-    const header = document.getElementById("headerPhoto");
-    const emptyMsg = document.getElementById("profilePhotoEmpty");
+  // Fill text fields
+  Object.keys(fieldMap).forEach(id => {
+    const el = document.getElementById(id);
+    const dataKey = fieldMap[id];
+    if (el) el.textContent = record[dataKey] || "-";
+  });
 
-    if (photoUrl) {
-      // If photo exists, set sources immediately
-      preview.src = photoUrl;
-      header.src = photoUrl;
-      preview.style.display = "block";
-      header.style.display = "block";
-      if (emptyMsg) emptyMsg.style.display = "none";
-    }
+  // Photo Handling
+  const photoUrl = record.photo_link || "";
+  const preview = document.getElementById("profilePhotoPreview");
+  const header = document.getElementById("headerPhoto");
+  const emptyMsg = document.getElementById("profilePhotoEmpty");
 
-    // 3. Link Updates
-    const icUrl = record.ic_link || "";
-    document.getElementById("profileIcLink").innerHTML = icUrl ? `<a href="${icUrl}" target="_blank" class="fileLink">View IC</a>` : "-";
-    document.getElementById("profilePhotoLink").innerHTML = photoUrl ? `<a href="${photoUrl}" target="_blank" class="fileLink">View Photo</a>` : "-";
+  if (photoUrl) {
+    preview.src = photoUrl;
+    header.src = photoUrl;
+    preview.style.display = "block";
+    header.style.display = "block";
+    if (emptyMsg) emptyMsg.style.display = "none";
   }
 
-  async function loadData() {
-    const docNo = localStorage.getItem("mcl_doc_no");
-    if (!docNo) { window.location.href = "index.html"; return; }
+  // Link Updates
+  const icUrl = record.ic_link || "";
+  document.getElementById("profileIcLink").innerHTML = icUrl ? `<a href="${icUrl}" target="_blank" class="fileLink">View IC</a>` : "-";
+  document.getElementById("profilePhotoLink").innerHTML = photoUrl ? `<a href="${photoUrl}" target="_blank" class="fileLink">View Photo</a>` : "-";
+}
 
-    // --- SPEED FIX 1: Instant Load from Cache ---
-    const cachedData = localStorage.getItem("mcl_doc_no");
-    if (cachedData) {
-      try {
-        fillProfile(JSON.parse(cachedData));
-        console.log("Loaded from cache (instant)");
-      } catch (e) { console.error("Cache error", e); }
-    }
+async function loadData() {
+  // 1. Get the ID for the network refresh
+  const docNo = localStorage.getItem("mcl_doc_no");
 
-    // --- SPEED FIX 2: Background Fetch ---
+  // 2. SPEED FIX: Open the same 'drawer' as the dashboard
+  const cachedData = localStorage.getItem("mitecWorkerRecord");
+  
+  if (cachedData) {
     try {
-      // FIXED: Changed action to get_full_profile
+      fillProfile(JSON.parse(cachedData));
+    } catch (e) { console.error("Cache error", e); }
+  }
+
+  // 3. Background Sync (If online)
+  if (docNo) {
+    try {
       const url = `${APPS_SCRIPT_URL}?action=get_full_profile&doc_no=${encodeURIComponent(docNo)}`;
       const res = await fetch(url);
       const data = await res.json();
 
       if (data.ok && data.record) {
         fillProfile(data.record);
-        // Silently update cache for next time
+        // Update the cache so the dashboard also stays fresh
         localStorage.setItem("mitecWorkerRecord", JSON.stringify(data.record));
       }
     } catch (e) {
-      console.error("Network sync failed, keeping cached data.");
+      console.warn("Using offline data.");
     }
-  }
-
-  function logout() {
-    localStorage.clear();
+  } else {
     window.location.href = "index.html";
   }
+}
 
-  function goToPage(p) { window.location.href = p; }
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
 
-  // Use DOMContentLoaded instead of Load for faster execution
-  window.addEventListener("DOMContentLoaded", loadData);
+function goToPage(p) { window.location.href = p; }
 
-  </script>
+window.addEventListener("DOMContentLoaded", loadData);
 
 </body>
 </html>
