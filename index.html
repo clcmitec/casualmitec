@@ -151,10 +151,11 @@
       color: var(--mitec-blue);
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      white-space: nowrap; /* Single line command */
-      margin-bottom: 12px;
-      display: inline-block;
-    }
+      white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adds '...' if the text is too long */
+  max-width: 100%;
+}
 
     .footer-divider {
       width: 30px;
