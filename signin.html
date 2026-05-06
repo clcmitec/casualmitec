@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MITEC Sign In | Premium Tint</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
+nect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -420,5 +413,308 @@ async function submitSignIn() {
 
 window.addEventListener("load", () => voucherInput.focus());
 </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MITEC — Secure Duty Entry</title>
+  
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    :root {
+      --mitec-blue: #092253;
+      --mitec-blue-dark: #07223f;
+      --mitec-accent: #0f4a82;
+      --bg-base: #f4f5f8; 
+      --card-bg: #ffffff;
+      --text-main: #1d1d1f;
+      --text-muted: #86868b;
+      --shadow-vip: 0 20px 40px rgba(7, 34, 63, 0.15);
+      --marble-url: url('dark-blue-marble-plain-photo-wallpapers (1).jpg');
+    }
+
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+    body { 
+      margin: 0; padding: 20px 16px 140px; 
+      background-color: var(--bg-base);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      color: var(--text-main);
+    }
+
+    .shell { max-width: 440px; margin: 0 auto; }
+
+    /* Header */
+    .header { text-align: center; margin-bottom: 20px; }
+    .brand-img { height: 20px; width: auto; }
+
+    /* VIP Identification Card (Marble) */
+    .identity-card {
+      background: var(--marble-url) center/cover no-repeat;
+      background-color: var(--mitec-blue-dark);
+      border-radius: 28px;
+      padding: 24px;
+      color: #fff;
+      display: flex; align-items: center; gap: 16px;
+      box-shadow: var(--shadow-vip);
+      position: relative; overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .identity-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.4); z-index: 0;
+    }
+
+    .avatar-wrap { position: relative; z-index: 1; }
+    .avatar { 
+      width: 64px; height: 64px; border-radius: 50%; 
+      border: 2px solid rgba(255,255,255,0.3); object-fit: cover; 
+      background: rgba(255,255,255,0.1); 
+    }
+    
+    .id-info { position: relative; z-index: 1; }
+    .id-status { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.8; font-weight: 700; color: #34c759; margin: 0 0 4px; }
+    .id-name { font-size: 19px; font-weight: 800; margin: 0; letter-spacing: -0.01em; }
+
+    /* Action Card */
+    .action-card {
+      background: var(--card-bg);
+      border-radius: 28px;
+      padding: 32px 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+      border: 1px solid rgba(0,0,0,0.02);
+    }
+
+    .section-label { 
+      font-size: 11px; font-weight: 700; text-transform: uppercase; 
+      letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 24px; display: block;
+    }
+
+    /* Elegant Fields */
+    .field { margin-bottom: 20px; }
+    .inputWrapper { position: relative; display: flex; align-items: center; }
+
+    .inputIcon {
+      position: absolute; left: 16px;
+      font-size: 20px; color: var(--mitec-blue); z-index: 2;
+    }
+
+    .input-field, select {
+      width: 100%; height: 58px; border-radius: 16px;
+      border: 1.5px solid #e5e7eb; background: #f9fafb;
+      padding: 0 16px 0 48px; font-size: 15px; font-weight: 600;
+      outline: none; transition: all 0.2s;
+      appearance: none; color: var(--text-main);
+    }
+    
+    .input-field:focus, select:focus {
+      border-color: var(--mitec-accent);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(15, 74, 130, 0.08);
+    }
+
+    /* Confirm Button */
+    .btn-clock {
+      width: 100%; height: 62px; border-radius: 20px;
+      background: var(--mitec-blue); color: #fff;
+      font-size: 16px; font-weight: 700; border: none;
+      cursor: pointer; transition: all 0.3s;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      box-shadow: 0 10px 20px rgba(9, 34, 83, 0.15);
+      margin-top: 12px;
+    }
+    .btn-clock:active { transform: scale(0.97); background: var(--mitec-blue-dark); }
+
+    /* Power Overlay */
+    .overlay {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 2000; text-align: center; padding: 40px;
+    }
+    .spinner { width: 48px; height: 48px; border: 4px solid #f3f3f3; border-top: 4px solid var(--mitec-blue); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 24px; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+  </style>
+</head>
+<body>
+
+  <div class="shell">
+    <div class="header">
+      <img class="brand-img" src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC">
+    </div>
+
+    <div class="identity-card">
+      <div class="avatar-wrap">
+        <img id="workerAvatar" class="avatar" src="https://via.placeholder.com/100" alt="Profile">
+      </div>
+      <div class="id-info">
+        <p class="id-status">● Authorized Entry Session</p>
+        <h2 class="id-name" id="workerName">LOADING...</h2>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <span class="section-label">Duty Authorization Details</span>
+      
+      <div class="field">
+        <div class="inputWrapper">
+          <i class="ph-fill ph-ticket inputIcon"></i>
+          <input type="text" id="voucherNo" class="input-field" placeholder="Voucher Number" inputmode="numeric">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="inputWrapper">
+          <i class="ph-fill ph-buildings inputIcon"></i>
+          <select id="dept" required>
+            <option value="" disabled selected hidden>Select Department</option>
+            <option value="AV">AV</option>
+            <option value="CAT">CAT</option>
+            <option value="EXH">EXH</option>
+            <option value="FIN">FIN</option>
+            <option value="GCC">GCC</option>
+            <option value="GS">GS</option>
+            <option value="HK">HK</option>
+            <option value="HR">HR</option>
+            <option value="KIT">KIT</option>
+            <option value="LINEN">LINEN</option>
+            <option value="OPERATION">OPERATION</option>
+            <option value="PUR">PUR</option>
+            <option value="QA">QA</option>
+            <option value="SC">SC</option>
+            <option value="SETUP">SETUP</option>
+            <option value="STWD">STWD</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="inputWrapper">
+          <i class="ph-fill ph-clock inputIcon"></i>
+          <select id="shift" required>
+            <option value="" disabled selected hidden>Select Shift Time</option>
+            <option value="0700">07:00</option>
+            <option value="0800">08:00</option>
+            <option value="0900">09:00</option>
+            <option value="1000">10:00</option>
+            <option value="1100">11:00</option>
+            <option value="1200">12:00</option>
+            <option value="1300">13:00</option>
+            <option value="1400">14:00</option>
+            <option value="1500">15:00</option>
+            <option value="1600">16:00</option>
+            <option value="1700">17:00</option>
+            <option value="1800">18:00</option>
+            <option value="1900">19:00</option>
+            <option value="2000">20:00</option>
+            <option value="2100">21:00</option>
+            <option value="2200">22:00</option>
+            <option value="2300">23:00</option>
+            <option value="0000">00:00</option>
+            <option value="0100">01:00</option>
+            <option value="0200">02:00</option>
+            <option value="0300">03:00</option>
+            <option value="0400">04:00</option>
+            <option value="0500">05:00</option>
+            <option value="0600">06:00</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-clock" onclick="executeSignIn()">
+        <i class="ph-bold ph-fingerprint"></i>
+        Confirm Duty Entry
+      </button>
+    </div>
+  </div>
+
+  <div id="statusOverlay" class="overlay">
+    <div id="spinner" class="spinner"></div>
+    <h2 id="statusTitle" style="margin:0; font-size:22px; font-weight:800;">Verifying...</h2>
+    <p id="statusMsg" style="color:var(--text-muted); font-size:15px; margin-top:12px;">Transmitting authorization to MITEC Registry.</p>
+    <button id="closeBtn" class="btn-clock" style="display:none; margin-top:30px; max-width:240px;" onclick="window.location.href='dashboard.html'">Return Home</button>
+  </div>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq0EucoCN7Y1O1k2mik8Ne7bZbPDfPonyJ9ac73UkzpBMCxsBBhVJ__0ZAC-Fr6OT5/exec";
+
+    // POWER FIX: The Direct Link Converter to ensure photos always load
+    function convertToDirectLink(url) {
+      if (!url) return "";
+      let stringUrl = String(url);
+      if (stringUrl.includes("drive.google.com")) {
+        const match = stringUrl.match(/\/file\/d\/([^/?]+)/) || stringUrl.match(/id=([^&]+)/);
+        if (match && match[1]) {
+          return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        }
+      }
+      return stringUrl;
+    }
+
+    function loadIdentity() {
+      const record = JSON.parse(localStorage.getItem("mitecWorkerRecord") || "{}");
+      const nameEl = document.getElementById("workerName");
+      const avatarEl = document.getElementById("workerAvatar");
+      
+      nameEl.textContent = (record.name_mykad || record.full_name || "Authorized Personnel").toUpperCase();
+      
+      if (record.photo_link) {
+        avatarEl.src = convertToDirectLink(record.photo_link);
+      }
+    }
+
+    async function executeSignIn() {
+      const voucher = document.getElementById("voucherNo").value.trim();
+      const dept = document.getElementById("dept").value;
+      const shift = document.getElementById("shift").value;
+      const docNo = localStorage.getItem("mcl_doc_no");
+
+      if (!voucher || !dept || !shift) {
+        alert("Authorization Denied: All fields must be populated.");
+        return;
+      }
+
+      const overlay = document.getElementById("statusOverlay");
+      const title = document.getElementById("statusTitle");
+      const msg = document.getElementById("statusMsg");
+      const spinner = document.getElementById("spinner");
+      const closeBtn = document.getElementById("closeBtn");
+
+      overlay.style.display = "flex";
+
+      try {
+        const url = `${WEB_APP_URL}?action=signIn&doc_no=${encodeURIComponent(docNo)}&voucher=${encodeURIComponent(voucher)}&dept=${encodeURIComponent(dept)}&shift=${encodeURIComponent(shift)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        spinner.style.display = "none";
+        if (data.ok) {
+          title.textContent = "Duty Entry Verified";
+          title.style.color = "#34c759";
+          msg.textContent = "Shift timestamp successfully logged in the central registry.";
+          closeBtn.style.display = "flex";
+        } else {
+          throw new Error(data.message || "Authorization Failed");
+        }
+      } catch (err) {
+        spinner.style.display = "none";
+        title.textContent = "Security Notice";
+        title.style.color = "#ff3b30";
+        msg.textContent = err.message;
+        closeBtn.style.display = "flex";
+        closeBtn.textContent = "Retry Connection";
+        closeBtn.onclick = () => { overlay.style.display="none"; };
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      if (!localStorage.getItem("mcl_doc_no")) window.location.href = "index.html";
+      else loadIdentity();
+    });
+  </script>
 </body>
 </html>
