@@ -401,14 +401,14 @@ async function submitSignIn() {
 
       setTimeout(() => {
         window.location.href = "dashboard.html";
-      }, 7000);
+      }, 1000);
 
     } else {
       setStatus(data.message || "Voucher has already been used.", "error");
 
       setTimeout(() => {
         window.location.href = "dashboard.html";
-      }, 7000);
+      }, 1000);
     }
 
   } catch (err) {
