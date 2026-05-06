@@ -42,14 +42,14 @@
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
-      padding: 54px 32px; /* Deeper padding for luxury feel */
+      padding: 54px 32px;
       text-align: center;
       box-shadow: var(--shadow-vip);
       border: 1px solid rgba(9, 34, 83, 0.05);
     }
 
     /* Spacing Refinement: Logo and Title */
-    .brand { margin-bottom: 54px; } /* Increased breathing room */
+    .brand { margin-bottom: 54px; }
     .brand img { width: 130px; height: auto; object-fit: contain; margin-bottom: 24px; }
 
     .title { 
@@ -136,10 +136,10 @@
     .msg.error { color: var(--error); }
     .msg.success { color: var(--success); }
 
-    /* Modified Footer: Trebuchet MS & Single Line */
+    /* Refined Footer: Multi-line Support */
     .footer {
       width: 100%;
-      max-width: 400px;
+      max-width: 320px; /* Constrained for better wrapping aesthetics */
       margin: 54px auto 32px;
       text-align: center;
     }
@@ -151,11 +151,10 @@
       color: var(--mitec-blue);
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; /* Adds '...' if the text is too long */
-  max-width: 100%;
-}
+      margin-bottom: 12px;
+      line-height: 1.4; /* Better spacing between wrapped lines */
+      display: block;
+    }
 
     .footer-divider {
       width: 30px;
@@ -193,7 +192,7 @@
       <div class="brand">
         <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo">
     
-        <p class="sub">Casual Labour Access</p>
+        <p class="sub">Casual Labour Portal</p>
       </div>
 
       <div class="input-group">
@@ -203,7 +202,7 @@
       </div>
 
       <button id="loginBtn" class="btn-primary" onclick="handleLogin()">
-        <span>Authorize & Enter</span>
+        <span>Access</span>
       </button>
 
       <a href="129c.html" class="btn-link">First Time User?<br>Register / Update Account</a>
