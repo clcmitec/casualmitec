@@ -232,7 +232,7 @@
       if (stringUrl.includes("drive.google.com")) {
         const match = stringUrl.match(/\/file\/d\/([^/?]+)/) || stringUrl.match(/id=([^&]+)/);
         if (match && match[1]) {
-          return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+          return `https://drive.google.com/thumbnail?id=${match[1]}`;
         }
       }
       return stringUrl;
