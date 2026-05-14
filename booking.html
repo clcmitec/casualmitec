@@ -90,10 +90,7 @@
     // UPDATED SCRIPT URL
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNeV_-0LLw4ya6_SJHxdNcmtWCRMDd-IuHxkgRSdO4FeLW5_OUe5SSRYxZ-UkYUYAs/exec";
 
-    window.onload = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const userDocNo = urlParams.get('id') || localStorage.getItem("mcl_doc_no");
-      
+    
       const record = JSON.parse(localStorage.getItem("mitecWorkerRecord") || "{}");
       document.getElementById("userNameDisplay").textContent = record.full_name || "Staff Member";
       if (record.photo_link) document.getElementById("userAvatar").src = record.photo_link;
