@@ -3,125 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MITEC — Casual Labour Management</title>
+  <title>MITEC — Casual Labour Portal</title>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     :root {
-      --mitec-navy: #092253;
-      --slate-bg: #f8f9fa;
-      --border-slate: #cfd8dc;
-      --text-header: #102a43;
-      --text-body: #334e68;
-      --accent-steel: #486581;
-      --success-cyan: #00827f;
-      --wait-amber: #8d6e63;
-      --font-main: 'Trebuchet MS', sans-serif;
+      --mitec-blue: #092253;
+      --deep-sapphire: #051636;
+      --accent-teal: #008f8f;
+      --status-gold: #c5a000;
+      --status-red: #d32f2f;
+      --bg-base: #f0f2f5;
+      --card-white: #ffffff;
+      --text-main: #1a1a1a;
+      --text-muted: #5f6368;
+      --font-main: 'Trebuchet MS', "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
     }
 
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
     body { 
-      margin: 0; background-color: var(--slate-bg); 
-      font-family: var(--font-main); color: var(--text-body);
-      padding-bottom: 80px; 
+      margin: 0; padding: 0; 
+      background-color: var(--bg-base); 
+      font-family: var(--font-main); 
+      color: var(--text-main);
+      padding-bottom: 100px;
     }
 
-    /* Sharp Industrial Header */
+    /* Professional Header */
     .header { 
-      background: #fff; padding: 12px; 
-      border-bottom: 3px solid var(--mitec-navy);
-      position: sticky; top: 0; z-index: 1000;
-      display: flex; justify-content: center;
-    }
-    .brand-img { height: 22px; width: auto; filter: contrast(1.1); }
-
-    .container { max-width: 500px; margin: 0 auto; padding: 12px; }
-
-    /* Slab Profile Card */
-    .profile-card { 
-      background: var(--mitec-navy);
-      padding: 15px; display: flex; align-items: center; gap: 15px; 
-      margin-bottom: 20px; color: #fff;
-      border-radius: 2px; /* Sharp corners */
-    }
-    .avatar { 
-      width: 45px; height: 45px; 
-      border: 1px solid rgba(255,255,255,0.4); 
-      object-fit: cover; filter: grayscale(0.2);
-    }
-    .profile-info h2 { font-size: 14px; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
-    .profile-info span { font-size: 9px; opacity: 0.6; letter-spacing: 1px; }
-
-    /* Dashboard Dividers */
-    .date-divider { 
-      font-size: 10px; font-weight: bold; color: var(--mitec-navy); 
-      padding: 8px 0; border-bottom: 1px solid var(--border-slate);
-      margin: 20px 0 10px 0; letter-spacing: 1px;
-    }
-
-    /* Structural Shift Cards */
-    .shift-card { 
       background: #fff; 
-      border: 1px solid var(--border-slate);
-      padding: 15px; margin-bottom: 8px; 
-      position: relative;
+      padding: 18px; 
+      text-align: center; 
+      border-bottom: 2px solid var(--mitec-blue);
+      position: sticky; top: 0; z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
+    .brand-img { height: 26px; width: auto; }
 
-    .shift-header { display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 8px; margin-bottom: 10px; }
-    .shift-dept { font-size: 15px; font-weight: bold; color: var(--mitec-navy); margin: 0; }
+    .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+
+    /* Executive Profile Card */
+    .profile-card { 
+      background: linear-gradient(135deg, var(--mitec-blue) 0%, var(--deep-sapphire) 100%);
+      border-radius: 20px; padding: 20px; 
+      display: flex; align-items: center; gap: 16px; 
+      margin-bottom: 24px; color: #fff;
+      box-shadow: 0 10px 20px rgba(9, 34, 83, 0.2);
+    }
+    .avatar-wrapper { position: relative; }
+    .avatar { 
+      width: 56px; height: 56px; 
+      border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); 
+      object-fit: cover; background: #fff;
+    }
+    .profile-info h2 { font-size: 17px; margin: 0; font-weight: 700; letter-spacing: -0.5px; }
+    .profile-info span { font-size: 10px; text-transform: uppercase; opacity: 0.7; letter-spacing: 1px; }
+
+    /* Section Dividers */
+    .date-divider { 
+      font-size: 11px; font-weight: 800; color: var(--mitec-blue); 
+      margin: 30px 0 15px 5px; text-transform: uppercase; 
+      display: flex; align-items: center; gap: 12px; opacity: 0.8;
+    }
+    .date-divider::after { content: ""; flex: 1; height: 1px; background: #d1d1d1; }
+
+    /* Premium Shift Cards */
+    .shift-card { 
+      background: var(--card-white); 
+      border-radius: 18px; padding: 20px; 
+      margin-bottom: 16px; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      border: 1px solid rgba(0,0,0,0.03);
+      transition: transform 0.2s;
+    }
+    .shift-card:active { transform: scale(0.98); }
+
+    .shift-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .shift-dept { font-size: 18px; font-weight: 800; color: var(--mitec-blue); margin: 0; }
     
-    .status-label { 
-      font-size: 8px; font-weight: 900; letter-spacing: 1px;
-      padding: 2px 6px; border: 1px solid;
+    .status-badge { 
+      font-size: 9px; font-weight: 800; padding: 4px 10px; 
+      border-radius: 6px; text-transform: uppercase; 
     }
-    .label-open { color: var(--success-cyan); border-color: var(--success-cyan); }
-    .label-booked { color: var(--mitec-navy); border-color: var(--mitec-navy); background: #f0f4f8; }
-    .label-wait { color: var(--wait-amber); border-color: var(--wait-amber); }
+    .badge-open { background: #e0f2f1; color: var(--accent-teal); }
+    .badge-booked { background: #e3f2fd; color: var(--mitec-blue); }
+    .badge-wait { background: #fff9e6; color: var(--status-gold); }
 
-    .shift-meta { font-size: 12px; color: var(--accent-steel); display: flex; gap: 12px; }
-    .meta-item { display: flex; align-items: center; gap: 4px; }
+    .shift-details { font-size: 13px; color: var(--text-muted); display: grid; gap: 6px; margin-bottom: 18px; }
+    .detail-item { display: flex; align-items: center; gap: 8px; }
 
-    /* Professional Buttons */
-    .btn-action { 
-      width: 100%; margin-top: 12px; padding: 10px; 
-      font-size: 12px; font-weight: bold; text-transform: uppercase;
-      border: 1px solid var(--mitec-navy); cursor: pointer;
-      transition: 0.2s;
+    /* Action Buttons */
+    .btn-main { 
+      width: 100%; padding: 14px; border-radius: 12px; 
+      font-weight: 700; font-size: 14px; border: none; cursor: pointer;
+      transition: all 0.3s; font-family: var(--font-main);
     }
-    .btn-book { background: var(--mitec-navy); color: white; }
-    .btn-book:hover { background: #0c317a; }
-    .btn-confirmed { background: transparent; color: var(--success-cyan); border-color: var(--success-cyan); cursor: default; }
-    .btn-full { background: #f1f3f5; color: #adb5bd; border-color: #dee2e6; cursor: not-allowed; }
-    
+    .btn-book { background: var(--mitec-blue); color: white; }
+    .btn-booked { background: var(--accent-teal); color: white; cursor: default; }
+    .btn-waitlist { border: 1.5px solid var(--status-gold); color: var(--status-gold); background: transparent; }
     .btn-cancel { 
-      background: transparent; color: #d32f2f; border: 1px solid #ffcdd2;
-      margin-top: 8px; font-size: 10px;
+      margin-top: 12px; background: transparent; color: var(--status-red); 
+      border: 1px solid #ffcdd2; font-size: 11px; padding: 8px;
     }
 
-    /* Bottom Utility Bar */
+    /* Modern Navigation */
     .bottom-nav { 
       position: fixed; bottom: 0; width: 100%; background: #fff; 
-      display: flex; border-top: 2px solid var(--mitec-navy);
-      z-index: 1000;
+      display: flex; padding: 15px 0 25px 0; border-top: 1px solid #eee;
+      box-shadow: 0 -5px 15px rgba(0,0,0,0.03); z-index: 1000;
     }
     .nav-item { 
-      flex: 1; padding: 12px 0; text-align: center;
-      color: #999; font-size: 9px; font-weight: bold; cursor: pointer;
+      flex: 1; display: flex; flex-direction: column; 
+      align-items: center; gap: 5px; color: #999; 
+      font-size: 10px; font-weight: 700; cursor: pointer;
     }
-    .nav-item.active { color: var(--mitec-navy); background: #f8f9fa; }
-    .nav-item i { font-size: 18px; display: block; margin-bottom: 2px; }
+    .nav-item.active { color: var(--mitec-blue); }
+    .nav-item i { font-size: 24px; }
 
-    #sync-overlay { 
-      position: fixed; inset: 0; background: #fff; 
-      z-index: 2000; display: flex; flex-direction: column; 
-      align-items: center; justify-content: center;
+    #sync-loader { 
+      position: fixed; inset: 0; background: var(--bg-base); 
+      z-index: 9999; display: flex; flex-direction: column; 
+      align-items: center; justify-content: center; font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-  <div id="sync-overlay">
-    <i class="ph ph-shield-check" style="font-size: 32px; color: var(--mitec-navy);"></i>
-    <p style="font-size: 10px; letter-spacing: 2px; margin-top: 10px;">SYSTEM SYNCING...</p>
+  <div id="sync-loader">
+    <i class="ph ph-circle-notch ph-spin" style="font-size: 48px; color: var(--mitec-blue);"></i>
+    <p style="margin-top: 15px; letter-spacing: 1px; color: var(--mitec-blue);">AUTHENTICATING...</p>
   </div>
 
   <header class="header">
@@ -130,137 +139,155 @@
 
   <div class="container">
     <div class="profile-card">
-      <img id="userAvatar" class="avatar" src="https://via.placeholder.com/100" alt="Avatar">
+      <div class="avatar-wrapper">
+        <img id="userAvatar" class="avatar" src="https://via.placeholder.com/150" alt="Avatar">
+      </div>
       <div class="profile-info">
-        <span>LOGGED IN AS</span>
+        <span>CASUAL LABOUR MANAGEMENT</span>
         <h2 id="userNameDisplay">...</h2>
       </div>
     </div>
 
-    <div id="available-view"></div>
-    <div id="booked-view" style="display:none;"></div>
+    <div id="available-page"></div>
+    <div id="booked-page" style="display:none;"></div>
   </div>
 
   <nav class="bottom-nav">
-    <div class="nav-item active" onclick="switchView(0)"><i class="ph ph-stack"></i><span>AVAILABLE</span></div>
-    <div class="nav-item" onclick="switchView(1)"><i class="ph ph-clipboard-text"></i><span>MY SCHEDULE</span></div>
-    <div class="nav-item" onclick="window.location.reload()"><i class="ph ph-arrows-clockwise"></i><span>REFRESH</span></div>
+    <div class="nav-item active" onclick="switchTab(0)"><i class="ph ph-calendar-plus"></i><span>AVAILABLE</span></div>
+    <div class="nav-item" onclick="switchTab(1)"><i class="ph ph-briefcase"></i><span>MY SHIFTS</span></div>
+    <div class="nav-item" onclick="window.location.reload()"><i class="ph ph-arrow-counter-clockwise"></i><span>REFRESH</span></div>
   </nav>
 
   <script>
+    // PASTE YOUR LATEST DEPLOYMENT URL HERE
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_vN5v3vRPhuT_H_FpXpA67v9E0W1I3J_vU6tZ5h7R1W8uL9vT/exec"; 
 
     window.onload = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const userDocNo = urlParams.get('id') || localStorage.getItem("mcl_doc_no");
       
-      if (!userDocNo) { window.location.href = "index.html"; return; }
+      if (!userDocNo) {
+        window.location.href = "index.html";
+        return;
+      }
 
       const record = JSON.parse(localStorage.getItem("mitecWorkerRecord") || "{}");
-      document.getElementById("userNameDisplay").textContent = record.full_name || "MITEC USER";
+      document.getElementById("userNameDisplay").textContent = record.full_name || "MITEC STAFF";
       if (record.photo_link) document.getElementById("userAvatar").src = record.photo_link;
 
-      fetchData(userDocNo);
+      refreshData(userDocNo);
     };
 
-    function fetchData(docNo) {
+    function refreshData(docNo) {
       fetch(`${SCRIPT_URL}?action=getShifts&userDocNo=${docNo}`)
         .then(r => r.json())
         .then(res => {
           if(res.ok) {
-            renderList(res.allShifts, res.myUpcomingEvents);
-            renderSchedule(res.myUpcomingEvents);
-            document.getElementById('sync-overlay').style.display = 'none';
+            renderAvailable(res.allShifts, res.myUpcomingEvents);
+            renderBooked(res.myUpcomingEvents);
+            document.getElementById('sync-loader').style.display = 'none';
+          } else if (res.error === "NOT_REGISTERED") {
+            alert("ACCESS DENIED: Record not found in Registry.");
+            localStorage.clear();
+            window.location.href = "index.html";
           }
         });
     }
 
-    function renderList(shifts, bookings) {
-      const container = document.getElementById('available-view');
+    function renderAvailable(allShifts, myBookings) {
+      const container = document.getElementById('available-page');
       container.innerHTML = '';
-      const dates = [...new Set(shifts.map(s => s.date))];
+      const dates = [...new Set(allShifts.map(s => s.date))];
       
       dates.forEach(date => {
         container.innerHTML += `<div class="date-divider">${date}</div>`;
-        shifts.filter(s => s.date === date).forEach(s => {
-          const booked = bookings.find(b => b.shift_id === s.id);
+        allShifts.filter(s => s.date === date).forEach(s => {
+          const booking = myBookings.find(b => b.shift_id === s.id);
           const isFull = s.slotsLeft <= 0;
           
           container.innerHTML += `
             <div class="shift-card">
               <div class="shift-header">
                 <h3 class="shift-dept">${s.dept}</h3>
-                <span class="status-label ${booked ? 'label-booked' : 'label-open'}">
-                  ${booked ? 'ASSIGNED' : (isFull ? 'FULL' : s.slotsLeft + ' SLOTS')}
+                <span class="status-badge ${booking ? 'badge-booked' : 'badge-open'}">
+                  ${booking ? 'Selected' : (isFull ? 'Full' : s.slotsLeft + ' Spots Left')}
                 </span>
               </div>
-              <div class="shift-meta">
-                <div class="meta-item"><i class="ph ph-clock"></i> ${s.time}</div>
+              <div class="shift-details">
+                <div class="detail-item"><i class="ph ph-clock"></i> ${s.time}</div>
+                ${s.notes ? `<div class="detail-item"><i class="ph ph-info"></i> ${s.notes}</div>` : ''}
               </div>
-              ${!booked ? `
-                <button class="btn-action btn-book" onclick="processAction('${s.id}', '${s.date}', '${s.dept}', '${s.time}')">
-                  ACCEPT ASSIGNMENT
+              ${!booking ? `
+                <button class="btn-main btn-book" onclick="handleBooking('${s.id}', '${s.date}', '${s.dept}', '${s.time}', this)">
+                  Book This Shift
                 </button>
               ` : `
-                <button class="btn-action btn-confirmed">BOOKING CONFIRMED</button>
+                <button class="btn-main btn-booked">Confirmed ✅</button>
               `}
             </div>`;
         });
       });
     }
 
-    function renderSchedule(bookings) {
-      const container = document.getElementById('booked-view');
-      container.innerHTML = '<div class="date-divider">CONFIRMED SCHEDULE</div>';
+    function renderBooked(myBookings) {
+      const container = document.getElementById('booked-page');
+      container.innerHTML = '<div class="date-divider">Confirmed Bookings</div>';
       
-      if (bookings.length === 0) {
-        container.innerHTML += `<p style="font-size:11px; color:#999; text-align:center; margin-top:40px;">No shifts currently assigned.</p>`;
+      if (myBookings.length === 0) {
+        container.innerHTML += `<div style="text-align:center; padding:60px 20px; color:#999;"><i class="ph ph-calendar-x" style="font-size:40px;"></i><p>No shifts booked yet.</p></div>`;
         return;
       }
 
-      bookings.forEach(b => {
-        const wait = b.status === "WAITLIST";
+      myBookings.forEach(b => {
+        const isWait = b.status === "WAITLIST";
         container.innerHTML += `
-          <div class="shift-card" style="border-left: 3px solid ${wait ? 'var(--wait-amber)' : 'var(--mitec-navy)'}">
+          <div class="shift-card" style="border-left: 5px solid ${isWait ? 'var(--status-gold)' : 'var(--accent-teal)'}">
             <div class="shift-header">
               <h3 class="shift-dept">${b.dept}</h3>
-              <span class="status-label ${wait ? 'label-wait' : 'label-booked'}">${b.status}</span>
+              <span class="status-badge ${isWait ? 'badge-wait' : 'badge-booked'}">${b.status}</span>
             </div>
-            <div class="shift-meta">
-              <div class="meta-item"><i class="ph ph-calendar"></i> ${b.date}</div>
-              <div class="meta-item"><i class="ph ph-clock"></i> ${b.time}</div>
+            <div class="shift-details">
+              <div class="detail-item"><i class="ph ph-calendar"></i> ${b.date}</div>
+              <div class="detail-item"><i class="ph ph-clock"></i> ${b.time}</div>
             </div>
-            <button class="btn-action btn-cancel" onclick="cancelAction('${b.shift_id}')">REMOVE FROM SCHEDULE</button>
+            <button class="btn-main btn-cancel" onclick="handleCancel('${b.shift_id}', this)">Cancel My Booking</button>
           </div>`;
       });
     }
 
-    function switchView(index) {
-      document.getElementById('available-view').style.display = index === 0 ? 'block' : 'none';
-      document.getElementById('booked-view').style.display = index === 1 ? 'block' : 'none';
-      const navs = document.querySelectorAll('.nav-item');
-      navs.forEach((n, i) => n.classList.toggle('active', i === index));
+    function switchTab(index) {
+      document.getElementById('available-page').style.display = index === 0 ? 'block' : 'none';
+      document.getElementById('booked-page').style.display = index === 1 ? 'block' : 'none';
+      const items = document.querySelectorAll('.nav-item');
+      items.forEach((it, i) => it.classList.toggle('active', i === index));
     }
 
-    function processAction(id, date, dept, time) {
+    function handleBooking(id, date, dept, time, btn) {
       const docNo = localStorage.getItem("mcl_doc_no");
-      if (!confirm("Add this shift to your schedule?")) return;
+      if (!confirm("Confirm booking for " + dept + "?")) return;
       
+      btn.innerText = "Processing...";
+      btn.disabled = true;
+
       fetch(`${SCRIPT_URL}?action=submit&shiftId=${id}&date=${date}&dept=${dept}&time=${time}&userDocNo=${docNo}`)
         .then(r => r.json())
         .then(res => {
           if (res.ok === "FULL") {
-            if (confirm("Shift capacity reached. Join standby list?")) {
+            if (confirm("Shift is full. Join waiting list?")) {
               fetch(`${SCRIPT_URL}?action=submit&shiftId=${id}&date=${date}&dept=${dept}&time=${time}&userDocNo=${docNo}&isWaitlist=true`)
                 .then(() => window.location.reload());
             }
-          } else { window.location.reload(); }
+          } else {
+            alert(res.message);
+            window.location.reload();
+          }
         });
     }
 
-    function cancelAction(shiftId) {
+    function handleCancel(shiftId, btn) {
       const docNo = localStorage.getItem("mcl_doc_no");
-      if (!confirm("Remove this shift?")) return;
+      if (!confirm("Cancel this booking?")) return;
+      btn.innerText = "Updating...";
       fetch(`${SCRIPT_URL}?action=cancel&shiftId=${shiftId}&userDocNo=${docNo}`)
         .then(() => window.location.reload());
     }
