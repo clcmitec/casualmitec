@@ -8,129 +8,114 @@
   <style>
     :root {
       --mitec-blue: #092253;
-      --deep-sapphire: #051636;
-      --accent-teal: #008f8f;
-      --status-gold: #c5a000;
-      --status-red: #d32f2f;
-      --bg-base: #f0f2f5;
-      --card-white: #ffffff;
-      --text-main: #1a1a1a;
-      --text-muted: #5f6368;
-      --font-main: 'Trebuchet MS', "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+      --mitec-gradient: linear-gradient(135deg, #092253 0%, #153269 100%);
+      --bg-light: #f8fafc;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --font-main: 'Trebuchet MS', sans-serif;
     }
 
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
     body { 
       margin: 0; padding: 0; 
-      background-color: var(--bg-base); 
+      background-color: white; 
       font-family: var(--font-main); 
-      color: var(--text-main);
+      color: var(--text-dark);
       padding-bottom: 100px;
     }
 
-    /* Professional Header */
-    .header { 
-      background: #fff; 
-      padding: 18px; 
-      text-align: center; 
-      border-bottom: 2px solid var(--mitec-blue);
-      position: sticky; top: 0; z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .brand-img { height: 26px; width: auto; }
+    /* Top Branding */
+    .header { padding: 25px 0; text-align: center; background: #fff; }
+    .brand-img { height: 28px; width: auto; }
 
-    .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+    .container { max-width: 480px; margin: 0 auto; padding: 0 20px; }
 
-    /* Executive Profile Card */
+    /* Profile Section - Exactly like your screenshot */
     .profile-card { 
-      background: linear-gradient(135deg, var(--mitec-blue) 0%, var(--deep-sapphire) 100%);
-      border-radius: 20px; padding: 20px; 
-      display: flex; align-items: center; gap: 16px; 
-      margin-bottom: 24px; color: #fff;
-      box-shadow: 0 10px 20px rgba(9, 34, 83, 0.2);
+      background: var(--mitec-gradient); 
+      border-radius: 16px; padding: 24px; 
+      display: flex; align-items: center; gap: 18px; 
+      margin-bottom: 25px; color: #fff;
+      box-shadow: 0 10px 25px rgba(9, 34, 83, 0.15);
     }
-    .avatar-wrapper { position: relative; }
     .avatar { 
-      width: 56px; height: 56px; 
-      border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); 
-      object-fit: cover; background: #fff;
+      width: 60px; height: 60px; 
+      border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); 
+      object-fit: cover;
     }
-    .profile-info h2 { font-size: 17px; margin: 0; font-weight: 700; letter-spacing: -0.5px; }
-    .profile-info span { font-size: 10px; text-transform: uppercase; opacity: 0.7; letter-spacing: 1px; }
+    .profile-info span { font-size: 10px; text-transform: uppercase; opacity: 0.8; letter-spacing: 1px; }
+    .profile-info h2 { font-size: 16px; margin: 4px 0 0 0; font-weight: 700; line-height: 1.3; }
 
-    /* Section Dividers */
-    .date-divider { 
-      font-size: 11px; font-weight: 800; color: var(--mitec-blue); 
-      margin: 30px 0 15px 5px; text-transform: uppercase; 
-      display: flex; align-items: center; gap: 12px; opacity: 0.8;
+    /* Elevated Content Container */
+    .duty-box {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
     }
-    .date-divider::after { content: ""; flex: 1; height: 1px; background: #d1d1d1; }
-
-    /* Premium Shift Cards */
-    .shift-card { 
-      background: var(--card-white); 
-      border-radius: 18px; padding: 20px; 
-      margin-bottom: 16px; 
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-      border: 1px solid rgba(0,0,0,0.03);
-      transition: transform 0.2s;
-    }
-    .shift-card:active { transform: scale(0.98); }
-
-    .shift-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-    .shift-dept { font-size: 18px; font-weight: 800; color: var(--mitec-blue); margin: 0; }
-    
-    .status-badge { 
-      font-size: 9px; font-weight: 800; padding: 4px 10px; 
-      border-radius: 6px; text-transform: uppercase; 
-    }
-    .badge-open { background: #e0f2f1; color: var(--accent-teal); }
-    .badge-booked { background: #e3f2fd; color: var(--mitec-blue); }
-    .badge-wait { background: #fff9e6; color: var(--status-gold); }
-
-    .shift-details { font-size: 13px; color: var(--text-muted); display: grid; gap: 6px; margin-bottom: 18px; }
-    .detail-item { display: flex; align-items: center; gap: 8px; }
-
-    /* Action Buttons */
-    .btn-main { 
-      width: 100%; padding: 14px; border-radius: 12px; 
-      font-weight: 700; font-size: 14px; border: none; cursor: pointer;
-      transition: all 0.3s; font-family: var(--font-main);
-    }
-    .btn-book { background: var(--mitec-blue); color: white; }
-    .btn-booked { background: var(--accent-teal); color: white; cursor: default; }
-    .btn-waitlist { border: 1.5px solid var(--status-gold); color: var(--status-gold); background: transparent; }
-    .btn-cancel { 
-      margin-top: 12px; background: transparent; color: var(--status-red); 
-      border: 1px solid #ffcdd2; font-size: 11px; padding: 8px;
+    .box-title { 
+      font-size: 12px; font-weight: 700; color: var(--mitec-blue); 
+      margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;
     }
 
-    /* Modern Navigation */
-    .bottom-nav { 
+    /* Input-Style Items (The "New Theme" look) */
+    .duty-item {
+      display: flex; align-items: center; gap: 14px;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .duty-item i { color: var(--text-muted); font-size: 20px; width: 24px; }
+    .item-content { flex: 1; }
+    .item-label { font-size: 14px; color: var(--text-muted); }
+    .item-value { font-size: 15px; font-weight: 600; color: var(--text-dark); margin-top: 2px; }
+
+    /* Status Tags */
+    .status-badge {
+      font-size: 8px; font-weight: 800; padding: 3px 8px; border-radius: 4px;
+      position: absolute; top: 12px; right: 12px; text-transform: uppercase;
+      background: #f1f5f9; color: var(--text-muted); border: 1px solid var(--border-color);
+    }
+    .status-confirmed { background: #ecfdf5; color: #059669; border-color: #a7f3d0; }
+    .status-wait { background: #fffbeb; color: #d97706; border-color: #fde68a; }
+
+    /* Confirm Button - From your Screenshot */
+    .btn-submit {
+      width: 100%; padding: 18px; 
+      background: var(--mitec-blue); 
+      color: #fff; border: none; border-radius: 12px;
+      font-size: 14px; font-weight: 700; 
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: 0.2s;
+    }
+    .btn-submit:active { transform: scale(0.98); opacity: 0.9; }
+    .btn-outline {
+      background: transparent; border: 1.5px solid #fee2e2; color: #dc2626; margin-top: 10px;
+    }
+
+    /* Bottom Nav */
+    nav.bottom-nav { 
       position: fixed; bottom: 0; width: 100%; background: #fff; 
-      display: flex; padding: 15px 0 25px 0; border-top: 1px solid #eee;
-      box-shadow: 0 -5px 15px rgba(0,0,0,0.03); z-index: 1000;
+      display: flex; padding: 15px 0 30px 0; border-top: 1px solid var(--border-color);
+      z-index: 1000;
     }
-    .nav-item { 
-      flex: 1; display: flex; flex-direction: column; 
-      align-items: center; gap: 5px; color: #999; 
-      font-size: 10px; font-weight: 700; cursor: pointer;
-    }
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; color: #94a3b8; font-size: 9px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
     .nav-item.active { color: var(--mitec-blue); }
     .nav-item i { font-size: 24px; }
 
-    #sync-loader { 
-      position: fixed; inset: 0; background: var(--bg-base); 
-      z-index: 9999; display: flex; flex-direction: column; 
-      align-items: center; justify-content: center; font-weight: bold;
-    }
+    #sync-loader { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   </style>
 </head>
 <body>
 
   <div id="sync-loader">
-    <i class="ph ph-circle-notch ph-spin" style="font-size: 48px; color: var(--mitec-blue);"></i>
-    <p style="margin-top: 15px; letter-spacing: 1px; color: var(--mitec-blue);">AUTHENTICATING...</p>
+    <i class="ph ph-circle-notch ph-spin" style="font-size: 40px; color: var(--mitec-blue);"></i>
   </div>
 
   <header class="header">
@@ -139,37 +124,31 @@
 
   <div class="container">
     <div class="profile-card">
-      <div class="avatar-wrapper">
-        <img id="userAvatar" class="avatar" src="https://via.placeholder.com/150" alt="Avatar">
-      </div>
+      <img id="userAvatar" class="avatar" src="https://via.placeholder.com/150">
       <div class="profile-info">
-        <span>CASUAL LABOUR MITEC/span>
+        <span>CURRENT USER</span>
         <h2 id="userNameDisplay">...</h2>
       </div>
     </div>
 
-    <div id="available-page"></div>
-    <div id="booked-page" style="display:none;"></div>
+    <div id="available-view"></div>
+    <div id="booked-view" style="display:none;"></div>
   </div>
 
   <nav class="bottom-nav">
     <div class="nav-item active" onclick="switchTab(0)"><i class="ph ph-calendar-plus"></i><span>AVAILABLE</span></div>
-    <div class="nav-item" onclick="switchTab(1)"><i class="ph ph-briefcase"></i><span>MY SHIFTS</span></div>
-    <div class="nav-item" onclick="window.location.reload()"><i class="ph ph-arrow-counter-clockwise"></i><span>REFRESH</span></div>
+    <div class="nav-item" onclick="switchTab(1)"><i class="ph ph-calendar-check"></i><span>BOOKED</span></div>
+    <div class="nav-item" onclick="window.location.reload()"><i class="ph ph-clock-counter-clockwise"></i><span>HISTORY</span></div>
   </nav>
 
   <script>
-    // PASTE YOUR LATEST DEPLOYMENT URL HERE
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQO2wNLYqbclyen6E8ermntNGuAJZyMosl7t7HFbgvyhWKRYEHwyqnyOyesoX3YdOH/exec"; 
 
     window.onload = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const userDocNo = urlParams.get('id') || localStorage.getItem("mcl_doc_no");
       
-      if (!userDocNo) {
-        window.location.href = "index.html";
-        return;
-      }
+      if (!userDocNo) { window.location.href = "index.html"; return; }
 
       const record = JSON.parse(localStorage.getItem("mitecWorkerRecord") || "{}");
       document.getElementById("userNameDisplay").textContent = record.full_name || "MITEC STAFF";
@@ -186,108 +165,76 @@
             renderAvailable(res.allShifts, res.myUpcomingEvents);
             renderBooked(res.myUpcomingEvents);
             document.getElementById('sync-loader').style.display = 'none';
-          } else if (res.error === "NOT_REGISTERED") {
-            alert("ACCESS DENIED: Record not found in Registry.");
-            localStorage.clear();
-            window.location.href = "index.html";
           }
         });
     }
 
-    function renderAvailable(allShifts, myBookings) {
-      const container = document.getElementById('available-page');
+    function renderAvailable(shifts, bookings) {
+      const container = document.getElementById('available-view');
       container.innerHTML = '';
-      const dates = [...new Set(allShifts.map(s => s.date))];
+      const dates = [...new Set(shifts.map(s => s.date))];
       
       dates.forEach(date => {
-        container.innerHTML += `<div class="date-divider">${date}</div>`;
-        allShifts.filter(s => s.date === date).forEach(s => {
-          const booking = myBookings.find(b => b.shift_id === s.id);
-          const isFull = s.slotsLeft <= 0;
-          
-          container.innerHTML += `
-            <div class="shift-card">
-              <div class="shift-header">
-                <h3 class="shift-dept">${s.dept}</h3>
-                <span class="status-badge ${booking ? 'badge-booked' : 'badge-open'}">
-                  ${booking ? 'Selected' : (isFull ? 'Full' : s.slotsLeft + ' Spots Left')}
-                </span>
+        let html = `<div class="duty-box"><div class="box-title">Available Duty: ${date}</div>`;
+        shifts.filter(s => s.date === date).forEach(s => {
+          const booked = bookings.find(b => b.shift_id === s.id);
+          html += `
+            <div class="duty-item">
+              <i class="ph ph-briefcase"></i>
+              <div class="item-content">
+                <div class="item-label">${s.dept}</div>
+                <div class="item-value">${s.time}</div>
               </div>
-              <div class="shift-details">
-                <div class="detail-item"><i class="ph ph-clock"></i> ${s.time}</div>
-                ${s.notes ? `<div class="detail-item"><i class="ph ph-info"></i> ${s.notes}</div>` : ''}
-              </div>
-              ${!booking ? `
-                <button class="btn-main btn-book" onclick="handleBooking('${s.id}', '${s.date}', '${s.dept}', '${s.time}', this)">
-                  Book This Shift
-                </button>
-              ` : `
-                <button class="btn-main btn-booked">Confirmed ✅</button>
-              `}
-            </div>`;
+              ${booked ? '<span class="status-badge status-confirmed">Confirmed</span>' : ''}
+            </div>
+            ${!booked ? `<button class="btn-submit" onclick="handleAction('${s.id}', '${s.date}', '${s.dept}', '${s.time}')"><i class="ph ph-check-circle"></i> Confirm Attendance</button>` : ''}
+            <div style="height:15px"></div>`;
         });
+        container.innerHTML += html + `</div>`;
       });
     }
 
-    function renderBooked(myBookings) {
-      const container = document.getElementById('booked-page');
-      container.innerHTML = '<div class="date-divider">Confirmed Bookings</div>';
-      
-      if (myBookings.length === 0) {
-        container.innerHTML += `<div style="text-align:center; padding:60px 20px; color:#999;"><i class="ph ph-calendar-x" style="font-size:40px;"></i><p>No shifts booked yet.</p></div>`;
+    function renderBooked(bookings) {
+      const container = document.getElementById('booked-view');
+      container.innerHTML = '';
+      if (bookings.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#94a3b8; margin-top:50px;">No upcoming duties.</p>';
         return;
       }
-
-      myBookings.forEach(b => {
-        const isWait = b.status === "WAITLIST";
-        container.innerHTML += `
-          <div class="shift-card" style="border-left: 5px solid ${isWait ? 'var(--status-gold)' : 'var(--accent-teal)'}">
-            <div class="shift-header">
-              <h3 class="shift-dept">${b.dept}</h3>
-              <span class="status-badge ${isWait ? 'badge-wait' : 'badge-booked'}">${b.status}</span>
+      let html = `<div class="duty-box"><div class="box-title">My Registered Schedule</div>`;
+      bookings.forEach(b => {
+        html += `
+          <div class="duty-item">
+            <i class="ph ph-calendar"></i>
+            <div class="item-content">
+              <div class="item-label">${b.dept} | ${b.date}</div>
+              <div class="item-value">${b.time}</div>
             </div>
-            <div class="shift-details">
-              <div class="detail-item"><i class="ph ph-calendar"></i> ${b.date}</div>
-              <div class="detail-item"><i class="ph ph-clock"></i> ${b.time}</div>
-            </div>
-            <button class="btn-main btn-cancel" onclick="handleCancel('${b.shift_id}', this)">Cancel My Booking</button>
-          </div>`;
+            <span class="status-badge ${b.status === 'WAITLIST' ? 'status-wait' : 'status-confirmed'}">${b.status}</span>
+          </div>
+          <button class="btn-submit btn-outline" onclick="cancelAction('${b.shift_id}')">Cancel Registration</button>
+          <div style="height:20px"></div>`;
       });
+      container.innerHTML = html + `</div>`;
     }
 
     function switchTab(index) {
-      document.getElementById('available-page').style.display = index === 0 ? 'block' : 'none';
-      document.getElementById('booked-page').style.display = index === 1 ? 'block' : 'none';
+      document.getElementById('available-view').style.display = index === 0 ? 'block' : 'none';
+      document.getElementById('booked-view').style.display = index === 1 ? 'block' : 'none';
       const items = document.querySelectorAll('.nav-item');
       items.forEach((it, i) => it.classList.toggle('active', i === index));
     }
 
-    function handleBooking(id, date, dept, time, btn) {
+    function handleAction(id, date, dept, time) {
       const docNo = localStorage.getItem("mcl_doc_no");
-      if (!confirm("Confirm booking for " + dept + "?")) return;
-      
-      btn.innerText = "Processing...";
-      btn.disabled = true;
-
+      if (!confirm("Confirm duty registration?")) return;
       fetch(`${SCRIPT_URL}?action=submit&shiftId=${id}&date=${date}&dept=${dept}&time=${time}&userDocNo=${docNo}`)
-        .then(r => r.json())
-        .then(res => {
-          if (res.ok === "FULL") {
-            if (confirm("Shift is full. Join waiting list?")) {
-              fetch(`${SCRIPT_URL}?action=submit&shiftId=${id}&date=${date}&dept=${dept}&time=${time}&userDocNo=${docNo}&isWaitlist=true`)
-                .then(() => window.location.reload());
-            }
-          } else {
-            alert(res.message);
-            window.location.reload();
-          }
-        });
+        .then(() => window.location.reload());
     }
 
-    function handleCancel(shiftId, btn) {
+    function cancelAction(shiftId) {
       const docNo = localStorage.getItem("mcl_doc_no");
-      if (!confirm("Cancel this booking?")) return;
-      btn.innerText = "Updating...";
+      if (!confirm("Remove this duty registration?")) return;
       fetch(`${SCRIPT_URL}?action=cancel&shiftId=${shiftId}&userDocNo=${docNo}`)
         .then(() => window.location.reload());
     }
