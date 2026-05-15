@@ -5,59 +5,149 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MITEC — Casual Labour Portal</title>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  <style>
+    <style>
     :root {
-      --bg-base: #f4f7f9;
-      --mitec-blue: #092253;
-      --accent-teal: #008f8f;
-      --accent-gold: #b38f00;
-      --accent-red: #ff3b30;
+      /* Core Branding */
+      --mitec-blue: #0D1B3E;      /* Midnight Sapphire */
+      --mitec-light: #1D2D50;     /* Lighter shade for gradients */
+      
+      /* UI Accents - Muted Professional Tones */
+      --accent-steel: #3E5C76;    /* Professional grey-blue */
+      --accent-bronze: #94763D;   /* Premium status */
+      --accent-crimson: #8E3A3A;  /* Subtle alert */
+      
+      /* Surface & Text */
+      --bg-base: #F1F3F6;         /* Neutral slate background */
       --card-bg: #ffffff;
-      --text-main: #1c1c1e;
-      --text-muted: #636366;
-      --border-light: #e5e5ea;
-      --shadow-float: 0 6px 16px rgba(0, 0, 0, 0.05);
+      --text-main: #101828;       /* Deep obsidian */
+      --text-muted: #667085;      /* Slate grey */
+      --border-light: #D0D5DD;
+      
+      /* Elevation */
+      --shadow-float: 0 4px 12px rgba(13, 27, 62, 0.08);
       --font-main: 'Trebuchet MS', sans-serif;
     }
+
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: var(--font-main); color: var(--text-main); min-height: 100vh; padding-bottom: 90px; }
+    
+    body { 
+      margin: 0; padding: 0; 
+      background-color: var(--bg-base); 
+      font-family: var(--font-main); 
+      color: var(--text-main); 
+      min-height: 100vh; 
+      padding-bottom: 90px; 
+    }
+
     .container { max-width: 450px; margin: 0 auto; padding: 20px; }
-    .header { text-align: center; padding: 20px 0; background: #fff; border-bottom: 1px solid var(--border-light); position: sticky; top: 0; z-index: 100; }
-    .brand-img { height: 22px; width: auto; }
-    
-    /* Profile Section */
-    .profile-card { background: var(--mitec-blue); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; margin: 15px 0 25px 0; color: #fff; box-shadow: var(--shadow-float); }
-    .avatar { width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); object-fit: cover; }
-    .profile-name { font-size: 15px; font-weight: 600; margin: 0; }
 
-    /* Cards & Layout */
-    .date-divider { font-size: 11px; font-weight: 800; color: var(--mitec-blue); margin: 25px 0 12px 5px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+    /* Premium Header */
+    .header { 
+      text-align: center; 
+      padding: 16px 0; 
+      background: #fff; 
+      border-bottom: 2px solid var(--mitec-blue); 
+      position: sticky; top: 0; z-index: 100; 
+    }
+    
+    .brand-img { height: 20px; width: auto; filter: brightness(1.1); }
+    
+    /* Profile Section - Luxury Gradient */
+    .profile-card { 
+      background: linear-gradient(135deg, var(--mitec-blue) 0%, var(--mitec-light) 100%); 
+      border-radius: 12px; 
+      padding: 20px; 
+      display: flex; 
+      align-items: center; 
+      gap: 16px; 
+      margin: 15px 0 25px 0; 
+      color: #fff; 
+      box-shadow: var(--shadow-float); 
+    }
+
+    .avatar { 
+      width: 52px; height: 52px; 
+      border-radius: 50%; 
+      border: 2px solid rgba(255,255,255,0.15); 
+      object-fit: cover; 
+    }
+
+    /* Date Dividers - Tighter & Cleaner */
+    .date-divider { 
+      font-size: 10px; font-weight: 800; 
+      color: var(--text-muted); 
+      margin: 30px 0 12px 5px; 
+      text-transform: uppercase; 
+      letter-spacing: 1.5px; 
+      display: flex; align-items: center; gap: 10px; 
+    }
     .date-divider::after { content: ""; flex: 1; height: 1px; background: var(--border-light); }
-    .shift-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 14px; padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow-float); position: relative; }
+
+    /* Shift Cards - "Floating" Look */
+    .shift-card { 
+      background: var(--card-bg); 
+      border: 1px solid rgba(208, 213, 221, 0.5); 
+      border-radius: 12px; 
+      padding: 20px; 
+      margin-bottom: 14px; 
+      box-shadow: var(--shadow-float); 
+      position: relative; 
+    }
     
-    /* Tags */
-    .status-tag { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; position: absolute; top: 18px; right: 18px; }
-    .tag-open { background: #e8f5f5; color: var(--accent-teal); }
-    .tag-booked { background: #e3f2fd; color: var(--mitec-blue); }
-    .tag-wait { background: #fff9e6; color: var(--accent-gold); }
-    .tag-locked { background: #f2f2f7; color: #8e8e93; }
+    /* Ghost Tags - No more heavy blocks of color */
+    .status-tag { 
+      font-size: 9px; font-weight: 800; 
+      padding: 4px 8px; border-radius: 6px; 
+      text-transform: uppercase; 
+      position: absolute; top: 20px; right: 20px; 
+      border: 1px solid transparent;
+    }
+    .tag-open { background: #F9FAFB; color: var(--accent-steel); border-color: var(--border-light); }
+    .tag-booked { background: #EFF8FF; color: var(--mitec-blue); border-color: #B2DDFF; }
+    .tag-wait { background: #FFFAEB; color: var(--accent-bronze); border-color: #FEDF89; }
+    .tag-locked { background: #F2F4F7; color: #667085; }
 
-    .shift-title { font-size: 16px; font-weight: 700; margin: 0 0 4px 0; color: var(--mitec-blue); padding-right: 60px; }
-    .shift-meta { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
+    .shift-title { font-size: 17px; font-weight: 700; margin: 0 0 6px 0; color: var(--mitec-blue); }
+    .shift-meta { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
     
-    /* Buttons */
-    .btn-action { width: 100%; height: 44px; border-radius: 8px; background: var(--mitec-blue); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .btn-booked { background: var(--accent-teal) !important; color: white !important; cursor: default; }
-    .btn-locked { background: #d1d1d6 !important; color: #8e8e93 !important; cursor: not-allowed; }
-    .btn-cancel { margin-top: 12px; background: none; border: 1px solid var(--accent-red); color: var(--accent-red); border-radius: 8px; padding: 8px; width: 100%; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-    .btn-cancel:active { background: #fff5f5; }
+    /* Buttons - Solid & Trustworthy */
+    .btn-action { 
+      width: 100%; height: 46px; 
+      border-radius: 8px; 
+      background: var(--mitec-blue); 
+      color: #fff; font-size: 14px; font-weight: 700; 
+      border: none; cursor: pointer; 
+      margin-top: 15px;
+      transition: all 0.2s;
+    }
+    .btn-action:active { transform: scale(0.98); opacity: 0.9; }
+    
+    .btn-booked { background: var(--accent-steel) !important; color: white !important; }
+    .btn-locked { background: #EAECF0 !important; color: #98A2B3 !important; }
+    
+    .btn-cancel { 
+      margin-top: 12px; background: transparent; 
+      border: 1px solid #FDA29B; color: var(--accent-crimson); 
+      border-radius: 8px; padding: 10px; width: 100%; 
+      font-size: 12px; font-weight: 700; cursor: pointer; 
+    }
 
-    nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid var(--border-light); z-index: 100; }
-    .nav-item { color: var(--text-muted); font-size: 10px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; flex: 1; }
-    .nav-item.active { color: var(--mitec-blue); font-weight: bold; }
+    /* Navigation - Minimalist */
+    nav.bottom-nav { 
+      position: fixed; bottom: 0; width: 100%; 
+      background: rgba(255, 255, 255, 0.95); 
+      backdrop-filter: blur(10px);
+      display: flex; justify-content: space-around; 
+      padding: 12px 0 25px 0; 
+      border-top: 1px solid var(--border-light); 
+      z-index: 100; 
+    }
+    .nav-item { color: #98A2B3; font-size: 10px; font-weight: 600; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; flex: 1; }
+    .nav-item.active { color: var(--mitec-blue); }
 
-    #sync-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(244, 247, 249, 0.98); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; color: var(--mitec-blue); text-align: center; padding: 20px; }
+    #sync-loader { background: #fff; color: var(--mitec-blue); }
   </style>
+
 </head>
 <body>
 
