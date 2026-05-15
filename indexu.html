@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MITEC — Casual Labour Portal</title>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    :root {
+      --bg-base: #f4f7f9;
+      --mitec-blue: #092253;
+      --accent-teal: #008f8f;
+      --accent-gold: #b38f00;
+      --accent-red: #ff3b30;
+      --card-bg: #ffffff;
+      --text-main: #1c1c1e;
+      --text-muted: #636366;
+      --border-light: #e5e5ea;
+      --shadow-float: 0 6px 16px rgba(0, 0, 0, 0.05);
+      --font-main: 'Trebuchet MS', sans-serif;
+    }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: var(--font-main); color: var(--text-main); min-height: 100vh; padding-bottom: 90px; }
+    .container { max-width: 450px; margin: 0 auto; padding: 20px; }
+    .header { text-align: center; padding: 20px 0; background: #fff; border-bottom: 1px solid var(--border-light); position: sticky; top: 0; z-index: 100; }
+    .brand-img { height: 22px; width: auto; }
+    
+    /* Profile Section */
+    .profile-card { background: var(--mitec-blue); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; margin: 15px 0 25px 0; color: #fff; box-shadow: var(--shadow-float); }
+    .avatar { width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); object-fit: cover; }
+    .profile-name { font-size: 15px; font-weight: 600; margin: 0; }
+
+    /* Cards & Layout */
+    .date-divider { font-size: 11px; font-weight: 800; color: var(--mitec-blue); margin: 25px 0 12px 5px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+    .date-divider::after { content: ""; flex: 1; height: 1px; background: var(--border-light); }
+    .shift-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 14px; padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow-float); position: relative; }
+    
+    /* Tags */
+    .status-tag { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; position: absolute; top: 18px; right: 18px; }
+    .tag-open { background: #e8f5f5; color: var(--accent-teal); }
+    .tag-booked { background: #e3f2fd; color: var(--mitec-blue); }
+    .tag-wait { background: #fff9e6; color: var(--accent-gold); }
+    .tag-locked { background: #f2f2f7; color: #8e8e93; }
+
+    .shift-title { font-size: 16px; font-weight: 700; margin: 0 0 4px 0; color: var(--mitec-blue); padding-right: 60px; }
+    .shift-meta { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
+    
+    /* Buttons */
+    .btn-action { width: 100%; height: 44px; border-radius: 8px; background: var(--mitec-blue); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-booked { background: var(--accent-teal) !important; color: white !important; cursor: default; }
+    .btn-locked { background: #d1d1d6 !important; color: #8e8e93 !important; cursor: not-allowed; }
+    .btn-cancel { margin-top: 12px; background: none; border: 1px solid var(--accent-red); color: var(--accent-red); border-radius: 8px; padding: 8px; width: 100%; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn-cancel:active { background: #fff5f5; }
+
+    nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid var(--border-light); z-index: 100; }
+    .nav-item { color: var(--text-muted); font-size: 10px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; flex: 1; }
+    .nav-item.active { color: var(--mitec-blue); font-weight: bold; }
+
+    #sync-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(244, 247, 249, 0.98); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; color: var(--mitec-blue); text-align: center; padding: 20px; }
+  </style>
+</head>
+<body>
+
+  <div id="sync-loader">
+    <i class="ph ph-circle-notch ph-spin" style="font-size: 40px; margin-bottom: 10px;"></i>
+    Syncing Portal...
+  </div>
+
+  <header class="header">
+    <img class="brand-img" src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC">
+  </header>
+
+  <div class="container">
+    <div class="profile-card">
+      <img id="userAvatar" class="avatar" src="https://via.placeholder.com/100" alt="Avatar">
+      <div class="profile-info">
+        <span style="font-size:10px; text-transform:uppercase; opacity:0.7;">Casual Labour Portal</span>
+        <h2 id="userNameDisplay" class="profile-name">Staff Member</h2>
+      </div>
+    </div>
+
+    <div id="available-page"></div>
+    <div id="booked-page" style="display:none;"></div>
+    <div id="history-page" style="display:none; text-align:center; padding-top:50px; color:var(--text-muted);">
+      <i class="ph ph-clock-counter-clockwise" style="font-size:48px; opacity:0.2;"></i>
+      <p>Attendance history will appear here.</p>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <div class="nav-item active" onclick="switchTab(0)"><i class="ph ph-magnifying-glass" style="font-size:22px"></i><span>Available</span></div>
+    <div class="nav-item" onclick="switchTab(1)"><i class="ph ph-calendar-check" style="font-size:22px"></i><span>Booked</span></div>
+    <div class="nav-item" onclick="switchTab(2)"><i class="ph ph-clock-counter-clockwise" style="font-size:22px"></i><span>History</span></div>
+  </nav>
+
+  <script>
+    // UPDATE THIS URL AFTER NEW DEPLOYMENT
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQO2wNLYqbclyen6E8ermntNGuAJZyMosl7t7HFbgvyhWKRYEHwyqnyOyesoX3YdOH/exec";
+
+    window.onload = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const userDocNo = urlParams.get('id') || localStorage.getItem("mcl_doc_no");
+      
+      // SECURITY SHIELD: Check if user exists
+      if (!userDocNo) {
+        document.getElementById('sync-loader').innerHTML = "Unauthorized Access.<br><br><button onclick='window.location.href=\"index.html\"' style='padding:10px 20px;'>Return to Login</button>";
+        return;
+      }
+
+      const record = JSON.parse(localStorage.getItem("mitecWorkerRecord") || "{}");
+      document.getElementById("userNameDisplay").textContent = record.full_name || "Staff Member";
+      if (record.photo_link) document.getElementById("userAvatar").src = record.photo_link;
+
+      refreshData(userDocNo);
+    };
+
+    function refreshData(docNo) {
+      fetch(`${SCRIPT_URL}?action=getShifts&userDocNo=${docNo}`)
+        .then(r => r.json())
+        .then(res => {
+          if(res.ok) {
+            renderAvailable(res.allShifts, res.myUpcomingEvents);
+            renderBooked(res.myUpcomingEvents);
+          } else if (res.error === "NOT_REGISTERED") {
+             // AUTO LOGOUT FOR UNAUTHORIZED USERS
+             alert("Your Document Number is not registered. Access Denied.");
+             localStorage.clear();
+             window.location.href = "https://casualmitec.online";
+          }
+          document.getElementById('sync-loader').style.display = 'none';
+        })
+        .catch(() => {
+          document.getElementById('sync-loader').innerHTML = "Connection Error.<br>Please ensure you are connected to the internet.";
+        });
+    }
+
+    function renderAvailable(allShifts, myBookings) {
+      const container = document.getElementById('available-page');
+      container.innerHTML = '';
+      const dates = [...new Set(allShifts.map(s => s.date))];
+      
+      dates.forEach(date => {
+        container.innerHTML += `<div class="date-divider">${date}</div>`;
+        allShifts.filter(s => s.date === date).forEach(s => {
+          const booking = myBookings.find(b => b.shift_id === s.id);
+          const isSelected = !!booking;
+          const isWaitlisted = booking && booking.status === "WAITLIST";
+          const isDateLocked = myBookings.some(b => b.date === s.date);
+          
+          let statusText = "Open";
+          let btnText = "Book Now";
+          let btnClass = "";
+          let isDisabled = false;
+
+          if (isSelected) {
+            statusText = isWaitlisted ? "On Waitlist" : "Booked";
+            btnText = isWaitlisted ? "Waitlist Confirmed" : "My Selection ✔️";
+            btnClass = "btn-booked";
+            isDisabled = true;
+          } else if (isDateLocked) {
+            statusText = "Unavailable";
+            btnText = "Day Locked";
+            btnClass = "btn-locked";
+            isDisabled = true;
+          } else if (s.slotsLeft <= 0) {
+            statusText = "Full";
+          }
+
+          container.innerHTML += `
+            <div class="shift-card">
+              <span class="status-tag ${isSelected ? (isWaitlisted ? 'tag-wait' : 'tag-booked') : (isDateLocked ? 'tag-locked' : 'tag-open')}">${statusText}</span>
+              <h3 class="shift-title">${s.dept}</h3>
+              <div class="shift-meta"><i class="ph ph-clock"></i> ${s.time} | ${s.slotsLeft} spots left</div>
+              <button class="btn-action ${btnClass}" 
+                ${isDisabled ? 'disabled' : ''} 
+                onclick="handleBooking('${s.id}', '${s.date}', '${s.dept}', '${s.time}', this)">
+                ${btnText}
+              </button>
+            </div>`;
+        });
+      });
+    }
+
+    function renderBooked(myBookings) {
+      const container = document.getElementById('booked-page');
+      container.innerHTML = '<div class="date-divider">Upcoming Shifts</div>';
+      
+      if (myBookings.length === 0) {
+        container.innerHTML += `<div style="text-align:center; padding:40px; color:var(--text-muted);">No active bookings.</div>`;
+        return;
+      }
+
+      myBookings.forEach(b => {
+        const isWait = b.status === "WAITLIST";
+        container.innerHTML += `
+          <div class="shift-card" style="border-left: 4px solid ${isWait ? 'var(--accent-gold)' : 'var(--accent-teal)'};">
+            <span class="status-tag ${isWait ? 'tag-wait' : 'tag-booked'}">${isWait ? 'Waitlist' : 'Confirmed'}</span>
+            <h3 class="shift-title">${b.dept}</h3>
+            <div class="shift-meta"><i class="ph ph-calendar"></i> ${b.date}</div>
+            <div class="shift-meta"><i class="ph ph-clock"></i> ${b.time}</div>
+            <button class="btn-cancel" onclick="handleCancel('${b.shift_id}', this)">Cancel Booking</button>
+          </div>`;
+      });
+    }
+
+    function switchTab(index) {
+      const pages = ['available-page', 'booked-page', 'history-page'];
+      const navs = document.querySelectorAll('.nav-item');
+      pages.forEach((p, i) => {
+        document.getElementById(p).style.display = (i === index) ? 'block' : 'none';
+        navs[i].classList.toggle('active', i === index);
+      });
+    }
+
+    function handleBooking(id, date, dept, time, btn, isWaitlist = false) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const userDocNo = urlParams.get('id') || localStorage.getItem("mcl_doc_no");
+
+      if (!isWaitlist && !confirm(`Confirm booking for ${dept}?`)) return;
+
+      btn.innerText = "Processing...";
+      btn.disabled = true;
+
+      fetch(`${SCRIPT_URL}?action=submit&shiftId=${id}&date=${date}&dept=${dept}&time=${time}&userDocNo=${userDocNo}&isWaitlist=${isWaitlist}`)
+        .then(r => r.json())
+        .then(res => {
+          if (res.ok === "FULL") {
+            if (confirm(res.message)) handleBooking(id, date, dept, time, btn, true);
+            else { btn.innerText = "Book Now"; btn.disabled = false; }
+          } else {
+            alert(res.message);
+            if (res.ok) window.location.reload();
+            else { btn.innerText = "Book Now"; btn.disabled = false; }
+          }
+        });
+    }
+
+    function handleCancel(shiftId, btn) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const userDocNo = urlParams.get('id') || localStorage.getItem("mcl_doc_no");
+
+      if (!confirm("Cancel this booking? This action cannot be undone.")) return;
+
+      btn.innerText = "Cancelling...";
+      btn.disabled = true;
+
+      fetch(`${SCRIPT_URL}?action=cancel&shiftId=${shiftId}&userDocNo=${userDocNo}`)
+        .then(r => r.json())
+        .then(res => {
+          alert(res.message);
+          if (res.ok) window.location.reload();
+          else { btn.innerText = "Cancel Booking"; btn.disabled = false; }
+        });
+    }
+  </script>
+</body>
+</html>
