@@ -127,4 +127,125 @@
     </div>
 
     <div id="available-view"></div>
-    
+    <div id="booked-view" style="display:none;"></div>
+  </div>
+
+  <nav class="bottom-nav">
+    <div class="nav-item active" onclick="switchTab(0)"><i class="ph ph-calendar-plus"></i><span>Available</span></div>
+    <div class="nav-item" onclick="switchTab(1)"><i class="ph ph-briefcase"></i><span>My Schedule</span></div>
+    <div class="nav-item" onclick="window.location.reload()"><i class="ph ph-arrows-clockwise"></i><span>Refresh</span></div>
+  </nav>
+
+  <script>
+    // UPDATED WITH YOUR LATEST URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQO2wNLYqbclyen6E8ermntNGuAJZyMosl7t7HFbgvyhWKRYEHwyqnyOyesoX3YdOH/exec"; 
+
+    window.onload = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const userDocNo = urlParams.get('id') || localStorage.getItem("mcl_doc_no");
+      
+      if (!userDocNo) { window.location.href = "index.html"; return; }
+
+      const record = JSON.parse(localStorage.getItem("mitecWorkerRecord") || "{}");
+      document.getElementById("userNameDisplay").textContent = record.full_name || "MITEC STAFF";
+      if (record.photo_link) document.getElementById("userAvatar").src = record.photo_link;
+
+      refreshData(userDocNo);
+    };
+
+    function refreshData(docNo) {
+      fetch(`${SCRIPT_URL}?action=getShifts&userDocNo=${docNo}`)
+        .then(r => r.json())
+        .then(res => {
+          if(res.ok) {
+            renderAvailable(res.allShifts, res.myUpcomingEvents);
+            renderBooked(res.myUpcomingEvents);
+            document.getElementById('sync-loader').style.display = 'none';
+          }
+        });
+    }
+
+    function renderAvailable(shifts, bookings) {
+      const container = document.getElementById('available-view');
+      container.innerHTML = '';
+      const dates = [...new Set(shifts.map(s => s.date))];
+      
+      dates.forEach(date => {
+        container.innerHTML += `<div class="date-label">${date}</div>`;
+        shifts.filter(s => s.date === date).forEach(s => {
+          const booked = bookings.find(b => b.shift_id === s.id);
+          const isFull = s.slotsLeft <= 0;
+          
+          container.innerHTML += `
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">${s.dept}</h3>
+                <span class="status-pill ${booked ? 'pill-confirmed' : 'pill-open'}">
+                  ${booked ? 'Confirmed' : (isFull ? 'Full' : s.slotsLeft + ' Left')}
+                </span>
+              </div>
+              <div class="card-meta">
+                <div class="meta-row"><i class="ph ph-clock"></i> ${s.time}</div>
+                ${s.notes ? `<div class="meta-row"><i class="ph ph-info"></i> ${s.notes}</div>` : ''}
+              </div>
+              ${!booked ? `
+                <button class="btn-exec" onclick="handleBooking('${s.id}', '${s.date}', '${s.dept}', '${s.time}')">
+                  <i class="ph ph-check-circle"></i> Confirm Duty
+                </button>
+              ` : `
+                <button class="btn-exec btn-secondary">Registration Confirmed ✅</button>
+              `}
+            </div>`;
+        });
+      });
+    }
+
+    function renderBooked(bookings) {
+      const container = document.getElementById('booked-view');
+      container.innerHTML = '<div class="date-label">My Registered Schedule</div>';
+      
+      if (bookings.length === 0) {
+        container.innerHTML += '<p style="text-align:center; padding:50px; color:#94a3b8; font-size:13px;">No duties registered.</p>';
+        return;
+      }
+
+      bookings.forEach(b => {
+        const isWait = b.status === "WAITLIST";
+        container.innerHTML += `
+          <div class="card" style="border-left: 5px solid ${isWait ? 'var(--accent-amber)' : 'var(--mitec-blue)'}">
+            <div class="card-header">
+              <h3 class="card-title">${b.dept}</h3>
+              <span class="status-pill ${isWait ? 'pill-wait' : 'pill-confirmed'}">${b.status}</span>
+            </div>
+            <div class="card-meta">
+              <div class="meta-row"><i class="ph ph-calendar"></i> ${b.date}</div>
+              <div class="meta-row"><i class="ph ph-clock"></i> ${b.time}</div>
+            </div>
+            <button class="btn-exec btn-remove" onclick="cancelBooking('${b.shift_id}')">Cancel Duty</button>
+          </div>`;
+      });
+    }
+
+    function switchTab(index) {
+      document.getElementById('available-view').style.display = index === 0 ? 'block' : 'none';
+      document.getElementById('booked-view').style.display = index === 1 ? 'block' : 'none';
+      const items = document.querySelectorAll('.nav-item');
+      items.forEach((it, i) => it.classList.toggle('active', i === index));
+    }
+
+    function handleBooking(id, date, dept, time) {
+      const docNo = localStorage.getItem("mcl_doc_no");
+      if (!confirm("Confirm registration for " + dept + "?")) return;
+      fetch(`${SCRIPT_URL}?action=submit&shiftId=${id}&date=${date}&dept=${dept}&time=${time}&userDocNo=${docNo}`)
+        .then(() => window.location.reload());
+    }
+
+    function cancelBooking(shiftId) {
+      const docNo = localStorage.getItem("mcl_doc_no");
+      if (!confirm("Cancel this duty registration?")) return;
+      fetch(`${SCRIPT_URL}?action=cancel&shiftId=${shiftId}&userDocNo=${docNo}`)
+        .then(() => window.location.reload());
+    }
+  </script>
+</body>
+</html>
