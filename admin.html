@@ -36,7 +36,7 @@
     .container { max-width: 500px; margin: 0 auto; padding: 15px; }
 
     /* Login Screen Portal Overlay Configuration */
-    #login-overlay { position: fixed; inset: 0; background: var(--bg-slate); z-index: 5000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    #login-overlay { position: fixed; inset: 0; background: var(--bg-slate); z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px; }
     .login-card { background: #fff; width: 100%; max-width: 400px; border-radius: 16px; padding: 32px 24px; border: 1px solid var(--border-thin); box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
     .login-logo { font-size: 44px; color: var(--admin-dark); margin-bottom: 12px; }
 
@@ -196,21 +196,20 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwpqdLf6YLVQL0h_P6C78J-TkijnFGAtbRwR4YztI8pINHwsnywbDIRfjyojFU3_bKg/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzz00Wih6vzhNBjXbg5Xi18IrSHJh9eJY8aKntu_m2VdZjylu6U86Sk_8IHv6eiSMSu/exec"; 
     
     let activeAdminKey = null;
     let cachedShifts = [];
     let cachedBookings = [];
 
     window.onload = () => {
-      // Automatic Session Recovery: Checks browser memory cache first
       const sessionKey = localStorage.getItem("mitec_admin_key");
       if (sessionKey) {
         activeAdminKey = sessionKey;
         document.getElementById('login-overlay').style.display = 'none';
         loadAdminDataSuite();
       } else {
-        // Keeps user behind login barrier until they click trigger input fields manually
+        // FIXED: Safely locks the screen until input is given, with NO background function pre-calls
         document.getElementById('login-overlay').style.display = 'flex';
       }
     };
@@ -240,17 +239,16 @@
     function loadAdminDataSuite() {
       document.getElementById('sync-loader').style.display = 'flex';
       
-      // Verification requests now fire ONLY with valid input tokens keyed into the login interface
       fetch(`${SCRIPT_URL}?action=getAdminMasterData&userDocNo=${activeAdminKey}`)
         .then(r => r.json())
         .then(res => {
           if (res.ok && res.allShifts && res.allBookingsRaw) {
-            // Success: Lock valid token to browser cache to stay verified across window refreshes
             localStorage.setItem("mitec_admin_key", activeAdminKey);
             
             cachedShifts = res.allShifts;
             cachedBookings = res.allBookingsRaw;
             
+            // FIXED: These will only fire now AFTER a verified response drops from your sheet
             renderStatisticsPage();
             renderRosterCardsPage();
             document.getElementById('sync-loader').style.display = 'none';
@@ -262,18 +260,17 @@
           }
         }).catch(err => {
           localStorage.removeItem("mitec_admin_key");
-          alert("Network Timeout Handshake Intercepted: Ensure you deployed the script as a Web App to Anyone!");
+          alert("Handshake Interrupted. Double-check your network deployment setting is on 'Anyone'.");
           document.getElementById('sync-loader').style.display = 'none';
           document.getElementById('login-overlay').style.display = 'flex';
         });
     }
 
-    // TAB 1: General View Overview Metrics Engine
     function renderStatisticsPage() {
       const container = document.getElementById('stats-view-container');
       container.innerHTML = '';
       
-      if(cachedShifts.length === 0) {
+      if(!cachedShifts || cachedShifts.length === 0) {
         container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">No active shifts found.</p>';
         return;
       }
@@ -301,12 +298,11 @@
       });
     }
 
-    // TAB 2: Upcoming Cards Directory Summary Renderer
     function renderRosterCardsPage() {
       const container = document.getElementById('roster-cards-container');
       container.innerHTML = '';
       
-      if(cachedShifts.length === 0) {
+      if(!cachedShifts || cachedShifts.length === 0) {
         container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">No active shift directory found.</p>';
         return;
       }
@@ -326,7 +322,6 @@
       });
     }
 
-    // TAB 2: Interactive Drawer Datatable Generator Logic
     function openRosterDrawer(shiftId, dept, date, time) {
       document.getElementById('drawer-shift-title').textContent = dept;
       const tbody = document.getElementById('drawer-table-body');
@@ -374,7 +369,6 @@
         });
     }
 
-    // TAB 3: Roster Form Appender Logic Block
     function handleFormSubmission(event) {
       event.preventDefault();
       
