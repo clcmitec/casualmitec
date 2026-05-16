@@ -79,7 +79,7 @@
   <div class="container">
     <div class="profile-card">
       <img id="userAvatar" class="avatar" src="https://via.placeholder.com/150">
-      <div class="profile-info"><span>CASUAL LABOUR SYSTEM</span><h2 id="userNameDisplay">STAFF MEMBER</h2></div>
+      <div class="profile-info"><span>Current User</span><h2 id="userNameDisplay">STAFF MEMBER</h2></div>
     </div>
     <div id="available-view"></div>
     <div id="booked-view" style="display:none;"></div>
@@ -141,7 +141,7 @@
               </div>
               <div class="card-meta"><div class="meta-row"><i class="ph ph-clock"></i> ${s.time}</div></div>
               ${isMyShift ? 
-                `<button class="btn-exec" style="background:#f1f5f9; color:#94a3b8; cursor:default;">Selected ✅</button>` : 
+                `<button class="btn-exec" style="background:#f1f5f9; color:#94a3b8; cursor:default;">Selected ✔️</button>` : 
                 (isFull ? 
                   `<button class="btn-exec btn-waitlist" onclick="handleBooking('${s.id}', '${s.date}', '${s.dept}', '${s.time}', true)"><i class="ph ph-clock-afternoon"></i> Join Waitlist</button>` : 
                   `<button class="btn-exec" onclick="handleBooking('${s.id}', '${s.date}', '${s.dept}', '${s.time}', false)">Confirm Duty</button>`
