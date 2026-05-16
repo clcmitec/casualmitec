@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MITEC — Admin Command Suite</title>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    :root {
+      --admin-dark: #0f172a;
+      --admin-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      --bg-slate: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #334155;
+      --text-muted: #64748b;
+      --border-thin: #e2e8f0;
+      
+      --pill-teal-bg: #f0fdfa;
+      --pill-teal-text: #0d9488;
+      --pill-teal-border: #ccfbf1;
+      --pill-amber-bg: #fffbeb;
+      --pill-amber-text: #b45309;
+      --pill-amber-border: #fef3c7;
+
+      --font-main: 'Trebuchet MS', sans-serif;
+    }
+
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    body { margin: 0; background-color: var(--bg-slate); font-family: var(--font-main); color: var(--text-main); padding-bottom: 90px; }
+    
+    .header { padding: 18px 0; text-align: center; background: #fff; border-bottom: 1px solid var(--border-thin); position: sticky; top: 0; z-index: 900; }
+    .brand-title { font-size: 13px; font-weight: 800; color: var(--admin-dark); letter-spacing: 2px; margin: 0; text-transform: uppercase; }
+    
+    .container { max-width: 480px; margin: 0 auto; padding: 15px; }
+
+    /* Top Navigation Tabs Bar */
+    .tab-bar { display: flex; background: #fff; border-bottom: 1px solid var(--border-thin); position: sticky; top: 54px; z-index: 900; }
+    .tab-item { flex: 1; text-align: center; padding: 14px 0; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; cursor: pointer; letter-spacing: 0.5px; border-bottom: 3px solid transparent; }
+    .tab-item.active { color: var(--admin-dark); border-color: var(--admin-dark); }
+
+    .app-page { display: none; }
+    .app-page.active { display: block; }
+
+    .section-label { font-size: 11px; font-weight: 800; color: var(--admin-dark); margin: 25px 0 12px 5px; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 12px; }
+    .section-label::after { content: ""; flex: 1; height: 1px; background: var(--border-thin); }
+
+    /* Tab 1: Stat Metric Layout Rows */
+    .stat-row-card { background: var(--card-bg); border: 1px solid var(--border-thin); border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .stat-info h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--admin-dark); }
+    .stat-info p { margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted); }
+    .metrics-pill-pack { display: flex; gap: 6px; }
+    .mini-badge { font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
+
+    /* Tab 2: Roster Cards */
+    .roster-card { background: var(--card-bg); border: 1px solid var(--border-thin); border-radius: 14px; padding: 18px; margin-bottom: 12px; cursor: pointer; transition: all 0.15s ease; position: relative; }
+    .roster-card:active { transform: scale(0.98); background: #fafafa; }
+    .roster-card .chevron-indicator { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px; }
+
+    /* Interactive Table Roster View Drawer Modal */
+    .drawer-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); z-index: 2000; display: none; align-items: flex-end; }
+    .drawer-content { background: #fff; width: 100%; max-height: 85vh; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px 20px; overflow-y: auto; }
+    .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .drawer-header h2 { font-size: 18px; margin: 0; color: var(--admin-dark); font-weight: 700; }
+    .btn-close-drawer { background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; }
+    
+    .roster-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; text-align: left; }
+    .roster-table th { background: #f1f5f9; padding: 10px; font-weight: 700; color: var(--admin-dark); text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
+    .roster-table td { padding: 12px 10px; border-bottom: 1px solid var(--border-thin); }
+    .status-pill { font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; }
+    .pill-sub { background: var(--pill-teal-bg); color: var(--pill-teal-text); }
+    .pill-wait { background: var(--pill-amber-bg); color: var(--pill-amber-text); }
+
+    /* Tab 3: Action Form Layout styling */
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+    .form-control { width: 100%; height: 46px; border: 1px solid var(--border-thin); border-radius: 10px; padding: 0 14px; font-family: var(--font-main); font-size: 14px; color: var(--admin-dark); background: #fff; }
+    .form-control:focus { outline: none; border-color: var(--admin-dark); }
+    textarea.form-control { height: 80px; padding: 12px; resize: none; }
+    .btn-submit-shift { width: 100%; height: 50px; background: var(--admin-dark); color: #fff; font-size: 14px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Premium Gear Loader Animation Panel */
+    #sync-loader { position: fixed; inset: 0; background: #ffffff; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .loader-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 80px; height: 80px; margin-bottom: 16px; }
+    .loader-pulse { position: absolute; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.06); border-radius: 50%; animation: fluidPulse 1.8s infinite ease-in-out; }
+    .loader-text { font-size: 11px; font-weight: 800; color: var(--admin-dark); letter-spacing: 1.5px; text-transform: uppercase; animation: textBlink 1.4s infinite ease-in-out; }
+
+    @keyframes fluidPulse { 0% { transform: scale(0.6); opacity: 1; } 100% { transform: scale(1.3); opacity: 0; } }
+    @keyframes textBlink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+  <div id="sync-loader">
+    <div class="loader-wrapper">
+      <div class="loader-pulse"></div>
+      <i class="ph ph-gear-six ph-spin" style="font-size: 44px; color: var(--admin-dark); position: relative; z-index: 2;"></i>
+    </div>
+    <div class="loader-text">Syncing Console Matrix...</div>
+  </div>
+
+  <header class="header"><div class="brand-title">MITEC — Operations Console</div></header>
+
+  <nav class="tab-bar">
+    <div class="tab-item active" onclick="switchTab(1)">Statistics</div>
+    <div class="tab-item" onclick="switchTab(2)">Rosters</div>
+    <div class="tab-item" onclick="switchTab(3)">Create Shift</div>
+  </nav>
+
+  <div class="container">
+    
+    <div id="page-1" class="app-page active">
+      <div class="section-label">Live Shift Statistics</div>
+      <div id="stats-view-container"></div>
+    </div>
+
+    <div id="page-2" class="app-page">
+      <div class="section-label">Select Shift To View Table</div>
+      <div id="roster-cards-container"></div>
+    </div>
+
+    <div id="page-3" class="app-page">
+      <div class="section-label">Deploy New Shift Parameters</div>
+      <form id="shift-creation-form" onsubmit="handleFormSubmission(event)">
+        <div class="form-group">
+          <label>Shift Reference ID</label>
+          <input type="text" id="form-shift-id" class="form-control" placeholder="e.g., S015" required />
+        </div>
+        <div class="form-group">
+          <label>Calendar Date</label>
+          <input type="text" id="form-date" class="form-control" placeholder="e.g., 24.05.2026" required />
+        </div>
+        <div class="form-group">
+          <label>Department Designation</label>
+          <input type="text" id="form-dept" class="form-control" placeholder="e.g., EXH (Exhibition Hall)" required />
+        </div>
+        <div class="form-group">
+          <label>Operational Reporting Time</label>
+          <input type="text" id="form-time" class="form-control" placeholder="e.g., 08:00 - 17:00" required />
+        </div>
+        <div class="form-group">
+          <label>Total Capacity Slots</label>
+          <input type="number" id="form-slots" class="form-control" placeholder="e.g., 10" required />
+        </div>
+        <div class="form-group">
+          <label>Coordinator Operational Notes</label>
+          <textarea id="form-notes" class="form-control" placeholder="Optional notes..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit-shift">Append & Deploy Shift</button>
+      </form>
+    </div>
+
+  </div>
+
+  <div id="roster-drawer" class="drawer-overlay" onclick="closeRosterDrawer()">
+    <div class="drawer-content" onclick="event.stopPropagation()">
+      <div class="drawer-header">
+        <h2 id="drawer-shift-title">Department Registry</h2>
+        <button class="btn-close-drawer" onclick="closeRosterDrawer()"><i class="ph ph-x"></i></button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="roster-table">
+          <thead>
+            <tr>
+              <th>Casual Worker Name</th>
+              <th>MyKad / Passport ID</th>
+              <th>System Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="drawer-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQO2wNLYqbclyen6E8ermntNGuAJZyMosl7t7HFbgvyhWKRYEHwyqnyOyesoX3YdOH/exec"; 
+    const ADMIN_MYKAD = "930129035193";
+
+    let cachedShifts = [];
+    let cachedBookings = [];
+
+    window.onload = () => {
+      loadMasterMetrics();
+    };
+
+    function switchTab(tabIndex) {
+      document.querySelectorAll('.tab-item').forEach((el, idx) => {
+        el.classList.toggle('active', (idx + 1) === tabIndex);
+      });
+      document.querySelectorAll('.app-page').forEach((el, idx) => {
+        el.classList.toggle('active', (idx + 1) === tabIndex);
+      });
+    }
+
+    function loadMasterMetrics() {
+      document.getElementById('sync-loader').style.display = 'flex';
+      fetch(`${SCRIPT_URL}?action=getAdminMasterData&userDocNo=${ADMIN_MYKAD}`)
+        .then(r => r.json())
+        .then(res => {
+          if(res.ok) {
+            cachedShifts = res.allShifts;
+            cachedBookings = res.allBookingsRaw;
+            renderStatisticsPage();
+            renderRosterCardsPage();
+            document.getElementById('sync-loader').style.display = 'none';
+          } else {
+            alert("Security check failed: Admin token matching issue.");
+          }
+        });
+    }
+
+    // TAB 1: Analytical Grid Rendering Engine
+    function renderStatisticsPage() {
+      const container = document.getElementById('stats-view-container');
+      container.innerHTML = '';
+      
+      const dates = [...new Set(cachedShifts.map(s => s.date))];
+      dates.forEach(date => {
+        container.innerHTML += `<div class="section-label">${date}</div>`;
+        cachedShifts.filter(s => s.date === date).forEach(s => {
+          const confirmedCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'SUBMITTED').length;
+          const waitlistCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'WAITLIST').length;
+          
+          container.innerHTML += `
+            <div class="stat-row-card">
+              <div class="stat-info">
+                <h3>${s.dept}</h3>
+                <p><i class="ph ph-clock"></i> Reporting at <b>${s.time}</b></p>
+              </div>
+              <div class="metrics-pill-pack">
+                <span class="mini-badge" style="background:#f1f5f9; color:#0f172a;">Cap: ${s.totalSlots}</span>
+                <span class="mini-badge pill-sub">Conf: ${confirmedCount}</span>
+                <span class="mini-badge pill-wait">Wait: ${waitlistCount}</span>
+              </div>
+            </div>`;
+        });
+      });
+    }
+
+    // TAB 2: Interactive List Trigger Generation Engine
+    function renderRosterCardsPage() {
+      const container = document.getElementById('roster-cards-container');
+      container.innerHTML = '';
+      
+      const dates = [...new Set(cachedShifts.map(s => s.date))];
+      dates.forEach(date => {
+        container.innerHTML += `<div class="section-label">${date}</div>`;
+        cachedShifts.filter(s => s.date === date).forEach(s => {
+          const totalRegistered = cachedBookings.filter(b => b.shift_id === s.id && b.status !== 'CANCELLED').length;
+          container.innerHTML += `
+            <div class="roster-card" onclick="openRosterDrawer('${s.id}', '${s.dept}', '${s.date}', '${s.time}')">
+              <h3 style="margin:0 0 6px 0; font-size:16px; color:var(--admin-dark); font-weight:700;">${s.dept}</h3>
+              <span style="font-size:12px; color:var(--text-muted); font-weight:600;"><i class="ph ph-users"></i> ${totalRegistered} Total Candidates Registered</span>
+              <div class="chevron-indicator"><i class="ph ph-caret-right"></i></div>
+            </div>`;
+        });
+      });
+    }
+
+    // TAB 2 Dynamic Drawer Table Generation Engine
+    function openRosterDrawer(shiftId, dept, date, time) {
+      document.getElementById('drawer-shift-title').textContent = dept;
+      const tbody = document.getElementById('drawer-table-body');
+      tbody.innerHTML = '';
+
+      // Extract and filter list of applicants specifically for this card ID
+      const activeApplicants = cachedBookings.filter(b => b.shift_id === shiftId && b.status !== 'CANCELLED');
+
+      if (activeApplicants.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); font-style:italic; padding:20px;">No candidates registered on this shift roster.</td></tr>`;
+      } else {
+        activeApplicants.forEach(w => {
+          const isWait = w.status === 'WAITLIST';
+          tbody.innerHTML += `
+            <tr>
+              <td style="font-weight:700; color:var(--admin-dark);">${w.worker_name}</td>
+              <td><code>${w.user_id}</code></td>
+              <td><span class="status-pill ${isWait ? 'pill-wait' : 'pill-sub'}">${isWait ? 'Standby' : 'Confirmed'}</span></td>
+              <td>
+                ${isWait ? `<button class="btn-approve" onclick="promoteFromDrawer('${shiftId}', '${w.user_id}', '${date}', '${dept}', '${time}')">Approve</button>` : `<span style="color:var(--text-muted); font-size:11px;">No Action</span>`}
+              </td>
+            </tr>`;
+        });
+      }
+      document.getElementById('roster-drawer').style.display = 'flex';
+    }
+
+    function closeRosterDrawer() {
+      document.getElementById('roster-drawer').style.display = 'none';
+    }
+
+    function promoteFromDrawer(shiftId, workerId, date, dept, time) {
+      closeRosterDrawer();
+      document.getElementById('sync-loader').querySelector('.loader-text').textContent = "Bypassing Waitlist Placement...";
+      document.getElementById('sync-loader').style.display = 'flex';
+      
+      fetch(`${SCRIPT_URL}?action=submit&shiftId=${shiftId}&date=${date}&dept=${dept}&time=${time}&userDocNo=${workerId}&isWaitlist=false`)
+        .then(() => loadMasterMetrics());
+    }
+
+    // TAB 3: Structured Data Append Form Writer Engine
+    function handleFormSubmission(event) {
+      event.preventDefault();
+      
+      const shiftId = document.getElementById('form-shift-id').value.trim();
+      const sDate = document.getElementById('form-date').value.trim();
+      const sDept = document.getElementById('form-dept').value.trim();
+      const sTime = document.getElementById('form-time').value.trim();
+      const sSlots = document.getElementById('form-slots').value.trim();
+      const sNotes = document.getElementById('form-notes').value.trim();
+
+      document.getElementById('sync-loader').querySelector('.loader-text').textContent = "Appending New Shift Roster...";
+      document.getElementById('sync-loader').style.display = 'flex';
+
+      fetch(`${SCRIPT_URL}?action=createShift&userDocNo=${ADMIN_MYKAD}&shiftId=${shiftId}&date=${sDate}&dept=${sDept}&time=${sTime}&slots=${sSlots}&notes=${encodeURIComponent(sNotes)}`)
+        .then(r => r.json())
+        .then(res => {
+          if(res.ok) {
+            alert("Roster successfully appended to database sheets.");
+            document.getElementById('shift-creation-form').reset();
+            switchTab(1); // Return to baseline Statistics overview tab automatically
+            loadMasterMetrics(); // Pull down newly created shift row properties
+          } else {
+            alert("Error logging layout parameters.");
+            document.getElementById('sync-loader').style.display = 'none';
+          }
+        });
+    }
+  </script>
+</body>
+</html>
