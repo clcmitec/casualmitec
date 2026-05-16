@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ — CasualMITEC</title>
+  
+  <!-- Phosphor Icons for Modern Theme Alignment -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <style>
+    :root {
+      --mitec-blue: #092253;
+      --mitec-blue-dark: #071a3d;
+      --bg-base: #f8f9fa; 
+      --card-bg: #ffffff;
+      --text-main: #2c2c2e;
+      --text-muted: #6e6e73;
+      --border-color: #d1d1d6;
+      --shadow-standard: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --link-color: #007BFF;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      -webkit-font-smoothing: antialiased; 
+    }
+
+    body { 
+      margin: 0; 
+      padding: 40px 20px; 
+      background-color: var(--bg-base);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text-main);
+    }
+
+    .container { 
+      max-width: 500px; 
+      margin: 0 auto; 
+    }
+
+    .header { 
+      text-align: center; 
+      margin-bottom: 32px; 
+    }
+    
+    .brand-img { 
+      height: 24px; 
+      width: auto; 
+    }
+
+    .faq-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-title { 
+      font-size: 13px; 
+      font-weight: 700; 
+      color: var(--mitec-blue); 
+      margin-bottom: 20px; 
+      display: block; 
+      border-bottom: 1px solid #eee; 
+      padding-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .faq-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: var(--shadow-standard);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .faq-question-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      text-align: left;
+      outline: none;
+    }
+
+    .faq-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .faq-icon {
+      font-size: 18px;
+      color: var(--text-muted);
+      transition: transform 0.2s ease, color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .faq-answer-wrapper {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.25s ease-out;
+    }
+
+    .faq-answer-content {
+      overflow: hidden;
+    }
+
+    .faq-answer {
+      padding: 0 20px 20px 20px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .faq-answer ul {
+      margin: 8px 0 0 0;
+      padding-left: 20px;
+    }
+
+    .faq-answer li {
+      margin-bottom: 6px;
+    }
+
+    /* Interactive States */
+    .faq-card.active {
+      box-shadow: 0 6px 16px rgba(9, 34, 83, 0.08);
+    }
+
+    .faq-card.active .faq-answer-wrapper {
+      grid-template-rows: 1fr;
+    }
+
+    .faq-card.active .faq-icon {
+      transform: rotate(45deg);
+      color: var(--mitec-blue);
+    }
+    
+    .faq-answer a {
+      color: var(--link-color);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dashed var(--link-color);
+    }
+
+    .faq-answer a:hover {
+      opacity: 0.8;
+    }
+
+    .support-footer {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Brand Header -->
+    <div class="header">
+      <img class="brand-img" src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC">
+    </div>
+
+    <!-- FAQ Wrapper Card Layout -->
+    <div style="background: var(--card-bg); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-standard);">
+      <span class="section-title">Frequently Asked Questions</span>
+      
+      <div class="faq-container">
+        
+        <!-- First Time Arrival -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">This is my first time working here. Where should I go when I arrive?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Welcome! Please head directly to the <strong>Security Post at the West Gate Entrance (Loading Bay Zone)</strong>. Inform the security team that you are a part-time/casual staff member to collect your physical voucher. 
+                <br><br>
+                <strong>Important:</strong> As soon as you receive your voucher, please log in to the <a href="https://casualmitec.online/signin.html" target="_blank">Sign-In Portal</a> immediately to register your voucher number.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parking -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">Where can I park my vehicle, and is there a fee?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Parking is completely free of charge for casual staff! Simply proceed to the <strong>West Gate</strong>, and our security officers on duty will happily guide you to the designated complimentary parking area.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next steps after voucher register -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">Where should I go after registering my voucher number in the system?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Once your voucher is successfully registered, head up to the <strong>Linen Room on Level 1A</strong> to collect your uniform. We highly recommend contacting your assigned Supervisor, Person-in-Charge (PIC), or team members beforehand so you know exactly where to report for duty.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Factors of Late Salary -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">What are the common reasons for a delay in receiving my salary?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Payout delays are usually caused by one of the following reasons:
+                <ul>
+                  <li><strong>Incomplete Bank Details:</strong> Forgetting to update or verify your bank account details in the portal profile.</li>
+                  <li><strong>Delayed Voucher Submission:</strong> Not handing in your physical voucher slip to the security post immediately after completing your shift.</li>
+                </ul>
+                Please ensure both actions are completed promptly to guarantee on-time processing!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Salary Deductions Rules -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">Under what circumstances will a salary deduction be made?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                To ensure fairness and accurate tracking, salary adjustments or deductions are applied based on the system logs in these situations:
+                <ul>
+                  <li><strong>Missing Portal Clocking:</strong> Failing to Sign-In or Sign-Out your voucher via the online portal. Please note that department-specific manual attendance lists or physical QR codes do not substitute this requirement.</li>
+                  <li><strong>Lateness:</strong> Signing in to the portal more than 5 minutes past your scheduled shift start time.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Minimum Age -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">What is the minimum age requirement to work at MITEC?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Only individuals aged 17 and above are allowed to work as casual labor at MITEC.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit details -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">Can I edit my personal details after registration?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Yes, you are encouraged to do so especially when you have some personal information changes.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment channels -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">How will I receive my payment?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Payments will only be made through bank transfer under your own name and account. If you currently don't hold any bank account, you can use any third party bank account once you have submitted a <a href="https://docs.google.com/forms/d/e/1FAIpQLSdrJKgxvaSKa0quLzf7SM9Ikj3R-oUYeHGTq5G03XykLcM8HA/viewform" target="_blank">consent letter</a>.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Foreigner entry rules -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">Can I work at MITEC if I am a foreigner?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Only International students with a valid visa are allowed to work. You must comply with Malaysia’s immigration laws and provide proper documentation for part-time work. Make sure you work for no longer than 20 hours per week.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dress code -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">What should I wear to work?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Appropriate attire depends on the task. Always follow the department’s dress code – no slippers, shorts, or crop tops unless specified.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- When do i get paid -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">How do I know when I will get paid?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Your payment date will be determined from the day you submitted your voucher. The voucher payout days for the time being are every Tuesday, Wednesday and Friday every week. You can check your specific date of each voucher you submitted from the <a href="https://www.casualmitec.online/my-record" target="_blank">portal</a>.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lost voucher process -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">What should I do if I've lost my voucher?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                You must fill up the <a href="https://docs.google.com/forms/d/e/1FAIpQLSfvdYUd-JCXJ31yffQ-ujrZ_I1oqSnYvEnGVYeusdQZWXOzeQ/viewform" target="_blank">form</a>. You must get the verification from your supervisor, which follows a similar process to getting your voucher verified every time you finish your work.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Breaks policy -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">What is the policy on breaks and meals?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Breaks depend on task length and department rules. A meal will be provided for every shift you work. If you work longer than 12 hours, you are entitled to one additional meal.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MOVED TO THE BOTTOM: Philosophy on Reductions -->
+        <div class="faq-card">
+          <button class="faq-question-btn">
+            <h3 class="faq-title">Why does MITEC enforce strict salary reductions for administrative or lateness errors?</h3>
+            <i class="ph ph-plus faq-icon"></i>
+          </button>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-content">
+              <div class="faq-answer">
+                Our primary goal is never to withhold hard-earned money from our part-time workforce. However, as a world-class venue hosting major international events, we manage a massive volume of casual labor every minute of the day. 
+                <br><br>
+                To maintain operational excellence, discipline, and absolute fairness across our systems, strict policies are necessary. Enforcing these systematic deductions ensures that everyone respects work guidelines, captures data accurately, and understands the critical operational consequences of punctuality and proper administrative compliance.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+    <div class="support-footer">
+      CasualMITEC Operations Support Portal
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.faq-question-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const currentCard = button.parentElement;
+        const icon = button.querySelector('.faq-icon');
+        
+        // Toggle Active Class
+        currentCard.classList.toggle('active');
+        
+        // Dynamically change icon state smoothly
+        if (currentCard.classList.contains('active')) {
+          icon.classList.replace('ph-plus', 'ph-x');
+        } else {
+          icon.classList.replace('ph-x', 'ph-plus');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
