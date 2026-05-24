@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Executive Pivot Approvals Portal</title>
+  <style>
+    /* FROST & STEEL AESTHETIC */
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #e2e8f0; color: #1e293b; padding: 24px; }
+    .page-container { max-width: 1600px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); padding: 24px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 8px 32px rgba(11, 26, 48, 0.15); backdrop-filter: blur(10px); }
+    
+    .portal-header { border-bottom: 2px solid #94a3b8; padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .portal-header h2 { font-size: 1.5rem; font-weight: 800; color: #0b1a30; text-transform: uppercase; margin: 0; letter-spacing: 0.5px; }
+    .portal-header p { color: #64748b; font-size: 0.85rem; margin: 4px 0 0 0; font-weight: 600; }
+    
+    /* PIVOT MANAGEMENT DATA GRID */
+    table.pivot-grid { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; margin-top: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    table.pivot-grid th { background: #0b1a30; color: #f1f5f9; font-weight: 600; padding: 14px 16px; border-bottom: 2px solid #94a3b8; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    table.pivot-grid td { padding: 12px 16px; border-bottom: 1px solid #cbd5e1; }
+    
+    /* WEEK MASTER ROW ROLLUP */
+    tr.pivot-week-row { background: #0f2545; color: #f1f5f9; cursor: pointer; transition: background 0.2s; }
+    tr.pivot-week-row:hover { background: #16325c; }
+    tr.pivot-week-row td { border-bottom: 2px solid #94a3b8; }
+    
+    /* DEPT HEADER BARS */
+    tr.pivot-header-row { background: #ffffff; font-weight: 700; color: #0f172a; cursor: pointer; transition: background 0.2s; }
+    tr.pivot-header-row:hover { background: #f8fafc; }
+    .toggle-arrow { display: inline-block; width: 16px; font-weight: bold; margin-right: 8px; color: #3b82f6; transition: transform 0.2s; }
+    
+    /* NESTED DRILL-DOWN SUB-TABLES */
+    tr.pivot-detail-row { display: none; background: #f1f5f9; }
+    .detail-container-cell { padding: 0 !important; border-bottom: 2px solid #94a3b8; }
+    table.inner-detail-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    table.inner-detail-table th { background: #e2e8f0; color: #334155; padding: 8px 16px; font-size: 0.72rem; border-bottom: 1px solid #cbd5e1; text-transform: uppercase; }
+    table.inner-detail-table td { padding: 10px 16px; border-bottom: 1px solid #e2e8f0; color: #1e293b; }
+
+    /* ACTION ENGINE BRAND BUTTONS */
+    .btn-action-approve { background: #10b981; color: #fff; border: 1px solid #059669; padding: 6px 14px; font-size: 0.75rem; font-weight: bold; border-radius: 4px; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,0.2); transition: background 0.1s; }
+    .btn-action-reject { background: #ef4444; color: #fff; border: 1px solid #b91c1c; padding: 6px 14px; font-size: 0.75rem; font-weight: bold; border-radius: 4px; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,0.2); transition: background 0.1s; }
+    .btn-action-approve:hover { background: #059669; } 
+    .btn-action-reject:hover { background: #dc2626; }
+    .btn-group { display: flex; gap: 8px; justify-content: center; }
+
+    .status-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid transparent; }
+    .status-badge.pending { background: #fef08a; color: #854d0e; border-color: #fde047; }
+    .status-badge.approved { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
+    .status-badge.rejected { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+    
+    .pdf-link { color: #2563eb; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #eff6ff; border: 1px solid #bfdbfe; transition: all 0.2s; }
+    .pdf-link:hover { background: #dbeafe; color: #1d4ed8; }
+  </style>
+</head>
+<body>
+
+<div class="page-container">
+  <div class="portal-header">
+    <div>
+      <h2>📋 Executive Requisition Pivot Authorization</h2>
+      <p>Dynamic nested weekly rosters consolidated from flat database matrices.</p>
+    </div>
+    <button onclick="loadAndCompilePivotTableData()" style="background:#0b1a30; color:#fff; border:1px solid #cbd5e1; padding:8px 16px; border-radius:4px; font-weight:bold; cursor:pointer;">🔄 Refresh Data</button>
+  </div>
+  
+  <table class="pivot-grid">
+    <thead>
+      <tr>
+        <th style="width: 140px;">Week / Dept</th>
+        <th>Department Unit</th>
+        <th style="text-align: right;">Consolidated Wages</th>
+        <th style="text-align: center;">Original Blueprint</th>
+        <th>First Approver (HOD)</th>
+        <th>Date Vetted</th>
+        <th>Final Approver (DCEO)</th>
+        <th>Date Authorized</th>
+        <th style="text-align: center;">Document Status</th>
+        <th style="text-align: center; width: 190px;">Batch Action Grid</th>
+      </tr>
+    </thead>
+    <tbody id="pivotTableRowsTargetContainer">
+      <tr><td colspan="10" style="text-align:center; padding:40px; color:#64748b; font-weight:600;">⌛ Synchronizing with Google Sheets database ledger...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  // ⚠️ SYSTEM CONFIGURATION: PASTE YOUR DEPLOYED APPS SCRIPT WEB APP URL HERE
+  const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbyHlx9flYBlUSr3MvV0EmxcjMOIEge5m30EgIVOQF18FHsx3yG8FKRqL6v-w5BVLgWH9g/exec";
+
+  // Formatter: Enforces dd/mm/yyyy hh:mm:ss styling
+  function forceDateTimeFormat(dateStr) {
+    if (!dateStr || dateStr === '-') return '-';
+    // If string only has 1 colon (missing seconds), append :00
+    if ((dateStr.match(/:/g) || []).length === 1) {
+      return dateStr + ':00';
+    }
+    return dateStr;
+  }
+
+  function toggleWeekAccordion(weekClass, element) {
+    const deptRows = document.querySelectorAll('.' + weekClass);
+    const arrow = element.querySelector('.toggle-arrow');
+    
+    let isExpanding = false;
+    if(deptRows.length > 0) {
+      isExpanding = deptRows[0].style.display === 'none';
+      deptRows.forEach(row => {
+        row.style.display = isExpanding ? 'table-row' : 'none';
+        
+        // If closing the Week row, forcefully close any open Department rows inside it to keep UI clean
+        if(!isExpanding) {
+          const detailId = row.getAttribute('data-detail-id');
+          if(detailId) {
+            const detailRow = document.getElementById(detailId);
+            if(detailRow) detailRow.style.display = 'none';
+            const innerArrow = row.querySelector('.toggle-arrow');
+            if(innerArrow) innerArrow.style.transform = 'rotate(0deg)';
+          }
+        }
+      });
+    }
+    if(arrow) arrow.style.transform = isExpanding ? 'rotate(90deg)' : 'rotate(0deg)';
+  }
+
+  function togglePivotAccordionSection(targetDetailRowId, element) {
+    const detailRow = document.getElementById(targetDetailRowId);
+    const arrow = element.querySelector('.toggle-arrow');
+    
+    if (detailRow.style.display === 'table-row') {
+      detailRow.style.display = 'none';
+      if(arrow) arrow.style.transform = 'rotate(0deg)';
+    } else {
+      detailRow.style.display = 'table-row';
+      if(arrow) arrow.style.transform = 'rotate(90deg)';
+    }
+  }
+
+  function loadAndCompilePivotTableData() {
+    const targetContainer = document.getElementById('pivotTableRowsTargetContainer');
+    targetContainer.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:40px; color:#64748b; font-weight:600;">⌛ Synchronizing with Google Sheets database ledger...</td></tr>';
+    
+    fetch(`${GOOGLE_API_URL}?action=readAll`)
+    .then(res => res.json())
+    .then(flatRowsList => {
+      targetContainer.innerHTML = '';
+      if(flatRowsList.length === 0) {
+        targetContainer.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:40px; font-weight:bold; color:#64748b;">No active requisitions found in the database.</td></tr>`;
+        return;
+      }
+
+      // Group 1: By Week, then by Department (Batch)
+      const groupedByWeek = {};
+      flatRowsList.forEach(row => {
+        if (!groupedByWeek[row.week]) {
+          groupedByWeek[row.week] = { weekTotal: 0, departments: {} };
+        }
+        groupedByWeek[row.week].weekTotal += parseFloat(row.wages);
+        
+        if (!groupedByWeek[row.week].departments[row.batchId]) {
+          groupedByWeek[row.week].departments[row.batchId] = {
+            week: row.week, department: row.department, totalWages: 0,
+            pdfUrl: row.pdfUrl, hodEmail: row.hodEmail, dceoEmail: row.dceoEmail,
+            hodStatus: row.hodStatus, dceoStatus: row.dceoStatus,
+            hodDate: row.hodDate, dceoDate: row.dceoDate, childShiftsList: []
+          };
+        }
+        groupedByWeek[row.week].departments[row.batchId].totalWages += parseFloat(row.wages);
+        groupedByWeek[row.week].departments[row.batchId].childShiftsList.push(row);
+      });
+
+      let blockIndexCounter = 0;
+
+      // Render the logic
+      Object.keys(groupedByWeek).sort((a,b) => parseInt(a) - parseInt(b)).forEach(weekKey => {
+        const weekData = groupedByWeek[weekKey];
+        const weekGroupClass = `week_${weekKey}_group_class`;
+        
+        // Render Top-Level WEEK ROW
+        targetContainer.innerHTML += `
+          <tr class="pivot-week-row" onclick="toggleWeekAccordion('${weekGroupClass}', this)">
+            <td colspan="2"><span class="toggle-arrow" style="color:#60a5fa;">▶</span><b style="letter-spacing:1px;">WEEK ${weekKey} SUMMARY</b></td>
+            <td style="text-align:right; font-weight:800; font-size:1.05rem; color:#60a5fa;">RM ${weekData.weekTotal.toFixed(2)}</td>
+            <td colspan="7" style="color:#64748b; font-size:0.8rem; font-style:italic;">Click to expand/collapse department batches...</td>
+          </tr>`;
+
+        // Render Department Rows underneath
+        Object.keys(weekData.departments).forEach(batchKeyId => {
+          blockIndexCounter++;
+          const pivotNode = weekData.departments[batchKeyId];
+          const detailRowId = `pivot_detail_id_${blockIndexCounter}`;
+          
+          let globalLifecycleText = "PENDING HOD";
+          let badgeClass = "pending";
+          if(pivotNode.hodStatus === "REJECTED" || pivotNode.dceoStatus === "REJECTED") {
+            globalLifecycleText = "REJECTED"; badgeClass = "rejected";
+          } else if(pivotNode.dceoStatus === "APPROVED") {
+            globalLifecycleText = "AUTHORIZED"; badgeClass = "approved";
+          } else if(pivotNode.hodStatus === "APPROVED") {
+            globalLifecycleText = "PENDING DCEO";
+          }
+
+          let currentActiveActionTier = (pivotNode.hodStatus === "PENDING") ? "HOD" : "DCEO";
+          let displayActionButtons = (pivotNode.hodStatus === "PENDING" || pivotNode.dceoStatus === "PENDING");
+          if(pivotNode.hodStatus === "REJECTED" || pivotNode.dceoStatus === "APPROVED" || pivotNode.dceoStatus === "REJECTED") {
+            displayActionButtons = false;
+          }
+
+          let innerShiftsHtml = '';
+          const groupedByDate = pivotNode.childShiftsList.reduce((acc, row) => {
+            if (!acc[row.date]) acc[row.date] = [];
+            acc[row.date].push(row);
+            return acc;
+          }, {});
+
+          Object.keys(groupedByDate).forEach(dateKey => {
+            innerShiftsHtml += `<tr><td colspan="7" style="background:#e2e8f0; font-weight:800; color:#0b1a30; padding-left:16px; border-top:2px solid #cbd5e1;">📅 ${dateKey}</td></tr>`;
+            
+            groupedByDate[dateKey].forEach(shiftItem => {
+              innerShiftsHtml += `
+                <tr>
+                  <td style="padding-left:40px; font-weight:600; color:#475569;">${shiftItem.day}</td>
+                  <td style="color:#475569;">RM ${shiftItem.rate.toFixed(2)} / Hr</td>
+                  <td><span style="background:#cbd5e1; padding:2px 8px; border-radius:4px; font-weight:800; font-size:0.7rem; color:#0f172a;">${shiftItem.shift}</span></td>
+                  <td style="font-weight:700;">${shiftItem.pt} Pax</td>
+                  <td>${shiftItem.hours} Hrs</td>
+                  <td style="font-weight:800; text-align:right; color:#0b1a30;">RM ${shiftItem.wages.toFixed(2)}</td>
+                  <td><small style="color:#64748b; font-weight:bold; text-transform:uppercase;">${shiftItem.payMethod}</small></td>
+                </tr>`;
+            });
+          });
+
+          // Render Dept Parent Row (Hidden by default until Week is expanded)
+          let parentRowHtml = `
+            <tr class="pivot-header-row ${weekGroupClass}" data-detail-id="${detailRowId}" style="display:none;" onclick="togglePivotAccordionSection('${detailRowId}', this)">
+              <td style="padding-left:24px; color:#94a3b8;"><span class="toggle-arrow">▶</span>└─</td>
+              <td style="font-weight:800; color:#2563eb; font-size:1.05rem;">${pivotNode.department}</td>
+              <td style="text-align:right; font-weight:800; color:#0b1a30; font-size:1.05rem;">RM ${pivotNode.totalWages.toFixed(2)}</td>
+              <td style="text-align:center;">
+                ${pivotNode.pdfUrl ? `<a href="${pivotNode.pdfUrl}" target="_blank" class="pdf-link" onclick="event.stopPropagation();">📄 View PDF</a>` : '<span style="color:#94a3b8; font-size:0.75rem;">N/A</span>'}
+              </td>
+              <td><small style="font-weight:600;">${pivotNode.hodEmail}</small></td>
+              <td><small style="color:#64748b; font-family:monospace;">${forceDateTimeFormat(pivotNode.hodDate)}</small></td>
+              <td><small style="font-weight:600;">${pivotNode.dceoEmail}</small></td>
+              <td><small style="color:#64748b; font-family:monospace;">${forceDateTimeFormat(pivotNode.dceoDate)}</small></td>
+              <td style="text-align:center;"><span class="status-badge ${badgeClass}">${globalLifecycleText}</span></td>
+              <td style="text-align:center;">
+                ${displayActionButtons ? `
+                  <div class="btn-group" onclick="event.stopPropagation();">
+                    <button class="btn-action-approve" onclick="executePivotBatchDecision('${batchKeyId}', '${currentActiveActionTier}', 'APPROVED')">Approve</button>
+                    <button class="btn-action-reject" onclick="executePivotBatchDecision('${batchKeyId}', '${currentActiveActionTier}', 'REJECTED')">Reject</button>
+                  </div>
+                ` : `<b style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px;">Finalized Registry</b>`}
+              </td>
+            </tr>`;
+
+          // Render Dept Details Row (Hidden)
+          let detailRowHtml = `
+            <tr class="pivot-detail-row" id="${detailRowId}">
+              <td colspan="10" class="detail-container-cell">
+                <table class="inner-detail-table">
+                  <thead>
+                    <tr>
+                      <th style="padding-left:40px; width:15%;">Weekday</th>
+                      <th style="width:15%;">Rate Scale</th>
+                      <th style="width:10%;">Shift Profile</th>
+                      <th style="width:15%;">Personnel Count</th>
+                      <th style="width:15%;">Planned Hours</th>
+                      <th style="text-align:right; width:15%;">Subtotal Wages</th>
+                      <th style="width:15%;">Payment Route</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${innerShiftsHtml}
+                  </tbody>
+                </table>
+              </td>
+            </tr>`;
+
+          targetContainer.innerHTML += parentRowHtml + detailRowHtml;
+        });
+      });
+    }).catch(err => {
+      targetContainer.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:40px; color:#ef4444; font-weight:bold;">⚠️ Connection Error: Failed to fetch database arrays. Ensure your Web App URL is correct.</td></tr>`;
+    });
+  }
+
+  function executePivotBatchDecision(batchId, level, status) {
+    if(!confirm(`Are you certain you want to register an official executive ${status} batch verification status action for the entirety of group [${batchId}]?`)) return;
+    
+    fetch(`${GOOGLE_API_URL}?action=updateBatch&batchId=${batchId}&level=${level}&status=${status}`)
+    .then(res => res.json())
+    .then(() => {
+      alert(`Transaction Registry finalized successfully: ${status}`);
+      loadAndCompilePivotTableData();
+    }).catch(err => {
+      alert(`Failed to execute transaction. Please check connection.`);
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', loadAndCompilePivotTableData);
+</script>
+</body>
+</html>
