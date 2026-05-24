@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Casual Labour Requisition Form</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+    }
+    .page {
+      background: #fff;
+      width: 100%;
+      max-width: 1200px;
+      padding: 24px 24px 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    }
+
+    /* HEADER */
+    .header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .logo-wrap { flex-shrink:0; width:90px; }
+    .logo-wrap img { width:75px; height:auto; }
+    .header-right h1 { font-size:1.7rem; font-weight:900; color:#111; text-transform:uppercase; line-height:1.2; }
+    .dept-row { display:flex; align-items:center; gap:10px; margin-top:8px; flex-wrap:wrap; }
+    .dept-row label { font-weight:700; font-size:0.9rem; white-space:nowrap; }
+    .dept-row select {
+      border:none; border-bottom:2px solid #222; outline:none;
+      font-size:0.9rem; padding:2px 4px; background:transparent; cursor:pointer;
+    }
+    .dept-row select.dept-select { width:180px; }
+    .dept-row select.week-select { width:320px; }
+
+    /* SECTION */
+    .section { margin-top:18px; }
+    .section-toolbar { display:flex; justify-content:flex-end; margin-bottom:3px; }
+    .btn-remove {
+      background:none; border:1.5px solid #c0392b; color:#c0392b;
+      border-radius:50%; width:22px; height:22px;
+      font-size:12px; font-weight:700; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:background 0.15s, color 0.15s;
+    }
+    .btn-remove:hover { background:#c0392b; color:#fff; }
+
+    /* Payment method label per section */
+    .payment-row {
+      display:flex; align-items:center; gap:8px;
+      margin-bottom:6px; font-size:0.82rem; font-weight:700;
+    }
+    .payment-row select {
+      border:1px solid #aaa; border-radius:3px;
+      font-size:0.82rem; padding:2px 6px; background:#fff; cursor:pointer;
+    }
+
+    /* TABLE */
+    .wrap { overflow-x: auto; }
+    table { border-collapse:collapse; font-size:0.68rem; width:100%; min-width:860px; table-layout:fixed; }
+    table th, table td { border:1px solid #aaa; text-align:center; vertical-align:middle; padding:0; }
+    table col.shift-col { width: calc((100% - 185px) / 21); }
+
+    /* A1 - DAY row */
+    .row-day th { background:#164B81; color:#fff; font-weight:700; font-size:0.7rem; padding:5px 2px; text-transform:uppercase; }
+    .row-day th.lbl { background:#164B81; color:#fff; text-align:left; padding-left:8px; width:185px; min-width:185px; }
+
+    /* A2 - SHIFT row */
+    .row-shift th { background:#D1E2EF; color:#000; font-weight:700; font-size:0.65rem; padding:4px 2px; }
+    .row-shift th.lbl { background:#D1E2EF; color:#000; text-align:left; padding-left:8px; font-size:0.68rem; }
+
+    /* A3 - Total */
+    .row-total td { background:#fff; height:30px; }
+    .row-total td.lbl { background:#f2f2f2; text-align:left; padding-left:8px; font-size:0.68rem; font-weight:700; line-height:1.3; }
+    .row-total td input { width:100%; height:100%; border:none; outline:none; text-align:center; font-size:0.68rem; background:transparent; }
+
+    /* A4 - HOURS: individual per shift */
+    .row-hours td { background:#fff; height:26px; }
+    .row-hours td.lbl { background:#f2f2f2; text-align:left; padding-left:8px; font-size:0.68rem; font-weight:700; }
+    .row-hours td input { width:100%; height:100%; border:none; outline:none; text-align:center; font-size:0.68rem; background:transparent; }
+
+    /* A5 - RATE: one merged per day */
+    .row-rate td { background:#fff; height:26px; }
+    .row-rate td.lbl { background:#f2f2f2; text-align:left; padding-left:8px; font-size:0.68rem; font-weight:700; }
+    .row-rate td input { width:100%; height:100%; border:none; outline:none; text-align:center; font-size:0.68rem; background:transparent; }
+
+    /* ADD TABLE */
+    .add-row { display:flex; justify-content:center; margin-top:22px; }
+    .btn-add {
+      display:flex; align-items:center; gap:8px;
+      background:#fff; border:2px dashed #1e3fa0; color:#1e3fa0;
+      border-radius:6px; padding:9px 32px; font-size:0.9rem; font-weight:700; cursor:pointer;
+      transition:background 0.15s, color 0.15s;
+    }
+    .btn-add:hover { background:#1e3fa0; color:#fff; }
+    .btn-add .plus { font-size:1.2rem; font-weight:900; }
+
+    /* BOTTOM BUTTONS */
+    .btn-row { display:flex; gap:12px; justify-content:center; margin-top:24px; flex-wrap:wrap; }
+    .btn { padding:9px 28px; font-size:0.9rem; font-weight:700; border:none; border-radius:4px; cursor:pointer; }
+    .btn-print { background:#1e3fa0; color:#fff; }
+    .btn-print:hover { background:#0f2570; }
+    .btn-reset { background:#e0e0e0; color:#333; }
+    .btn-reset:hover { background:#bbb; }
+    .btn-submit { background:#16a34a; color:#fff; }
+    .btn-submit:hover { background:#15803d; }
+
+    /* TOAST */
+    #toast {
+      display:none; position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
+      background:#1e293b; color:#fff; padding:12px 24px; border-radius:8px;
+      font-size:0.88rem; font-weight:600; z-index:9999; box-shadow:0 4px 16px rgba(0,0,0,0.2);
+    }
+    #toast.success { background:#16a34a; }
+    #toast.error { background:#dc2626; }
+
+    @media print {
+      body { background:#fff; padding:0; }
+      .page { box-shadow:none; }
+      .btn-row, .add-row, .section-toolbar, .payment-row { display:none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-wrap">
+      <img src="https://mitec.com.my/static/img/logos/logo-footer.png" alt="MiTEC Logo"/>
+    </div>
+    <div class="header-right">
+      <h1>Casual Labour Requisition Form</h1>
+      <div class="dept-row">
+        <label>Department :</label>
+        <select class="dept-select" id="sel-dept">
+          <option value="">-- Select Department --</option>
+          <option value="AV">AV</option>
+          <option value="CAT">CAT</option>
+          <option value="EXH">EXH</option>
+          <option value="FIN">FIN</option>
+          <option value="GCC">GCC</option>
+          <option value="GS">GS</option>
+          <option value="HK">HK</option>
+          <option value="HR">HR</option>
+          <option value="KIT">KIT</option>
+          <option value="LINEN">LINEN</option>
+          <option value="OPERATION">OPERATION</option>
+          <option value="PUR">PUR</option>
+          <option value="QA">QA</option>
+          <option value="SC">SC</option>
+          <option value="SETUP">SETUP</option>
+          <option value="STWD">STWD</option>
+           <option value="SH">SH</option>
+        </select>
+
+        <label style="margin-left:10px;">Week :</label>
+        <select class="week-select" id="sel-week">
+          <option value="">-- Select Week --</option>
+          <option value="01">WEEK 01 — 05/01/2026 to 11/01/2026</option>
+          <option value="02">WEEK 02 — 12/01/2026 to 18/01/2026</option>
+          <option value="03">WEEK 03 — 19/01/2026 to 25/01/2026</option>
+          <option value="04">WEEK 04 — 26/01/2026 to 01/02/2026</option>
+          <option value="05">WEEK 05 — 02/02/2026 to 08/02/2026</option>
+          <option value="06">WEEK 06 — 09/02/2026 to 15/02/2026</option>
+          <option value="07">WEEK 07 — 16/02/2026 to 22/02/2026</option>
+          <option value="08">WEEK 08 — 23/02/2026 to 01/03/2026</option>
+          <option value="09">WEEK 09 — 02/03/2026 to 08/03/2026</option>
+          <option value="10">WEEK 10 — 09/03/2026 to 15/03/2026</option>
+          <option value="11">WEEK 11 — 16/03/2026 to 22/03/2026</option>
+          <option value="12">WEEK 12 — 23/03/2026 to 29/03/2026</option>
+          <option value="13">WEEK 13 — 30/03/2026 to 05/04/2026</option>
+          <option value="14">WEEK 14 — 06/04/2026 to 12/04/2026</option>
+          <option value="15">WEEK 15 — 13/04/2026 to 19/04/2026</option>
+          <option value="16">WEEK 16 — 20/04/2026 to 26/04/2026</option>
+          <option value="17">WEEK 17 — 27/04/2026 to 03/05/2026</option>
+          <option value="18">WEEK 18 — 04/05/2026 to 10/05/2026</option>
+          <option value="19">WEEK 19 — 11/05/2026 to 17/05/2026</option>
+          <option value="20">WEEK 20 — 18/05/2026 to 24/05/2026</option>
+          <option value="21">WEEK 21 — 25/05/2026 to 31/05/2026</option>
+          <option value="22">WEEK 22 — 01/06/2026 to 07/06/2026</option>
+          <option value="23">WEEK 23 — 08/06/2026 to 14/06/2026</option>
+          <option value="24">WEEK 24 — 15/06/2026 to 21/06/2026</option>
+          <option value="25">WEEK 25 — 22/06/2026 to 28/06/2026</option>
+          <option value="26">WEEK 26 — 29/06/2026 to 05/07/2026</option>
+          <option value="27">WEEK 27 — 06/07/2026 to 12/07/2026</option>
+          <option value="28">WEEK 28 — 13/07/2026 to 19/07/2026</option>
+          <option value="29">WEEK 29 — 20/07/2026 to 26/07/2026</option>
+          <option value="30">WEEK 30 — 27/07/2026 to 02/08/2026</option>
+          <option value="31">WEEK 31 — 03/08/2026 to 09/08/2026</option>
+          <option value="32">WEEK 32 — 10/08/2026 to 16/08/2026</option>
+          <option value="33">WEEK 33 — 17/08/2026 to 23/08/2026</option>
+          <option value="34">WEEK 34 — 24/08/2026 to 30/08/2026</option>
+          <option value="35">WEEK 35 — 31/08/2026 to 06/09/2026</option>
+          <option value="36">WEEK 36 — 07/09/2026 to 13/09/2026</option>
+          <option value="37">WEEK 37 — 14/09/2026 to 20/09/2026</option>
+          <option value="38">WEEK 38 — 21/09/2026 to 27/09/2026</option>
+          <option value="39">WEEK 39 — 28/09/2026 to 04/10/2026</option>
+          <option value="40">WEEK 40 — 05/10/2026 to 11/10/2026</option>
+          <option value="41">WEEK 41 — 12/10/2026 to 18/10/2026</option>
+          <option value="42">WEEK 42 — 19/10/2026 to 25/10/2026</option>
+          <option value="43">WEEK 43 — 26/10/2026 to 01/11/2026</option>
+          <option value="44">WEEK 44 — 02/11/2026 to 08/11/2026</option>
+          <option value="45">WEEK 45 — 09/11/2026 to 15/11/2026</option>
+          <option value="46">WEEK 46 — 16/11/2026 to 22/11/2026</option>
+          <option value="47">WEEK 47 — 23/11/2026 to 29/11/2026</option>
+          <option value="48">WEEK 48 — 30/11/2026 to 06/12/2026</option>
+          <option value="49">WEEK 49 — 07/12/2026 to 13/12/2026</option>
+          <option value="50">WEEK 50 — 14/12/2026 to 20/12/2026</option>
+          <option value="51">WEEK 51 — 21/12/2026 to 27/12/2026</option>
+          <option value="52">WEEK 52 — 28/12/2026 to 03/01/2027</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLES -->
+  <div id="container"></div>
+
+  <!-- ADD TABLE -->
+  <div class="add-row">
+    <button class="btn-add" onclick="addSection()">
+      <span class="plus">+</span> Add Table
+    </button>
+  </div>
+</div>
+
+<div class="btn-row">
+  <button class="btn btn-print" onclick="window.print()">🖨 Print / Save as PDF</button>
+  <button class="btn btn-reset" onclick="resetForm()">↺ Reset Form</button>
+  <button class="btn btn-submit" onclick="submitForm()">📤 Submit to System</button>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  // ⚠️ PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbyFVC48lv8MndBuQwVlVMD1zkke2QJ2FNodIXFXEZEfXCMTfZdzjAwEGlk9TaHnxpHpHw/exec";
+
+  const DAYS   = ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
+  const SHIFTS = ['AM','PM','SUP'];
+  let n = 0;
+
+  function makeSection(i) {
+    const p = 's' + i;
+
+    let r1 = '<th class="lbl">DAY</th>';
+    DAYS.forEach(function(d) { r1 += '<th colspan="3">' + d + '</th>'; });
+
+    let r2 = '<th class="lbl">SHIFT</th>';
+    DAYS.forEach(function() { SHIFTS.forEach(function(s) { r2 += '<th>' + s + '</th>'; }); });
+
+    let r3 = '<td class="lbl">Total number of Casual Labour</td>';
+    DAYS.forEach(function(d, di) { SHIFTS.forEach(function(s, si) {
+      r3 += '<td><input type="number" min="0" data-sec="'+i+'" data-type="total" data-day="'+di+'" data-shift="'+si+'"></td>';
+    }); });
+
+    let r4 = '<td class="lbl">HOURS</td>';
+    DAYS.forEach(function(d, di) { SHIFTS.forEach(function(s, si) {
+      r4 += '<td><input type="number" min="0" step="0.5" data-sec="'+i+'" data-type="hours" data-day="'+di+'" data-shift="'+si+'"></td>';
+    }); });
+
+    let r5 = '<td class="lbl">RATE</td>';
+    DAYS.forEach(function(d, di) {
+      r5 += '<td colspan="3"><input type="number" min="0" step="0.01" data-sec="'+i+'" data-type="rate" data-day="'+di+'"></td>';
+    });
+
+    return '<div class="section" id="sec'+i+'">'
+      + '<div class="section-toolbar">'
+      + '<button class="btn-remove" onclick="removeSection('+i+')" title="Remove">✕</button>'
+      + '</div>'
+      + '<div class="payment-row">'
+      + '<label>Payment Method:</label>'
+      + '<select id="pay-'+i+'">'
+      + '<option value="Online">Online</option>'
+      + '<option value="Cash">Cash</option>'
+      + '<option value="Monthly">Infotech</option>'
+      + '</select>'
+      + '</div>'
+      + '<div class="wrap"><table>'
+      + '<colgroup><col style="width:185px;min-width:185px;">'
+      + Array(21).fill('<col class="shift-col">').join('')
+      + '</colgroup>'
+      + '<thead>'
+      + '<tr class="row-day">'   + r1 + '</tr>'
+      + '<tr class="row-shift">' + r2 + '</tr>'
+      + '</thead><tbody>'
+      + '<tr class="row-total">' + r3 + '</tr>'
+      + '<tr class="row-hours">' + r4 + '</tr>'
+      + '<tr class="row-rate">'  + r5 + '</tr>'
+      + '</tbody></table></div></div>';
+  }
+
+  function addSection() {
+    n++;
+    var tmp = document.createElement('div');
+    tmp.innerHTML = makeSection(n);
+    document.getElementById('container').appendChild(tmp.firstElementChild);
+  }
+
+  function removeSection(i) {
+    if (document.querySelectorAll('.section').length <= 1) {
+      alert('At least one table must remain.');
+      return;
+    }
+    var el = document.getElementById('sec' + i);
+    if (el) el.remove();
+  }
+
+  function resetForm() {
+    if (confirm('Reset all fields?')) {
+      document.querySelectorAll('input[type="number"]').forEach(function(el) { el.value = ''; });
+      document.getElementById('sel-dept').value = '';
+      document.getElementById('sel-week').value = '';
+    }
+  }
+
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = type || '';
+    t.style.display = 'block';
+    setTimeout(function() { t.style.display = 'none'; }, 4000);
+  }
+
+  function submitForm() {
+    var dept = document.getElementById('sel-dept').value;
+    var week = document.getElementById('sel-week').value;
+
+    if (!dept) { showToast('⚠️ Please select a Department.', 'error'); return; }
+    if (!week) { showToast('⚠️ Please select a Week.', 'error'); return; }
+
+    // Build sections payload matching GAS doPost expected format
+    var sections = [];
+    document.querySelectorAll('.section').forEach(function(secEl) {
+      var secId = secEl.id.replace('sec','');
+      var paymentMethod = document.getElementById('pay-' + secId).value;
+      var fields = [];
+
+      secEl.querySelectorAll('input[data-type]').forEach(function(inp) {
+        fields.push({
+          type:  inp.dataset.type,
+          day:   inp.dataset.day,
+          shift: inp.dataset.shift || null,
+          val:   inp.value || '0'
+        });
+      });
+
+      sections.push({ paymentMethod: paymentMethod, fields: fields });
+    });
+
+    var payload = { department: dept, week: week, sections: sections };
+
+    showToast('⏳ Submitting...', '');
+
+    fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (res.status === 'success') {
+        showToast('✅ Submitted successfully! Email sent to HOD.', 'success');
+      } else {
+        showToast('❌ Error: ' + (res.message || 'Unknown error'), 'error');
+      }
+    })
+    .catch(function(err) {
+      showToast('❌ Network error. Check GAS_URL.', 'error');
+    });
+  }
+
+  addSection();
+</script>
+</body>
+</html>
