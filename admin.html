@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MITEC — Admin Command Suite</title>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    :root {
+      --admin-dark: #092253;
+      --admin-gradient: linear-gradient(135deg, #092253 0%, #153269 100%);
+      --bg-slate: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-thin: #e2e8f0;
+      
+      --pill-teal-bg: #f0f4f8;
+      --pill-teal-text: #092253;
+      --pill-teal-border: #d0dbe5;
+      
+      --pill-amber-bg: #f1f5f9;
+      --pill-amber-text: #475569;
+      --pill-amber-border: #cbd5e1;
+
+      --pill-red-bg: #fdf2f2;
+      --pill-red-text: #9b1c1c;
+      --pill-red-border: #fbd5d5;
+
+      --accent-emerald: #092253;
+      --accent-warn: #9b1c1c;
+      --font-main: 'Trebuchet MS', sans-serif;
+    }
+
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    body { margin: 0; background-color: var(--bg-slate); font-family: var(--font-main); color: var(--text-main); padding-bottom: 90px; }
+    
+    .header { 
+      position: sticky; 
+      top: 0; 
+      z-index: 1100; 
+      background: #fff; 
+      border-bottom: 1px solid var(--border-thin); 
+      height: 60px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      padding: 0 16px; 
+    }
+    .brand-img { height: 20px; width: auto; display: block; }
+    .user-profile-tag { font-size: 11px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; letter-spacing: 0.5px; background: #e2e8f0; padding: 5px 12px; border-radius: 6px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    
+    .container { max-width: 500px; margin: 0 auto; padding: 15px; }
+
+    #login-overlay { position: fixed; inset: 0; background: var(--bg-slate); z-index: 5500; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .login-card { background: #fff; width: 100%; max-width: 400px; border-radius: 16px; padding: 32px 24px; border: 1px solid var(--border-thin); box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
+    .login-logo { font-size: 44px; color: var(--admin-dark); margin-bottom: 12px; }
+
+    .tab-bar { display: flex; background: #fff; border-bottom: 1px solid var(--border-thin); position: sticky; top: 60px; z-index: 900; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .tab-item { flex: 1; text-align: center; padding: 16px 0; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; cursor: pointer; letter-spacing: 0.5px; border-bottom: 3px solid transparent; }
+    .tab-item.active { color: var(--admin-dark); border-color: var(--admin-dark); }
+
+    .app-page { display: none; }
+    .app-page.active { display: block; }
+
+    .section-label { font-size: 11px; font-weight: 800; color: var(--admin-dark); margin: 25px 0 12px 5px; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; }
+    .section-label::after { content: ""; flex: 1; height: 1px; background: var(--border-thin); }
+
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0 25px 0; }
+    .dash-tile { background: #fff; border: 1px solid var(--border-thin); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; transition: all 0.15s ease; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .dash-tile:active { transform: scale(0.96); }
+    .dash-tile.selected { border-width: 2px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
+    
+    .dash-tile.tile-cap.selected { border-color: var(--admin-dark); color: var(--admin-dark); }
+    .dash-tile.tile-conf.selected { border-color: var(--admin-dark); color: var(--admin-dark); background: var(--pill-teal-bg); }
+    .dash-tile.tile-wait.selected { border-color: var(--pill-amber-text); color: var(--pill-amber-text); background: var(--pill-amber-bg); }
+    .dash-tile.tile-drop.selected { border-color: var(--pill-red-text); color: var(--pill-red-text); background: var(--pill-red-bg); }
+
+    .dash-tile span { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
+    .dash-tile h2 { margin: 0; font-size: 24px; font-weight: 800; color: var(--admin-dark); }
+
+    .stat-row-card { background: var(--card-bg); border: 1px solid var(--border-thin); border-radius: 14px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 8px rgba(0,0,0,0.03); }
+    .stat-info h3 { margin: 0; font-size: 16px; font-weight: 800; color: var(--admin-dark); display: flex; align-items: center; gap: 8px; }
+    .stat-info p { margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted); font-weight: 600; display: flex; flex-direction: column; gap: 3px; }
+    
+    .shift-tag-sub { font-size: 10px; font-weight: 800; background: #e2e8f0; color: #475569; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+    .meta-data-line { display: flex; align-items: center; gap: 6px; }
+
+    .metrics-pill-pack { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+    .mini-badge { font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; display: inline-block; text-align: center; min-width: 76px; }
+
+    .roster-card { background: var(--card-bg); border: 1px solid var(--border-thin); border-radius: 14px; padding: 18px; margin-bottom: 12px; cursor: pointer; transition: all 0.15s ease; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+    .roster-card:active { transform: scale(0.98); background: #f8fafc; }
+    .roster-card .chevron-indicator { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px; }
+
+    .drawer-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); z-index: 2000; display: none; align-items: flex-end; }
+    .drawer-content { background: #fff; width: 100%; max-height: 80vh; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px 20px; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); }
+    .drawer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid var(--border-thin); padding-bottom: 14px; }
+    .drawer-header h2 { font-size: 18px; margin: 0; color: var(--admin-dark); font-weight: 800; display: flex; flex-direction: column; gap: 4px; }
+    .drawer-meta-subtitle { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-top: 4px; display: flex; flex-direction: column; gap: 2px; }
+    .btn-close-drawer { background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; padding: 4px; }
+    
+    .roster-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 13px; text-align: left; }
+    .roster-table th { background: #f8fafc; padding: 12px 10px; font-weight: 700; color: var(--admin-dark); text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-thin); }
+    .roster-table td { padding: 12px 10px; border-bottom: 1px solid var(--border-thin); vertical-align: middle; }
+    .status-pill { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; display: inline-block; width: 90px; text-align: center; }
+    
+    /* TARGETED CSS FIX: Blue MITEC Confirmed Pill & Slate Waitlist Pill */
+    .pill-sub { background: var(--admin-dark); color: #ffffff; border: 1px solid var(--admin-dark); }
+    .pill-wait { background: #e2e8f0; color: #475569; border: 1px solid #cbd5e1; }
+    .pill-cancelled { background: var(--pill-red-bg); color: var(--pill-red-text); border: 1px solid var(--pill-red-border); }
+
+    .btn-approve { background: transparent; border: 1px solid var(--admin-dark); color: var(--admin-dark); font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
+    .btn-demote { background: transparent; border: 1px solid var(--pill-red-text); color: var(--pill-red-text); font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-group label { display: block; font-size: 11px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+    .form-control { width: 100%; height: 46px; border: 1px solid var(--border-thin); border-radius: 10px; padding: 0 14px; font-family: var(--font-main); font-size: 14px; color: var(--admin-dark); background: #fff; }
+    .form-control:focus { outline: none; border-color: var(--admin-dark); box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.05); }
+    textarea.form-control { height: 80px; padding: 12px; resize: none; }
+    .btn-submit-shift { width: 100%; height: 50px; background: var(--admin-dark); color: #fff; font-size: 14px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    .btn-logout { background: none; border: 1px solid var(--pill-red-text); color: var(--pill-red-text); font-weight: 700; font-size: 11px; padding: 6px 12px; border-radius: 6px; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+
+    #sync-loader { position: fixed; inset: 0; background: #ffffff; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--admin-dark); letter-spacing: 1px; }
+    .loader-text { margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+  <div id="login-overlay">
+    <div class="login-card">
+      <div class="login-logo"><i class="ph ph-shield-check"></i></div>
+      <h2 style="margin: 0 0 6px 0; font-size: 20px; color: var(--admin-dark);">Operations Console</h2>
+      <p style="margin: 0 0 24px 0; font-size: 13px; color: var(--text-muted);">Please provide your Admin credentials to scan matrix.</p>
+      <form id="login-form" onsubmit="handleAdminLogin(event)">
+        <div class="form-group">
+          <label>MyKad / Passport ID</label>
+          <input type="text" id="login-id-input" class="form-control" placeholder="Enter administrative ID Key" required />
+        </div>
+        <button type="submit" class="btn-submit-shift" style="margin-top: 5px;">Verify Handshake</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="sync-loader">
+    <i class="ph ph-gear-six ph-spin" style="font-size: 40px; color: var(--admin-dark);"></i>
+    <div class="loader-text">LOADING MANAGEMENT PORTAL...</div>
+  </div>
+
+  <header class="header">
+    <img class="brand-img" src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC">
+    <div id="adminUserDisplayTag" class="user-profile-tag">SUPER ADMIN</div>
+  </header>
+
+  <nav class="tab-bar">
+    <div id="tab-btn-1" class="tab-item active" onclick="switchTab(1)">Statistics</div>
+    <div id="tab-btn-2" class="tab-item" onclick="switchTab(2)">Rosters</div>
+    <div id="tab-btn-3" class="tab-item" onclick="switchTab(3)">Create Shift</div>
+  </nav>
+
+  <div class="container">
+    
+    <div id="page-1" class="app-page active">
+      <div id="matrixFilterActiveLabel" class="section-label">Matrix showing Total Capacity</div>
+      <div class="dashboard-grid">
+        <div id="tile-cap" class="dash-tile tile-cap selected" onclick="setDashboardFilter('ALL')">
+          <span>Total Capacity</span>
+          <h2 id="dash-txt-cap">0</h2>
+        </div>
+        <div id="tile-conf" class="dash-tile tile-conf" onclick="setDashboardFilter('CONF')">
+          <span>Confirmed Active</span>
+          <h2 id="dash-txt-conf">0</h2>
+        </div>
+        <div id="tile-wait" class="dash-tile tile-wait" onclick="setDashboardFilter('WAIT')">
+          <span>Standby Queue</span>
+          <h2 id="dash-txt-wait">0</h2>
+        </div>
+        <div id="tile-drop" class="dash-tile tile-drop" onclick="setDashboardFilter('DROP')">
+          <span>Total Dropouts</span>
+          <h2 id="dash-txt-drop">0</h2>
+        </div>
+      </div>
+      
+      <div id="stats-view-container"></div>
+    </div>
+
+    <div id="page-2" class="app-page">
+      <div class="section-label">Roster Selection Directory</div>
+      <div id="roster-cards-container"></div>
+    </div>
+
+    <div id="page-3" class="app-page">
+      <div class="section-label">Deploy New Shift Parameters</div>
+      <form id="shift-creation-form" onsubmit="handleFormSubmission(event)">
+        <div class="form-group">
+  <label>Shift Reference ID</label>
+
+  <div style="display:flex; gap:8px;">
+    <input 
+      type="text" 
+      id="form-shift-id" 
+      class="form-control" 
+      placeholder="e.g., S015"
+      style="flex:1;"
+      required
+    />
+
+    <button 
+      type="button"
+      onclick="enableEditMode()"
+      style="
+        border:none;
+        background:var(--admin-dark);
+        color:white;
+        padding:0 16px;
+        border-radius:10px;
+        font-size:11px;
+        font-weight:800;
+        text-transform:uppercase;
+        cursor:pointer;
+      ">
+      Lookup
+    </button>
+  </div>
+
+  <div style="
+    margin-top:6px;
+    font-size:11px;
+    color:var(--text-muted);
+    font-weight:600;
+  ">
+    Existing Shift ID = Edit Mode | New Shift ID = Create New Shift
+  </div>
+</div>
+        <div class="form-group">
+          <label>Calendar Date</label>
+          <input type="text" id="form-date" class="form-control" placeholder="e.g., 24.05.2026" required />
+        </div>
+        <div class="form-group">
+          <label>Department Designation</label>
+          <input type="text" id="form-dept" class="form-control" placeholder="e.g., EXH (Exhibition Hall)" required />
+        </div>
+        <div class="form-group">
+          <label>Operational Reporting Time</label>
+          <input type="text" id="form-time" class="form-control" placeholder="e.g., 08:00 - 17:00" required />
+        </div>
+        <div class="form-group">
+          <label>Total Capacity Slots</label>
+          <input type="number" id="form-slots" class="form-control" placeholder="e.g., 10" required />
+        </div>
+        <div class="form-group">
+          <label>Coordinator Operational Notes</label>
+          <textarea id="form-notes" class="form-control" placeholder="Optional notes..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit-shift">Append & Deploy Shift</button>
+      </form>
+      
+      <div style="text-align: center; margin-top: 40px; border-top: 1px dashed var(--border-thin); padding-top: 20px;">
+        <button class="btn-logout" onclick="handleAdminLogout()">Exit Session (Logout)</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="roster-drawer" class="drawer-overlay" onclick="closeRosterDrawer()">
+    <div class="drawer-content" onclick="event.stopPropagation()">
+      <div class="drawer-header">
+        <h2>
+          <span id="drawer-shift-title">Department Registry</span>
+          <div id="drawer-shift-meta" class="drawer-meta-subtitle"></div>
+        </h2>
+        <button class="btn-close-drawer" onclick="closeRosterDrawer()"><i class="ph ph-x"></i></button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="roster-table">
+          <thead>
+            <tr>
+              <th>Casual Worker Name</th>
+              <th style="width: 100px; text-align: center;">Status</th>
+              <th style="width: 90px; text-align: center;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="drawer-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOQA9l1lpjs9eSOHwQmdZe4axc6OR6E9ohXmHQI3d9B-3apRtl6mFValUpepCorlqs/exec"; 
+    
+    let activeAdminKey = null;
+    let cachedShifts = [];
+    let cachedBookings = [];
+    let currentActiveFilter = "ALL"; 
+    let editModeShift = false;
+    let editingShiftId = null;
+
+    window.onload = () => {
+      const sessionKey = localStorage.getItem("mitec_admin_key") || localStorage.getItem("mcl_doc_no");
+      if (sessionKey) {
+        activeAdminKey = sessionKey;
+        document.getElementById('login-overlay').style.display = 'none';
+        
+        // Safety check: Don't read the worker file layout for Admin Name
+        document.getElementById("adminUserDisplayTag").textContent = "SUPER ADMIN";
+        
+        loadAdminDataSuite();
+      } else {
+        document.getElementById('login-overlay').style.display = 'flex';
+      }
+    };
+
+    function handleAdminLogin(event) {
+      event.preventDefault();
+      const enteredId = document.getElementById('login-id-input').value.trim();
+      
+      if(!enteredId) return;
+      activeAdminKey = enteredId;
+      document.getElementById('login-overlay').style.display = 'none';
+      loadAdminDataSuite();
+    }
+
+    function handleAdminLogout() {
+      localStorage.removeItem("mitec_admin_key");
+      localStorage.removeItem("mcl_doc_no");
+      window.location.reload();
+    }
+
+    function switchTab(tabIndex) {
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById(`tab-btn-${i}`).classList.toggle('active', i === tabIndex);
+        document.getElementById(`page-${i}`).classList.toggle('active', i === tabIndex);
+      }
+    }
+
+    function formatAttendanceTime(timeVal) {
+
+  if (!timeVal) return "";
+
+  const str = String(timeVal).trim();
+
+  // HANDLE GOOGLE SHEETS TIME OBJECT
+  if (str.includes("1899")) {
+
+    try {
+
+      const d = new Date(str);
+
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+
+      return `${hh}:${mm}`;
+
+    } catch(e) {
+      return str;
+    }
+  }
+
+  // HANDLE NORMAL DATE OBJECTS
+  if (str.includes("GMT")) {
+
+    try {
+
+      const d = new Date(str);
+
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mo = String(d.getMonth() + 1).padStart(2, '0');
+      const yy = d.getFullYear();
+
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+
+      return `${dd}/${mo}/${yy} ${hh}:${mm}`;
+
+    } catch(e) {
+      return str;
+    }
+  }
+
+  return str;
+}
+
+    function loadAdminDataSuite() {
+      document.getElementById('sync-loader').style.display = 'flex';
+      
+      fetch(`${SCRIPT_URL}?action=getAdminMasterData&userDocNo=${activeAdminKey}`)
+        .then(r => r.json())
+        .then(res => {
+          if (res.ok && res.allShifts && res.allBookingsRaw) {
+            localStorage.setItem("mitec_admin_key", activeAdminKey);
+            
+            cachedShifts = (res.allShifts || []).map(s => ({
+  ...s,
+  totalSlots: s.slots,   // alias fix
+  Slots: s.slots          // safety fallback for your old code
+}));
+            cachedBookings = res.allBookingsRaw;
+            
+            if (res.adminName) {
+              document.getElementById("adminUserDisplayTag").textContent = res.adminName.toUpperCase();
+            } else {
+              document.getElementById("adminUserDisplayTag").textContent = "SUPER ADMIN";
+            }
+            
+            calculateGlobalMetrics(); 
+            renderStatisticsPage();
+            renderRosterCardsPage();
+            document.getElementById('sync-loader').style.display = 'none';
+          } else {
+            localStorage.removeItem("mitec_admin_key");
+            alert("Handshake Refused: Credentials not matching records in the SUPER_ADMIN tab!");
+            document.getElementById('sync-loader').style.display = 'none';
+            document.getElementById('login-overlay').style.display = 'flex';
+          }
+        }).catch(err => {
+          localStorage.removeItem("mitec_admin_key");
+          alert("Handshake Interrupted. Double-check your network deployment setting is on 'Anyone'.");
+          document.getElementById('sync-loader').style.display = 'none';
+          document.getElementById('login-overlay').style.display = 'flex';
+        });
+    }
+
+    function calculateGlobalMetrics() {
+      let totalCap = 0;
+      cachedShifts.forEach(s => {
+  totalCap += Number(s.slots || s.totalSlots || s.Slots || 0);
+});
+      
+      const totalConf = cachedBookings.filter(b => b.status === 'SUBMITTED').length;
+      const totalWait = cachedBookings.filter(b => b.status === 'WAITLIST').length;
+      const totalDrop = cachedBookings.filter(b => b.status === 'CANCELLED').length;
+
+      document.getElementById('dash-txt-cap').textContent = totalCap;
+      document.getElementById('dash-txt-conf').textContent = totalConf;
+      document.getElementById('dash-txt-wait').textContent = totalWait;
+      document.getElementById('dash-txt-drop').textContent = totalDrop;
+    }
+
+    function setDashboardFilter(filterType) {
+      currentActiveFilter = filterType;
+      
+      document.getElementById('tile-cap').classList.toggle('selected', filterType === 'ALL');
+      document.getElementById('tile-conf').classList.toggle('selected', filterType === 'CONF');
+      document.getElementById('tile-wait').classList.toggle('selected', filterType === 'WAIT');
+      document.getElementById('tile-drop').classList.toggle('selected', filterType === 'DROP');
+      
+      const labelElement = document.getElementById("matrixFilterActiveLabel");
+      if (filterType === 'ALL') labelElement.textContent = "Matrix showing Total Capacity";
+      if (filterType === 'CONF') labelElement.textContent = "Matrix showing Confirmed Active";
+      if (filterType === 'WAIT') labelElement.textContent = "Matrix showing Standby Queue";
+      if (filterType === 'DROP') labelElement.textContent = "Matrix showing Total Dropouts";
+
+      renderStatisticsPage(); 
+    }
+
+    function renderStatisticsPage() {
+      const container = document.getElementById('stats-view-container');
+      container.innerHTML = '';
+      
+      if(!cachedShifts || cachedShifts.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding:50px; color:var(--text-muted); font-style:italic;">No active shifts found.</p>';
+        return;
+      }
+
+      const dates = [...new Set(cachedShifts.map(s => s.date))];
+      let visibleCardsRendered = 0;
+
+      dates.forEach(date => {
+        let dateHeaderAppended = false;
+
+        cachedShifts.filter(s => s.date === date).forEach(s => {
+          const confirmedCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'SUBMITTED').length;
+          const waitlistCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'WAITLIST').length;
+          const cancelledCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'CANCELLED').length;
+          
+          let shouldDisplay = true;
+          if (currentActiveFilter === "CONF" && confirmedCount === 0) shouldDisplay = false;
+          if (currentActiveFilter === "WAIT" && waitlistCount === 0) shouldDisplay = false;
+          if (currentActiveFilter === "DROP" && cancelledCount === 0) shouldDisplay = false;
+
+          if (shouldDisplay) {
+            if (!dateHeaderAppended) {
+              container.innerHTML += `<div class="section-label">${date}</div>`;
+              dateHeaderAppended = true;
+            }
+            
+            let displayTime = formatAttendanceTime(s.time);
+            let shiftReferenceId = s.id || "N/A";
+            let maxCapacitySlots = s.slots || s.totalSlots || s.Slots || 0;
+            visibleCardsRendered++;
+
+            container.innerHTML += `
+              <div class="stat-row-card">
+                <div class="stat-info">
+                  <h3>
+                    <span>${s.dept}</span> 
+                    <span class="shift-tag-sub">ID: ${shiftReferenceId}</span>
+                  </h3>
+                  <p>
+                    <span class="meta-data-line"><i class="ph ph-calendar-blank"></i> ${date}</span>
+                    <span class="meta-data-line"><i class="ph ph-clock"></i> ${displayTime}</span>
+                    <span class="meta-data-line"><i class="ph ph-user-list"></i> Capacity: <b>${maxCapacitySlots} Slots</b></span>
+                  </p>
+                </div>
+                <div class="metrics-pill-pack">
+                  <span class="mini-badge" style="background:#e2e8f0; color:#1e293b; border: 1px solid ${currentActiveFilter === 'ALL' ? 'var(--admin-dark)' : 'transparent'}">Cap: ${maxCapacitySlots}</span>
+                  <span class="mini-badge pill-sub" style="border-width: ${currentActiveFilter === 'CONF' ? '2px' : '1px'}">Conf: ${confirmedCount}</span>
+                  <span class="mini-badge pill-wait" style="border-width: ${currentActiveFilter === 'WAIT' ? '2px' : '1px'}">Wait: ${waitlistCount}</span>
+                  <span class="mini-badge pill-cancelled" style="border-width: ${currentActiveFilter === 'DROP' ? '2px' : '1px'}">Drop: ${cancelledCount}</span>
+                </div>
+              </div>`;
+          }
+        });
+      });
+
+      if (visibleCardsRendered === 0) {
+        container.innerHTML = '<p style="text-align:center; padding:40px; color:var(--text-muted); font-style:italic;">No shifts match the active matrix filter parameter selection.</p>';
+      }
+    }
+
+    function renderRosterCardsPage() {
+      const container = document.getElementById('roster-cards-container');
+      container.innerHTML = '';
+      
+      if(!cachedShifts || cachedShifts.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">No active shift directory found.</p>';
+        return;
+      }
+
+      const dates = [...new Set(cachedShifts.map(s => s.date))];
+      dates.forEach(date => {
+        container.innerHTML += `<div class="section-label">${date}</div>`;
+        cachedShifts.filter(s => s.date === date).forEach(s => {
+          const activeCount = cachedBookings.filter(b => b.shift_id === s.id && b.status !== 'CANCELLED').length;
+          const droppedCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'CANCELLED').length;
+          
+          container.innerHTML += `
+            <div class="roster-card" onclick="openRosterDrawer('${s.id}', '${s.dept}', '${s.date}', '${s.time}', '${s.slots || s.totalSlots || s.Slots || 0}')">
+              <h3 style="margin:0 0 6px 0; font-size:16px; color:var(--admin-dark); font-weight:700;">${s.dept}</h3>
+              <span style="font-size:12px; color:var(--text-muted); font-weight:600; display:inline-block; margin-right:12px;">
+                <i class="ph ph-users"></i> ${activeCount} Personnel Active
+              </span>
+              <span style="font-size:12px; color:var(--accent-warn); font-weight:600;">
+                <i class="ph ph-user-minus"></i> ${droppedCount} Cancelled
+              </span>
+              <div class="chevron-indicator"><i class="ph ph-caret-right"></i></div>
+            </div>`;
+        });
+      });
+    } 
+
+    /* TARGETED JS FIX: Tab 2 Roster Sorting & Dynamic Action Column (Past vs Upcoming) */
+    function openRosterDrawer(shiftId, dept, date, time, maxCapacity) {
+      document.getElementById('drawer-shift-title').textContent = dept;
+      
+      let displayTimeStr = formatAttendanceTime(time);
+      document.getElementById('drawer-shift-meta').innerHTML = `
+        <span><i class="ph ph-fingerprint"></i> Shift ID: <b>${shiftId}</b></span>
+        <span><i class="ph ph-calendar-blank"></i> Date: <b>${date}</b> (${displayTimeStr})</span>
+        <span><i class="ph ph-users-three"></i> Capacity: <b>${maxCapacity} Slots</b></span>
+      `;
+
+      const tbody = document.getElementById('drawer-table-body');
+      tbody.innerHTML = '';
+
+      let applicants = cachedBookings.filter(b => b.shift_id === shiftId);
+
+      if (applicants.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--text-muted); font-style:italic;">No logged applications found.</td></tr>`;
+      } else {
+        
+        // Date Check: Determine if the shift is historical (date has passed)
+        let isPastShift = false;
+        try {
+            let parts = date.includes('.') ? date.split('.') : date.split('/');
+            if (parts.length === 3) {
+                let shiftDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                let today = new Date();
+                today.setHours(0,0,0,0);
+                isPastShift = shiftDate < today;
+            }
+        } catch(e) {}
+
+        // Priority Map: Confirmed (1), Waitlist (2), Cancelled (3)
+        const priorityMap = { 'SUBMITTED': 1, 'WAITLIST': 2, 'CANCELLED': 3 };
+
+        applicants.sort((a, b) => {
+          let pA = priorityMap[String(a.status).toUpperCase()] || 2;
+          let pB = priorityMap[String(b.status).toUpperCase()] || 2;
+          
+          if (pA !== pB) return pA - pB; // Sort by Status first
+          // Then sort Alphabetically by Name
+          return String(a.worker_name || "").trim().toUpperCase().localeCompare(String(b.worker_name || "").trim().toUpperCase());
+        });
+
+        applicants.forEach(w => {
+          const rawStatus = String(w.status).toUpperCase();
+          let statusPillMarkup = "";
+          let actionButtonMarkup = "";
+
+          // Grabbing Timestamp data from Column H safely
+          // Covers common JSON property mappings from Apps Script for Column H
+          let colHTimestamp = w.cancel_time || w.timestamp || w.column_h || w.time_in || w.Col8 || w.col_h || w.h || "";
+
+          if (rawStatus === 'CANCELLED') {
+            statusPillMarkup = `<span class="status-pill pill-cancelled">Cancelled</span>`;
+            
+            let optimizedCancelTime = formatAttendanceTime(colHTimestamp);
+            if (optimizedCancelTime && optimizedCancelTime.includes(" ")) {
+              let parts = optimizedCancelTime.split(" ");
+              if (parts.length > 1) optimizedCancelTime = parts[1]; 
+            }
+            
+            actionButtonMarkup = `<span style="font-size:11px; color:var(--text-muted); font-weight:700; font-family:monospace;">Drop: ${optimizedCancelTime || "N/A"}</span>`;
+          
+          } else if (rawStatus === 'WAITLIST' || rawStatus === 'WAITING LIST') {
+            statusPillMarkup = `<span class="status-pill pill-wait">Standby</span>`;
+            
+            if (isPastShift) {
+                actionButtonMarkup = `<span style="font-size:11px; color:var(--text-muted); font-weight:600;">Historical</span>`;
+            } else {
+                actionButtonMarkup = `<button class="btn-approve" onclick="toggleWorkerStatus('${shiftId}', '${w.user_id}', '${date}', '${dept}', '${time}', 'false')">Approve</button>`;
+            }
+
+          } else {
+            statusPillMarkup = `<span class="status-pill pill-sub">Confirmed</span>`;
+            
+            if (isPastShift) {
+                if(colHTimestamp) {
+                    let formatted = formatAttendanceTime(colHTimestamp);
+                    if (formatted.includes(" ")) formatted = formatted.split(" ")[1];
+                    actionButtonMarkup = `<span style="font-size:11px; color:var(--admin-dark); font-weight:700;">${formatted}</span>`;
+                } else {
+                    actionButtonMarkup = `<span style="font-size:11px; color:var(--accent-warn); font-weight:700;">No Show</span>`;
+                }
+            } else {
+                actionButtonMarkup = `<button class="btn-demote" onclick="toggleWorkerStatus('${shiftId}', '${w.user_id}', '${date}', '${dept}', '${time}', 'true')">Demote</button>`;
+            }
+          }
+
+          tbody.innerHTML += `
+            <tr>
+              <td>
+                <div style="font-weight:700; color:var(--admin-dark); font-size:14px;">${w.worker_name}</div>
+                <div style="font-size:11px; color:var(--text-muted); margin-top:2px; font-family:monospace;">ID: ${w.user_id}</div>
+              </td>
+              <td style="text-align:center;">${statusPillMarkup}</td>
+              <td style="text-align:center;">${actionButtonMarkup}</td>
+            </tr>`;
+        });
+      }
+      document.getElementById('roster-drawer').style.display = 'flex';
+    }
+
+    function closeRosterDrawer() {
+      document.getElementById('roster-drawer').style.display = 'none';
+    }
+
+    function toggleWorkerStatus(shiftId, workerId, date, dept, time, targetToWaitlist) {
+      closeRosterDrawer();
+      
+      const promptMsg = targetToWaitlist === 'true' 
+        ? `Demote Worker ID: ${workerId} back to Standby Waitlist?` 
+        : `Confirm registration for Worker ID: ${workerId}?`;
+
+      if (!confirm(promptMsg)) return;
+      
+      document.getElementById('sync-loader').querySelector('.loader-text').textContent = "SYNCHRONIZING STATUS TRANSACTION...";
+      document.getElementById('sync-loader').style.display = 'flex';
+      
+      fetch(`${SCRIPT_URL}?action=updateStatus&shiftId=${shiftId}&date=${date}&dept=${dept}&time=${time}&userDocNo=${workerId}&isWaitlist=${targetToWaitlist}`)
+        .then(() => {
+          alert("Database matrix successfully updated!");
+          loadAdminDataSuite();
+        }).catch(() => {
+          alert("An error occurred while transmitting transaction variables.");
+          loadAdminDataSuite();
+        });
+    }
+
+    function handleFormSubmission(event) {
+  event.preventDefault();
+
+document.getElementById('form-shift-id').disabled = false;
+
+  const sId = document.getElementById('form-shift-id').value.trim();
+  const sDate = document.getElementById('form-date').value.trim();
+  const sDept = document.getElementById('form-dept').value.trim();
+const sTime = formatAttendanceTime(
+  document.getElementById('form-time').value.trim()
+);
+  const sSlots = document.getElementById('form-slots').value.trim();
+  const sNotes = document.getElementById('form-notes').value.trim();
+
+  const actionType = editModeShift ? "updateShift" : "createShift";
+
+  const loaderText = editModeShift 
+    ? "UPDATING SHIFT NODE..."
+    : "DEPLOYING NEW SHIFT NODE...";
+
+  document.getElementById('sync-loader').querySelector('.loader-text').textContent = loaderText;
+  document.getElementById('sync-loader').style.display = 'flex';
+
+  fetch(`${SCRIPT_URL}?action=${actionType}&userDocNo=${activeAdminKey}&shiftId=${sId}&date=${sDate}&dept=${sDept}&time=${sTime}&slots=${sSlots}&notes=${encodeURIComponent(sNotes)}`)
+    .then(r => r.json())
+    .then(res => {
+      if (res.ok) {
+
+        alert(editModeShift ? "Shift updated successfully!" : "Shift created successfully!");
+
+        document.getElementById('shift-creation-form').reset();
+        switchTab(1);
+        loadAdminDataSuite();
+
+        // RESET MODE (IMPORTANT)
+        editModeShift = false;
+        editingShiftId = null;
+
+        document.querySelector('#shift-creation-form button[type="submit"]').textContent = "CREATE SHIFT";
+
+      } else {
+        alert("Error: " + res.error);
+      }
+
+      document.getElementById('sync-loader').style.display = 'none';
+    })
+    .catch(() => {
+      alert("Network execution exception.");
+      document.getElementById('sync-loader').style.display = 'none';
+    });
+}
+    function enableEditMode() {
+
+  const sId = document.getElementById('form-shift-id').value.trim();
+
+  if (!sId) {
+    alert("Please enter Shift ID first.");
+    return;
+  }
+
+  const shift = cachedShifts.find(
+    s => String(s.id).toUpperCase() === String(sId).toUpperCase()
+  );
+
+  // NOT FOUND = CREATE MODE
+  if (!shift) {
+
+    editModeShift = false;
+    editingShiftId = null;
+
+    document.getElementById('form-date').value = "";
+    document.getElementById('form-dept').value = "";
+    document.getElementById('form-time').value = formatAttendanceTime(shift.time);
+    document.getElementById('form-slots').value = "";
+    document.getElementById('form-notes').value = "";
+
+    document.querySelector('#shift-creation-form button[type="submit"]').textContent = "CREATE SHIFT";
+
+    alert("Shift ID not found. Ready to create new shift.");
+
+    return;
+  }
+
+  // FOUND = EDIT MODE
+  document.getElementById('form-date').value = shift.date;
+  document.getElementById('form-dept').value = shift.dept;
+  document.getElementById('form-time').value = shift.time;
+  document.getElementById('form-slots').value = shift.slots || shift.totalSlots;
+  document.getElementById('form-notes').value = shift.notes || "";
+
+  editModeShift = true;
+  editingShiftId = shift.id;
+
+  document.querySelector('#shift-creation-form button[type="submit"]').textContent = "UPDATE SHIFT";
+
+  alert("Existing shift loaded successfully.");
+}
+  </script>
+</body>
+</html>
