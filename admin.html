@@ -66,7 +66,8 @@
     .section-label { font-size: 11px; font-weight: 800; color: var(--admin-dark); margin: 25px 0 12px 5px; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; }
     .section-label::after { content: ""; flex: 1; height: 1px; background: var(--border-thin); }
 
-    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0 25px 0; }
+    /* Matrix Tiles */
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0 20px 0; }
     .dash-tile { background: #fff; border: 1px solid var(--border-thin); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; transition: all 0.15s ease; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
     .dash-tile:active { transform: scale(0.96); }
     .dash-tile.selected { border-width: 2px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
@@ -77,9 +78,32 @@
     .dash-tile.tile-drop.selected { border-color: var(--pill-red-text); color: var(--pill-red-text); background: var(--pill-red-bg); }
 
     .dash-tile span { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
-    .dash-tile h2 { margin: 0; font-size: 24px; font-weight: 800; color: var(--admin-dark); }
+    .dash-tile h2 { margin: 0; font-size: 24px; font-weight: 800; color: var(--admin-dark); transition: color 0.2s; }
+    .matrix-title-badge { font-size: 9px; padding: 2px 6px; border-radius: 4px; background: #e2e8f0; color: var(--admin-dark); margin-left: 6px; vertical-align: middle; }
 
-    .stat-row-card { background: var(--card-bg); border: 1px solid var(--border-thin); border-radius: 14px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 8px rgba(0,0,0,0.03); }
+    /* Calendar UI Components */
+    .calendar-wrapper { background: #fff; border: 1px solid var(--border-thin); border-radius: 14px; padding: 16px; margin-bottom: 20px; box-shadow: 0 3px 8px rgba(0,0,0,0.03); }
+    .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .cal-header h3 { margin: 0; font-size: 15px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; letter-spacing: 1px; }
+    .btn-cal-nav { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; color: var(--admin-dark); font-size: 16px; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: 0.15s; }
+    .btn-cal-nav:active { transform: scale(0.9); }
+    
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+    .cal-day-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
+    .cal-cell { aspect-ratio: 1; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--text-main); cursor: pointer; border: 1px solid transparent; transition: 0.2s; position: relative; }
+    .cal-cell:hover { background: #f8fafc; }
+    .cal-cell.empty { background: transparent; cursor: default; }
+    .cal-cell.has-shifts { background: #f0f4f8; border-color: #d0dbe5; color: var(--admin-dark); }
+    .cal-cell.selected { background: var(--admin-dark); color: #fff; border-color: var(--admin-dark); box-shadow: 0 4px 10px rgba(9, 34, 83, 0.2); transform: scale(1.05); z-index: 2; }
+    
+    .cal-indicator { font-size: 9px; font-weight: 800; border-radius: 4px; padding: 1px 4px; margin-top: 2px; line-height: 1.2; }
+    .cal-cell.selected .cal-indicator { background: rgba(255,255,255,0.2) !important; color: #fff !important; }
+
+    /* Cards */
+    .stat-row-card { background: var(--card-bg); border: 1px solid var(--border-thin); border-radius: 14px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 8px rgba(0,0,0,0.03); cursor: pointer; transition: all 0.2s ease; }
+    .stat-row-card:active { transform: scale(0.98); }
+    .stat-row-card.selected-card { border: 2px solid var(--admin-dark); box-shadow: 0 4px 12px rgba(9, 34, 83, 0.1); transform: scale(1.02); }
+
     .stat-info h3 { margin: 0; font-size: 16px; font-weight: 800; color: var(--admin-dark); display: flex; align-items: center; gap: 8px; }
     .stat-info p { margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted); font-weight: 600; display: flex; flex-direction: column; gap: 3px; }
     
@@ -93,8 +117,9 @@
     .roster-card:active { transform: scale(0.98); background: #f8fafc; }
     .roster-card .chevron-indicator { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px; }
 
+    /* Drawers */
     .drawer-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); z-index: 2000; display: none; align-items: flex-end; }
-    .drawer-content { background: #fff; width: 100%; max-height: 80vh; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px 20px; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); }
+    .drawer-content { background: #fff; width: 100%; max-height: 85vh; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px 20px; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); }
     .drawer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid var(--border-thin); padding-bottom: 14px; }
     .drawer-header h2 { font-size: 18px; margin: 0; color: var(--admin-dark); font-weight: 800; display: flex; flex-direction: column; gap: 4px; }
     .drawer-meta-subtitle { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-top: 4px; display: flex; flex-direction: column; gap: 2px; }
@@ -105,7 +130,6 @@
     .roster-table td { padding: 12px 10px; border-bottom: 1px solid var(--border-thin); vertical-align: middle; }
     .status-pill { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; display: inline-block; width: 90px; text-align: center; }
     
-    /* TARGETED CSS FIX: Blue MITEC Confirmed Pill & Slate Waitlist Pill */
     .pill-sub { background: var(--admin-dark); color: #ffffff; border: 1px solid var(--admin-dark); }
     .pill-wait { background: #e2e8f0; color: #475569; border: 1px solid #cbd5e1; }
     .pill-cancelled { background: var(--pill-red-bg); color: var(--pill-red-text); border: 1px solid var(--pill-red-border); }
@@ -113,14 +137,21 @@
     .btn-approve { background: transparent; border: 1px solid var(--admin-dark); color: var(--admin-dark); font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
     .btn-demote { background: transparent; border: 1px solid var(--pill-red-text); color: var(--pill-red-text); font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
 
+    /* Forms */
     .form-group { margin-bottom: 16px; text-align: left; }
     .form-group label { display: block; font-size: 11px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
-    .form-control { width: 100%; height: 46px; border: 1px solid var(--border-thin); border-radius: 10px; padding: 0 14px; font-family: var(--font-main); font-size: 14px; color: var(--admin-dark); background: #fff; }
-    .form-control:focus { outline: none; border-color: var(--admin-dark); box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.05); }
-    textarea.form-control { height: 80px; padding: 12px; resize: none; }
-    .btn-submit-shift { width: 100%; height: 50px; background: var(--admin-dark); color: #fff; font-size: 14px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
     
-    .btn-logout { background: none; border: 1px solid var(--pill-red-text); color: var(--pill-red-text); font-weight: 700; font-size: 11px; padding: 6px 12px; border-radius: 6px; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+    .form-control { width: 100%; height: 46px; border: 1px solid var(--border-thin); border-radius: 10px; padding: 0 14px; font-family: var(--font-main); font-size: 14px; color: var(--admin-dark); background: #fff; appearance: auto; }
+    .form-control:focus { outline: none; border-color: var(--admin-dark); box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.05); }
+    .form-control:disabled { background: #f1f5f9; color: var(--text-muted); cursor: not-allowed; }
+    textarea.form-control { height: 80px; padding: 12px; resize: none; appearance: none; }
+    input[type="date"].form-control { appearance: none; padding-right: 14px; }
+    
+    .btn-submit-shift { width: 100%; height: 50px; background: var(--admin-dark); color: #fff; font-size: 14px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.15s; }
+    .btn-submit-shift:active { transform: scale(0.98); }
+    
+    .btn-logout { background: none; border: 1px solid var(--pill-red-text); color: var(--pill-red-text); font-weight: 700; font-size: 11px; padding: 6px 12px; border-radius: 6px; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: 0.15s; }
+    .btn-logout:active { background: var(--pill-red-bg); }
 
     #sync-loader { position: fixed; inset: 0; background: #ffffff; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--admin-dark); letter-spacing: 1px; }
     .loader-text { margin-top: 12px; }
@@ -154,15 +185,15 @@
   </header>
 
   <nav class="tab-bar">
-    <div id="tab-btn-1" class="tab-item active" onclick="switchTab(1)">Statistics</div>
+    <div id="tab-btn-1" class="tab-item active" onclick="switchTab(1)">Statistics & Deployment</div>
     <div id="tab-btn-2" class="tab-item" onclick="switchTab(2)">Rosters</div>
-    <div id="tab-btn-3" class="tab-item" onclick="switchTab(3)">Create Shift</div>
   </nav>
 
   <div class="container">
     
+    <!-- PAGE 1: STATISTICS / DEPLOYMENT -->
     <div id="page-1" class="app-page active">
-      <div id="matrixFilterActiveLabel" class="section-label">Matrix showing Total Capacity</div>
+      <div id="matrixFilterActiveLabel" class="section-label">Global Matrix <span class="matrix-title-badge">All Data</span></div>
       <div class="dashboard-grid">
         <div id="tile-cap" class="dash-tile tile-cap selected" onclick="setDashboardFilter('ALL')">
           <span>Total Capacity</span>
@@ -183,86 +214,21 @@
       </div>
       
       <div id="stats-view-container"></div>
-    </div>
 
-    <div id="page-2" class="app-page">
-      <div class="section-label">Roster Selection Directory</div>
-      <div id="roster-cards-container"></div>
-    </div>
-
-    <div id="page-3" class="app-page">
-      <div class="section-label">Deploy New Shift Parameters</div>
-      <form id="shift-creation-form" onsubmit="handleFormSubmission(event)">
-        <div class="form-group">
-  <label>Shift Reference ID</label>
-
-  <div style="display:flex; gap:8px;">
-    <input 
-      type="text" 
-      id="form-shift-id" 
-      class="form-control" 
-      placeholder="e.g., S015"
-      style="flex:1;"
-      required
-    />
-
-    <button 
-      type="button"
-      onclick="enableEditMode()"
-      style="
-        border:none;
-        background:var(--admin-dark);
-        color:white;
-        padding:0 16px;
-        border-radius:10px;
-        font-size:11px;
-        font-weight:800;
-        text-transform:uppercase;
-        cursor:pointer;
-      ">
-      Lookup
-    </button>
-  </div>
-
-  <div style="
-    margin-top:6px;
-    font-size:11px;
-    color:var(--text-muted);
-    font-weight:600;
-  ">
-    Existing Shift ID = Edit Mode | New Shift ID = Create New Shift
-  </div>
-</div>
-        <div class="form-group">
-          <label>Calendar Date</label>
-          <input type="text" id="form-date" class="form-control" placeholder="e.g., 24.05.2026" required />
-        </div>
-        <div class="form-group">
-          <label>Department Designation</label>
-          <input type="text" id="form-dept" class="form-control" placeholder="e.g., EXH (Exhibition Hall)" required />
-        </div>
-        <div class="form-group">
-          <label>Operational Reporting Time</label>
-          <input type="text" id="form-time" class="form-control" placeholder="e.g., 08:00 - 17:00" required />
-        </div>
-        <div class="form-group">
-          <label>Total Capacity Slots</label>
-          <input type="number" id="form-slots" class="form-control" placeholder="e.g., 10" required />
-        </div>
-        <div class="form-group">
-          <label>Coordinator Operational Notes</label>
-          <textarea id="form-notes" class="form-control" placeholder="Optional notes..."></textarea>
-        </div>
-        <button type="submit" class="btn-submit-shift">Append & Deploy Shift</button>
-      </form>
-      
-      <div style="text-align: center; margin-top: 40px; border-top: 1px dashed var(--border-thin); padding-top: 20px;">
+      <!-- Logout mapped safely to bottom -->
+      <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px dashed var(--border-thin);">
         <button class="btn-logout" onclick="handleAdminLogout()">Exit Session (Logout)</button>
       </div>
     </div>
 
+    <!-- PAGE 2: ROSTER DIRECTORY -->
+    <div id="page-2" class="app-page">
+      <div id="roster-cards-container"></div>
+    </div>
+
   </div>
 
+  <!-- ROSTER DRAWER (Worker Attendance/Action View) -->
   <div id="roster-drawer" class="drawer-overlay" onclick="closeRosterDrawer()">
     <div class="drawer-content" onclick="event.stopPropagation()">
       <div class="drawer-header">
@@ -274,16 +240,105 @@
       </div>
       <div style="overflow-x:auto;">
         <table class="roster-table">
-          <thead>
-            <tr>
-              <th>Casual Worker Name</th>
-              <th style="width: 100px; text-align: center;">Status</th>
-              <th style="width: 90px; text-align: center;">Action</th>
-            </tr>
+          <thead id="drawer-table-head">
+            <!-- Dynamic Headers injected here -->
           </thead>
           <tbody id="drawer-table-body"></tbody>
         </table>
       </div>
+    </div>
+  </div>
+
+  <!-- SHIFT CREATION/EDITING DRAWER -->
+  <div id="shift-drawer" class="drawer-overlay" onclick="closeShiftDrawer()">
+    <div class="drawer-content" onclick="event.stopPropagation()">
+      <div class="drawer-header">
+        <h2>
+          <span id="shift-drawer-title">Deploy Shift Parameters</span>
+        </h2>
+        <button class="btn-close-drawer" onclick="closeShiftDrawer()"><i class="ph ph-x"></i></button>
+      </div>
+      
+      <form id="shift-creation-form" onsubmit="handleFormSubmission(event)">
+        <div class="form-group">
+          <label>Shift Reference ID</label>
+          <input type="text" id="form-shift-id" class="form-control" placeholder="e.g., S015" required />
+          <div id="shift-id-hint" style="margin-top:6px; font-size:10px; color:var(--text-muted); font-weight:600;">
+            Must be a unique Shift ID to deploy accurately.
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Calendar Date</label>
+          <input type="date" id="form-date" class="form-control" required />
+        </div>
+        
+        <div class="form-group">
+          <label>Department Designation</label>
+          <select id="form-dept" class="form-control" required>
+            <option value="" disabled selected hidden>-- Select Department --</option>
+            <option value="AV">AV</option>
+            <option value="CAT">CAT</option>
+            <option value="EXH">EXH</option>
+            <option value="FIN">FIN</option>
+            <option value="GCC">GCC</option>
+            <option value="GS">GS</option>
+            <option value="HK">HK</option>
+            <option value="HR">HR</option>
+            <option value="KIT">KIT</option>
+            <option value="LINEN">LINEN</option>
+            <option value="OPERATION">OPERATION</option>
+            <option value="PUR">PUR</option>
+            <option value="QA">QA</option>
+            <option value="SC">SC</option>
+            <option value="SETUP">SETUP</option>
+            <option value="STWD">STWD</option>
+            <option value="SH">SH</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Operational Reporting Time</label>
+          <select id="form-time" class="form-control" required>
+            <option value="" disabled selected hidden>Scheduled Shift</option>
+            <option value="0700">07:00</option>
+            <option value="0800">08:00</option>
+            <option value="0900">09:00</option>
+            <option value="1000">10:00</option>
+            <option value="1100">11:00</option>
+            <option value="1200">12:00</option>
+            <option value="1300">13:00</option>
+            <option value="1400">14:00</option>
+            <option value="1500">15:00</option>
+            <option value="1600">16:00</option>
+            <option value="1700">17:00</option>
+            <option value="1800">18:00</option>
+            <option value="1900">19:00</option>
+            <option value="2000">20:00</option>
+            <option value="2100">21:00</option>
+            <option value="2200">22:00</option>
+            <option value="2300">23:00</option>
+            <option value="0000">00:00</option>
+            <option value="0100">01:00</option>
+            <option value="0200">02:00</option>
+            <option value="0300">03:00</option>
+            <option value="0400">04:00</option>
+            <option value="0500">05:00</option>
+            <option value="0600">06:00</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Total Capacity Slots</label>
+          <input type="number" id="form-slots" class="form-control" placeholder="e.g., 10" required />
+        </div>
+        
+        <div class="form-group">
+          <label>Coordinator Operational Notes</label>
+          <textarea id="form-notes" class="form-control" placeholder="Optional notes..."></textarea>
+        </div>
+        <button type="submit" id="btn-submit-shift-action" class="btn-submit-shift">Append & Deploy Shift</button>
+      </form>
     </div>
   </div>
 
@@ -293,19 +348,24 @@
     let activeAdminKey = null;
     let cachedShifts = [];
     let cachedBookings = [];
+    
     let currentActiveFilter = "ALL"; 
+    let calSelectedDateStr = null;   
+    let calSelectedShiftId = null;   
+
     let editModeShift = false;
     let editingShiftId = null;
+
+    let calDate = new Date();
+    let calMonth = calDate.getMonth();
+    let calYear = calDate.getFullYear();
 
     window.onload = () => {
       const sessionKey = localStorage.getItem("mitec_admin_key") || localStorage.getItem("mcl_doc_no");
       if (sessionKey) {
         activeAdminKey = sessionKey;
         document.getElementById('login-overlay').style.display = 'none';
-        
-        // Safety check: Don't read the worker file layout for Admin Name
         document.getElementById("adminUserDisplayTag").textContent = "SUPER ADMIN";
-        
         loadAdminDataSuite();
       } else {
         document.getElementById('login-overlay').style.display = 'flex';
@@ -329,58 +389,100 @@
     }
 
     function switchTab(tabIndex) {
-      for (let i = 1; i <= 3; i++) {
+      for (let i = 1; i <= 2; i++) { 
         document.getElementById(`tab-btn-${i}`).classList.toggle('active', i === tabIndex);
         document.getElementById(`page-${i}`).classList.toggle('active', i === tabIndex);
       }
     }
 
     function formatAttendanceTime(timeVal) {
+      if (!timeVal) return "";
+      const str = String(timeVal).trim();
 
-  if (!timeVal) return "";
+      if (str.includes("1899")) {
+        try {
+          const d = new Date(str);
+          const hh = String(d.getHours()).padStart(2, '0');
+          const mm = String(d.getMinutes()).padStart(2, '0');
+          return `${hh}:${mm}`;
+        } catch(e) { return str; }
+      }
 
-  const str = String(timeVal).trim();
-
-  // HANDLE GOOGLE SHEETS TIME OBJECT
-  if (str.includes("1899")) {
-
-    try {
-
-      const d = new Date(str);
-
-      const hh = String(d.getHours()).padStart(2, '0');
-      const mm = String(d.getMinutes()).padStart(2, '0');
-
-      return `${hh}:${mm}`;
-
-    } catch(e) {
+      if (str.includes("GMT")) {
+        try {
+          const d = new Date(str);
+          const dd = String(d.getDate()).padStart(2, '0');
+          const mo = String(d.getMonth() + 1).padStart(2, '0');
+          const yy = d.getFullYear();
+          const hh = String(d.getHours()).padStart(2, '0');
+          const mm = String(d.getMinutes()).padStart(2, '0');
+          return `${dd}/${mo}/${yy} ${hh}:${mm}`;
+        } catch(e) { return str; }
+      }
+      
+      let cleanDigits = str.replace(/[^0-9]/g, "");
+      if (cleanDigits.length === 4 && !str.includes(":")) {
+        return cleanDigits.substring(0, 2) + ":" + cleanDigits.substring(2, 4);
+      }
       return str;
     }
-  }
 
-  // HANDLE NORMAL DATE OBJECTS
-  if (str.includes("GMT")) {
+    function formatFullTimestamp(timeVal) {
+      if (!timeVal) return "No Show";
+      let str = String(timeVal).trim();
+      let lowerStr = str.toLowerCase();
+      
+      if (lowerStr === "no show" || lowerStr === "absent" || str === "0" || str === "-" || str === "") {
+          return "No Show";
+      }
 
-    try {
+      let strMatch = str.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})[\sT]+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+      if (strMatch) {
+          let dd = strMatch[1].padStart(2, '0');
+          let mo = strMatch[2].padStart(2, '0');
+          let yy = strMatch[3].length === 4 ? strMatch[3].slice(-2) : strMatch[3].padStart(2, '0');
+          let hh = strMatch[4].padStart(2, '0');
+          let mm = strMatch[5].padStart(2, '0');
+          let ss = strMatch[6] ? strMatch[6].padStart(2, '0') : "00";
+          return `${dd}/${mo}/${yy} ${hh}:${mm}:${ss}`;
+      }
 
-      const d = new Date(str);
+      try {
+        const d = new Date(str);
+        if (!isNaN(d.getTime()) && d.getFullYear() !== 1899) {
+            let dd = String(d.getDate()).padStart(2, '0');
+            let mo = String(d.getMonth() + 1).padStart(2, '0');
+            let yy = String(d.getFullYear()).slice(-2);
+            let hh = String(d.getHours()).padStart(2, '0');
+            let mm = String(d.getMinutes()).padStart(2, '0');
+            let ss = String(d.getSeconds()).padStart(2, '0');
+            return `${dd}/${mo}/${yy} ${hh}:${mm}:${ss}`;
+        }
+      } catch (e) {}
 
-      const dd = String(d.getDate()).padStart(2, '0');
-      const mo = String(d.getMonth() + 1).padStart(2, '0');
-      const yy = d.getFullYear();
-
-      const hh = String(d.getHours()).padStart(2, '0');
-      const mm = String(d.getMinutes()).padStart(2, '0');
-
-      return `${dd}/${mo}/${yy} ${hh}:${mm}`;
-
-    } catch(e) {
-      return str;
+      return str; 
     }
-  }
 
-  return str;
-}
+    function getShiftDateObj(dateStr) {
+      try {
+        let parts = dateStr.includes('.') ? dateStr.split('.') : dateStr.split('/');
+        if (parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]);
+      } catch(e) {}
+      return new Date(0);
+    }
+
+    // Identifies if the date selected is equal to or strictly greater than today
+    function isFutureOrToday(dateStr) {
+      if (!dateStr) return false;
+      let parts = dateStr.split('.');
+      if (parts.length !== 3) return false;
+      
+      let checkDate = new Date(parts[2], parts[1] - 1, parts[0]);
+      let today = new Date();
+      today.setHours(0, 0, 0, 0); // Strip time for accurate day comparison
+      
+      return checkDate >= today;
+    }
 
     function loadAdminDataSuite() {
       document.getElementById('sync-loader').style.display = 'flex';
@@ -391,135 +493,341 @@
           if (res.ok && res.allShifts && res.allBookingsRaw) {
             localStorage.setItem("mitec_admin_key", activeAdminKey);
             
-            cachedShifts = (res.allShifts || []).map(s => ({
-  ...s,
-  totalSlots: s.slots,   // alias fix
-  Slots: s.slots          // safety fallback for your old code
-}));
+            cachedShifts = (res.allShifts || []).map(s => ({ ...s, totalSlots: s.slots, Slots: s.slots }));
             cachedBookings = res.allBookingsRaw;
             
-            if (res.adminName) {
-              document.getElementById("adminUserDisplayTag").textContent = res.adminName.toUpperCase();
-            } else {
-              document.getElementById("adminUserDisplayTag").textContent = "SUPER ADMIN";
-            }
+            if (res.adminName) document.getElementById("adminUserDisplayTag").textContent = res.adminName.toUpperCase();
             
-            calculateGlobalMetrics(); 
-            renderStatisticsPage();
+            updateMatrixNumbers(calSelectedDateStr, calSelectedShiftId);
+            renderStatisticsPage(); 
             renderRosterCardsPage();
+            
             document.getElementById('sync-loader').style.display = 'none';
           } else {
             localStorage.removeItem("mitec_admin_key");
-            alert("Handshake Refused: Credentials not matching records in the SUPER_ADMIN tab!");
+            alert("Handshake Refused: Credentials not matching records!");
             document.getElementById('sync-loader').style.display = 'none';
             document.getElementById('login-overlay').style.display = 'flex';
           }
         }).catch(err => {
           localStorage.removeItem("mitec_admin_key");
-          alert("Handshake Interrupted. Double-check your network deployment setting is on 'Anyone'.");
+          alert("Handshake Interrupted. Double-check your network deployment.");
           document.getElementById('sync-loader').style.display = 'none';
           document.getElementById('login-overlay').style.display = 'flex';
         });
     }
 
-    function calculateGlobalMetrics() {
+    function updateMatrixNumbers(targetDate, targetShiftId) {
+      let scopedShifts = cachedShifts;
+      let scopedBookings = cachedBookings;
+      let labelScope = "Global Matrix";
+      let badgeScope = "All Data";
+
+      if (targetShiftId) {
+        scopedShifts = cachedShifts.filter(s => s.id === targetShiftId);
+        scopedBookings = cachedBookings.filter(b => b.shift_id === targetShiftId);
+        labelScope = "Shift Matrix";
+        badgeScope = `ID: ${targetShiftId}`;
+      } else if (targetDate) {
+        scopedShifts = cachedShifts.filter(s => s.date === targetDate);
+        scopedBookings = cachedBookings.filter(b => scopedShifts.some(s => s.id === b.shift_id));
+        labelScope = "Daily Matrix";
+        badgeScope = targetDate;
+      }
+
       let totalCap = 0;
-      cachedShifts.forEach(s => {
-  totalCap += Number(s.slots || s.totalSlots || s.Slots || 0);
-});
-      
-      const totalConf = cachedBookings.filter(b => b.status === 'SUBMITTED').length;
-      const totalWait = cachedBookings.filter(b => b.status === 'WAITLIST').length;
-      const totalDrop = cachedBookings.filter(b => b.status === 'CANCELLED').length;
+      scopedShifts.forEach(s => { totalCap += Number(s.slots || s.totalSlots || s.Slots || 0); });
+      const totalConf = scopedBookings.filter(b => b.status === 'SUBMITTED').length;
+      const totalWait = scopedBookings.filter(b => b.status === 'WAITLIST' || b.status === 'WAITING LIST').length;
+      const totalDrop = scopedBookings.filter(b => b.status === 'CANCELLED').length;
 
       document.getElementById('dash-txt-cap').textContent = totalCap;
       document.getElementById('dash-txt-conf').textContent = totalConf;
       document.getElementById('dash-txt-wait').textContent = totalWait;
       document.getElementById('dash-txt-drop').textContent = totalDrop;
+      
+      document.getElementById("matrixFilterActiveLabel").innerHTML = `${labelScope} <span class="matrix-title-badge">${badgeScope}</span>`;
     }
 
     function setDashboardFilter(filterType) {
       currentActiveFilter = filterType;
-      
       document.getElementById('tile-cap').classList.toggle('selected', filterType === 'ALL');
       document.getElementById('tile-conf').classList.toggle('selected', filterType === 'CONF');
       document.getElementById('tile-wait').classList.toggle('selected', filterType === 'WAIT');
       document.getElementById('tile-drop').classList.toggle('selected', filterType === 'DROP');
       
-      const labelElement = document.getElementById("matrixFilterActiveLabel");
-      if (filterType === 'ALL') labelElement.textContent = "Matrix showing Total Capacity";
-      if (filterType === 'CONF') labelElement.textContent = "Matrix showing Confirmed Active";
-      if (filterType === 'WAIT') labelElement.textContent = "Matrix showing Standby Queue";
-      if (filterType === 'DROP') labelElement.textContent = "Matrix showing Total Dropouts";
-
       renderStatisticsPage(); 
     }
 
     function renderStatisticsPage() {
       const container = document.getElementById('stats-view-container');
-      container.innerHTML = '';
       
-      if(!cachedShifts || cachedShifts.length === 0) {
-        container.innerHTML = '<p style="text-align:center; padding:50px; color:var(--text-muted); font-style:italic;">No active shifts found.</p>';
-        return;
+      if(!document.getElementById('cal-wrapper')) {
+        container.innerHTML = `
+          <div class="calendar-wrapper" id="cal-wrapper">
+              <div class="cal-header">
+                  <button class="btn-cal-nav" onclick="changeCalMonth(-1)"><i class="ph ph-caret-left"></i></button>
+                  <h3 id="cal-month-title"></h3>
+                  <button class="btn-cal-nav" onclick="changeCalMonth(1)"><i class="ph ph-caret-right"></i></button>
+              </div>
+              <div class="cal-grid" id="cal-grid"></div>
+          </div>
+          <div id="cal-details-list"></div>
+        `;
       }
+      renderCalendarGrid();
+      renderSelectedDateDetails();
+    }
 
-      const dates = [...new Set(cachedShifts.map(s => s.date))];
-      let visibleCardsRendered = 0;
+    function changeCalMonth(direction) {
+      calMonth += direction;
+      if (calMonth > 11) { calMonth = 0; calYear++; }
+      if (calMonth < 0) { calMonth = 11; calYear--; }
+      renderCalendarGrid();
+    }
 
-      dates.forEach(date => {
-        let dateHeaderAppended = false;
+    function selectCalDate(dateStr) {
+      if (calSelectedDateStr === dateStr) {
+          calSelectedDateStr = null;
+          calSelectedShiftId = null;
+      } else {
+          calSelectedDateStr = dateStr;
+          calSelectedShiftId = null; 
+      }
+      
+      updateMatrixNumbers(calSelectedDateStr, calSelectedShiftId);
+      renderCalendarGrid();
+      renderSelectedDateDetails();
+    }
+    
+    // Triggered strictly when drawing/clicking a shift card under the calendar
+    function selectShiftCard(shiftId) {
+      if (calSelectedShiftId === shiftId) {
+          calSelectedShiftId = null; 
+      } else {
+          calSelectedShiftId = shiftId;
+          openEditShift(shiftId); // Open drawer instantly to edit the shift
+      }
+      
+      updateMatrixNumbers(calSelectedDateStr, calSelectedShiftId);
+      renderSelectedDateDetails();
+    }
 
-        cachedShifts.filter(s => s.date === date).forEach(s => {
-          const confirmedCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'SUBMITTED').length;
-          const waitlistCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'WAITLIST').length;
-          const cancelledCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'CANCELLED').length;
-          
-          let shouldDisplay = true;
-          if (currentActiveFilter === "CONF" && confirmedCount === 0) shouldDisplay = false;
-          if (currentActiveFilter === "WAIT" && waitlistCount === 0) shouldDisplay = false;
-          if (currentActiveFilter === "DROP" && cancelledCount === 0) shouldDisplay = false;
+    function renderCalendarGrid() {
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      document.getElementById('cal-month-title').textContent = `${monthNames[calMonth]} ${calYear}`;
 
-          if (shouldDisplay) {
-            if (!dateHeaderAppended) {
-              container.innerHTML += `<div class="section-label">${date}</div>`;
-              dateHeaderAppended = true;
-            }
-            
-            let displayTime = formatAttendanceTime(s.time);
-            let shiftReferenceId = s.id || "N/A";
-            let maxCapacitySlots = s.slots || s.totalSlots || s.Slots || 0;
-            visibleCardsRendered++;
+      const grid = document.getElementById('cal-grid');
+      grid.innerHTML = `
+          <div class="cal-day-label">Su</div><div class="cal-day-label">Mo</div><div class="cal-day-label">Tu</div>
+          <div class="cal-day-label">We</div><div class="cal-day-label">Th</div><div class="cal-day-label">Fr</div><div class="cal-day-label">Sa</div>
+      `;
 
-            container.innerHTML += `
-              <div class="stat-row-card">
-                <div class="stat-info">
-                  <h3>
-                    <span>${s.dept}</span> 
-                    <span class="shift-tag-sub">ID: ${shiftReferenceId}</span>
-                  </h3>
-                  <p>
-                    <span class="meta-data-line"><i class="ph ph-calendar-blank"></i> ${date}</span>
-                    <span class="meta-data-line"><i class="ph ph-clock"></i> ${displayTime}</span>
-                    <span class="meta-data-line"><i class="ph ph-user-list"></i> Capacity: <b>${maxCapacitySlots} Slots</b></span>
-                  </p>
-                </div>
-                <div class="metrics-pill-pack">
-                  <span class="mini-badge" style="background:#e2e8f0; color:#1e293b; border: 1px solid ${currentActiveFilter === 'ALL' ? 'var(--admin-dark)' : 'transparent'}">Cap: ${maxCapacitySlots}</span>
-                  <span class="mini-badge pill-sub" style="border-width: ${currentActiveFilter === 'CONF' ? '2px' : '1px'}">Conf: ${confirmedCount}</span>
-                  <span class="mini-badge pill-wait" style="border-width: ${currentActiveFilter === 'WAIT' ? '2px' : '1px'}">Wait: ${waitlistCount}</span>
-                  <span class="mini-badge pill-cancelled" style="border-width: ${currentActiveFilter === 'DROP' ? '2px' : '1px'}">Drop: ${cancelledCount}</span>
-                </div>
-              </div>`;
+      let firstDay = new Date(calYear, calMonth, 1).getDay();
+      let daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+      for(let i=0; i<firstDay; i++) { grid.innerHTML += `<div class="cal-cell empty"></div>`; }
+
+      for(let day=1; day<=daysInMonth; day++) {
+          let dStr = String(day).padStart(2, '0');
+          let mStr = String(calMonth + 1).padStart(2, '0');
+          let dateStr = `${dStr}.${mStr}.${calYear}`;
+
+          let shiftsToday = cachedShifts.filter(s => s.date === dateStr);
+          let cellClass = "cal-cell";
+          let indicatorHTML = "";
+
+          if (shiftsToday.length > 0) {
+              let totalMetric = 0;
+              if (currentActiveFilter === 'ALL') {
+                   totalMetric = shiftsToday.reduce((sum, s) => sum + Number(s.slots || s.totalSlots || s.Slots || 0), 0);
+                   if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:#e2e8f0; color:var(--text-main);">Cap ${totalMetric}</div>`;
+              } else if (currentActiveFilter === 'CONF') {
+                   totalMetric = cachedBookings.filter(b => shiftsToday.some(s => s.id === b.shift_id) && b.status === 'SUBMITTED').length;
+                   if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:var(--pill-teal-bg); color:var(--admin-dark);">+${totalMetric}</div>`;
+              } else if (currentActiveFilter === 'WAIT') {
+                   totalMetric = cachedBookings.filter(b => shiftsToday.some(s => s.id === b.shift_id) && b.status === 'WAITLIST').length;
+                   if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:var(--pill-amber-bg); color:var(--accent-amber);">+${totalMetric}</div>`;
+              } else if (currentActiveFilter === 'DROP') {
+                   totalMetric = cachedBookings.filter(b => shiftsToday.some(s => s.id === b.shift_id) && b.status === 'CANCELLED').length;
+                   if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:var(--pill-red-bg); color:var(--accent-warn);">-${totalMetric}</div>`;
+              }
+              if (indicatorHTML !== "") cellClass += " has-shifts";
           }
-        });
-      });
 
-      if (visibleCardsRendered === 0) {
-        container.innerHTML = '<p style="text-align:center; padding:40px; color:var(--text-muted); font-style:italic;">No shifts match the active matrix filter parameter selection.</p>';
+          if (dateStr === calSelectedDateStr) cellClass += " selected";
+
+          grid.innerHTML += `
+            <div class="${cellClass}" onclick="selectCalDate('${dateStr}')">
+              ${day}
+              ${indicatorHTML}
+            </div>`;
       }
     }
 
+    function renderSelectedDateDetails() {
+      const listContainer = document.getElementById('cal-details-list');
+      if (!listContainer) return;
+
+      if (!calSelectedDateStr) {
+          listContainer.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted); font-style:italic;">Select a date on the calendar to scan the operational matrix.</p>';
+          return;
+      }
+
+      const shiftsToday = cachedShifts.filter(s => s.date === calSelectedDateStr);
+      let detailsHTML = `<div class="section-label">Shift Details: ${calSelectedDateStr}</div>`;
+      
+      if (shiftsToday.length === 0) {
+          detailsHTML += `<p style="text-align:center; padding:10px; color:var(--text-muted); font-style:italic;">No shifts scheduled for this date.</p>`;
+      } else {
+          let visibleCards = 0;
+          shiftsToday.forEach(s => {
+              const confirmedCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'SUBMITTED').length;
+              const waitlistCount = cachedBookings.filter(b => b.shift_id === s.id && (b.status === 'WAITLIST' || b.status === 'WAITING LIST')).length;
+              const cancelledCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'CANCELLED').length;
+
+              let shouldDisplay = true;
+              if (currentActiveFilter === "CONF" && confirmedCount === 0) shouldDisplay = false;
+              if (currentActiveFilter === "WAIT" && waitlistCount === 0) shouldDisplay = false;
+              if (currentActiveFilter === "DROP" && cancelledCount === 0) shouldDisplay = false;
+
+              if (shouldDisplay) {
+                  visibleCards++;
+                  let displayTime = formatAttendanceTime(s.time);
+                  let maxCapacitySlots = s.slots || s.totalSlots || s.Slots || 0;
+                  
+                  let isSelectedClass = (calSelectedShiftId === s.id) ? "selected-card" : "";
+
+                  detailsHTML += `
+                    <div class="stat-row-card ${isSelectedClass}" onclick="selectShiftCard('${s.id}')">
+                      <div class="stat-info">
+                        <h3><span>${s.dept}</span> <span class="shift-tag-sub">ID: ${s.id || "N/A"}</span></h3>
+                        <p>
+                          <span class="meta-data-line"><i class="ph ph-clock"></i> ${displayTime}</span>
+                          <span class="meta-data-line"><i class="ph ph-user-list"></i> Capacity: <b>${maxCapacitySlots} Slots</b></span>
+                        </p>
+                      </div>
+                      <div class="metrics-pill-pack">
+                        <span class="mini-badge" style="background:#e2e8f0; color:#1e293b; border: 1px solid ${currentActiveFilter === 'ALL' ? 'var(--admin-dark)' : 'transparent'}">Cap: ${maxCapacitySlots}</span>
+                        <span class="mini-badge pill-sub" style="border-width: ${currentActiveFilter === 'CONF' ? '2px' : '1px'}">Conf: ${confirmedCount}</span>
+                        <span class="mini-badge pill-wait" style="border-width: ${currentActiveFilter === 'WAIT' ? '2px' : '1px'}">Wait: ${waitlistCount}</span>
+                        <span class="mini-badge pill-cancelled" style="border-width: ${currentActiveFilter === 'DROP' ? '2px' : '1px'}">Drop: ${cancelledCount}</span>
+                      </div>
+                    </div>`;
+              }
+          });
+          if (visibleCards === 0) detailsHTML += `<p style="text-align:center; padding:10px; color:var(--text-muted); font-style:italic;">No shifts match the active matrix filter parameter for this date.</p>`;
+      }
+
+      // Check if selected date is today or future, if so, append ADD SHIFT button.
+      if (isFutureOrToday(calSelectedDateStr)) {
+          detailsHTML += `<button class="btn-submit-shift" style="margin-top: 15px; background: #f8fafc; color: var(--admin-dark); border: 2px dashed #cbd5e1;" onclick="openCreateShift()"><i class="ph ph-plus-circle" style="font-size: 18px;"></i> DEPLOY NEW SHIFT HERE</button>`;
+      }
+
+      listContainer.innerHTML = detailsHTML;
+    }
+
+    // --- FORM MODAL CONTROLS ---
+    function openCreateShift() {
+      editModeShift = false;
+      editingShiftId = null;
+      document.getElementById('shift-creation-form').reset();
+
+      document.getElementById('form-shift-id').disabled = false;
+      document.getElementById('shift-id-hint').textContent = "Must be a unique Shift ID to deploy accurately.";
+      document.getElementById('shift-drawer-title').textContent = "Deploy New Shift";
+      document.getElementById('btn-submit-shift-action').innerHTML = "<i class='ph ph-paper-plane-right'></i> Append & Deploy";
+
+      // Pre-fill date based on calendar selection
+      if (calSelectedDateStr) {
+          let parts = calSelectedDateStr.split('.');
+          document.getElementById('form-date').value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+
+      document.getElementById('shift-drawer').style.display = 'flex';
+    }
+
+    function openEditShift(shiftId) {
+      editModeShift = true;
+      editingShiftId = shiftId;
+      
+      let shift = cachedShifts.find(s => s.id === shiftId);
+      if(!shift) return;
+
+      document.getElementById('shift-drawer-title').textContent = "Edit Shift Parameters";
+      document.getElementById('btn-submit-shift-action').innerHTML = "<i class='ph ph-floppy-disk'></i> Overwrite & Update";
+
+      document.getElementById('form-shift-id').value = shift.id;
+      document.getElementById('form-shift-id').disabled = true; // Lock ID mapping
+      document.getElementById('shift-id-hint').textContent = "Shift ID is locked during edit mode to preserve matrix records.";
+
+      let parts = shift.date.split('.');
+      if (parts.length === 3) {
+          document.getElementById('form-date').value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+
+      document.getElementById('form-dept').value = shift.dept;
+      
+      let fTime = formatAttendanceTime(shift.time);
+      let vTime = fTime.replace(":", "");
+      let timeSelect = document.getElementById('form-time');
+      if (Array.from(timeSelect.options).some(opt => opt.value === vTime)) {
+          timeSelect.value = vTime;
+      }
+
+      document.getElementById('form-slots').value = shift.slots || shift.totalSlots;
+      document.getElementById('form-notes').value = shift.notes || "";
+
+      document.getElementById('shift-drawer').style.display = 'flex';
+    }
+
+    function closeShiftDrawer() {
+      document.getElementById('shift-drawer').style.display = 'none';
+    }
+
+    function handleFormSubmission(event) {
+      event.preventDefault();
+      
+      // Temporarily enable to extract value
+      const idField = document.getElementById('form-shift-id');
+      const wasDisabled = idField.disabled;
+      idField.disabled = false;
+      const sId = idField.value.trim();
+      idField.disabled = wasDisabled;
+
+      const rawDate = document.getElementById('form-date').value.trim();
+      const sDate = rawDate.split('-').reverse().join('.');
+      const sDept = document.getElementById('form-dept').value.trim();
+      const sTime = formatAttendanceTime(document.getElementById('form-time').value.trim());
+      const sSlots = document.getElementById('form-slots').value.trim();
+      const sNotes = document.getElementById('form-notes').value.trim();
+
+      const actionType = editModeShift ? "updateShift" : "createShift";
+      const loaderText = editModeShift ? "UPDATING SHIFT NODE..." : "DEPLOYING NEW SHIFT NODE...";
+
+      closeShiftDrawer();
+      document.getElementById('sync-loader').querySelector('.loader-text').textContent = loaderText;
+      document.getElementById('sync-loader').style.display = 'flex';
+
+      fetch(`${SCRIPT_URL}?action=${actionType}&userDocNo=${activeAdminKey}&shiftId=${sId}&date=${sDate}&dept=${sDept}&time=${sTime}&slots=${sSlots}&notes=${encodeURIComponent(sNotes)}`)
+        .then(r => r.json())
+        .then(res => {
+          if (res.ok) {
+            alert(editModeShift ? "Shift updated successfully!" : "Shift created successfully!");
+            document.getElementById('shift-creation-form').reset();
+            loadAdminDataSuite();
+          } else {
+            alert("Error: " + res.error);
+          }
+          document.getElementById('sync-loader').style.display = 'none';
+        })
+        .catch(() => {
+          alert("Network execution exception.");
+          document.getElementById('sync-loader').style.display = 'none';
+        });
+    }
+
+    // --- ROSTER RENDERER (TAB 2) ---
     function renderRosterCardsPage() {
       const container = document.getElementById('roster-cards-container');
       container.innerHTML = '';
@@ -529,30 +837,79 @@
         return;
       }
 
-      const dates = [...new Set(cachedShifts.map(s => s.date))];
-      dates.forEach(date => {
-        container.innerHTML += `<div class="section-label">${date}</div>`;
-        cachedShifts.filter(s => s.date === date).forEach(s => {
-          const activeCount = cachedBookings.filter(b => b.shift_id === s.id && b.status !== 'CANCELLED').length;
-          const droppedCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'CANCELLED').length;
-          
-          container.innerHTML += `
-            <div class="roster-card" onclick="openRosterDrawer('${s.id}', '${s.dept}', '${s.date}', '${s.time}', '${s.slots || s.totalSlots || s.Slots || 0}')">
-              <h3 style="margin:0 0 6px 0; font-size:16px; color:var(--admin-dark); font-weight:700;">${s.dept}</h3>
-              <span style="font-size:12px; color:var(--text-muted); font-weight:600; display:inline-block; margin-right:12px;">
-                <i class="ph ph-users"></i> ${activeCount} Personnel Active
-              </span>
-              <span style="font-size:12px; color:var(--accent-warn); font-weight:600;">
-                <i class="ph ph-user-minus"></i> ${droppedCount} Cancelled
-              </span>
-              <div class="chevron-indicator"><i class="ph ph-caret-right"></i></div>
-            </div>`;
-        });
+      let today = new Date();
+      today.setHours(0,0,0,0);
+
+      let pastShifts = [];
+      let upcomingShifts = [];
+
+      cachedShifts.forEach(s => {
+        let sDate = getShiftDateObj(s.date);
+        if (sDate < today) pastShifts.push(s);
+        else upcomingShifts.push(s);
       });
+
+      upcomingShifts.sort((a,b) => getShiftDateObj(a.date) - getShiftDateObj(b.date));
+      pastShifts.sort((a,b) => getShiftDateObj(b.date) - getShiftDateObj(a.date));
+
+      let htmlOutput = '';
+
+      // UPCOMING SHIFTS
+      htmlOutput += `<div class="section-label">Upcoming Shifts</div>`;
+      if (upcomingShifts.length === 0) htmlOutput += `<p style="text-align:center; color:var(--text-muted); font-style:italic; padding:10px;">No upcoming shifts scheduled.</p>`;
+      
+      upcomingShifts.forEach(s => {
+        const activeCount = cachedBookings.filter(b => b.shift_id === s.id && b.status !== 'CANCELLED').length;
+        const capacity = s.slots || s.totalSlots || s.Slots || 0;
+        const displayTime = formatAttendanceTime(s.time);
+        
+        htmlOutput += `
+          <div class="roster-card" onclick="openRosterDrawer('${s.id}', '${s.dept}', '${s.date}', '${s.time}', '${capacity}', false)">
+            <h3 style="margin:0 0 6px 0; font-size:16px; color:var(--admin-dark); font-weight:700;">
+              ${s.dept} <span style="font-size:10px; color:var(--text-muted); float:right; background:#f1f5f9; padding:2px 6px; border-radius:4px;">${s.date} • ${displayTime}</span>
+            </h3>
+            <span style="font-size:12px; color:var(--text-muted); font-weight:600; display:inline-block;">
+              <i class="ph ph-users"></i> Active: <b>${activeCount} / ${capacity}</b> 
+            </span>
+            <div class="chevron-indicator"><i class="ph ph-caret-right"></i></div>
+          </div>`;
+      });
+
+      // PAST SHIFTS
+      htmlOutput += `<div class="section-label" style="margin-top:30px;">Historical / Past Shifts</div>`;
+      if (pastShifts.length === 0) htmlOutput += `<p style="text-align:center; color:var(--text-muted); font-style:italic; padding:10px;">No historical shifts on record.</p>`;
+      
+      pastShifts.forEach(s => {
+        const confirmedApplicants = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'SUBMITTED');
+        const totalConfirmed = confirmedApplicants.length;
+        const capacity = s.slots || s.totalSlots || s.Slots || 0;
+        const displayTime = formatAttendanceTime(s.time);
+        
+        let attendedCount = 0;
+        confirmedApplicants.forEach(w => {
+            let colHTimestamp = w.attendance || w.ATTENDANCE || w.column_h || w.Col8 || "";
+            let attFormat = formatFullTimestamp(colHTimestamp);
+            if (attFormat && attFormat !== "No Show") {
+                attendedCount++;
+            }
+        });
+
+        htmlOutput += `
+          <div class="roster-card" onclick="openRosterDrawer('${s.id}', '${s.dept}', '${s.date}', '${s.time}', '${capacity}', true)">
+            <h3 style="margin:0 0 6px 0; font-size:16px; color:var(--admin-dark); font-weight:700;">
+              ${s.dept} <span style="font-size:10px; color:var(--text-muted); float:right; background:#f1f5f9; padding:2px 6px; border-radius:4px;">${s.date} • ${displayTime}</span>
+            </h3>
+            <span style="font-size:12px; color:var(--admin-dark); font-weight:700; display:inline-block;">
+              <i class="ph ph-check-circle" style="color:var(--pill-teal-text);"></i> Attended: ${attendedCount} / ${totalConfirmed}
+            </span>
+            <div class="chevron-indicator"><i class="ph ph-caret-right"></i></div>
+          </div>`;
+      });
+
+      container.innerHTML = htmlOutput;
     } 
 
-    /* TARGETED JS FIX: Tab 2 Roster Sorting & Dynamic Action Column (Past vs Upcoming) */
-    function openRosterDrawer(shiftId, dept, date, time, maxCapacity) {
+    function openRosterDrawer(shiftId, dept, date, time, maxCapacity, isPastShift) {
       document.getElementById('drawer-shift-title').textContent = dept;
       
       let displayTimeStr = formatAttendanceTime(time);
@@ -562,6 +919,23 @@
         <span><i class="ph ph-users-three"></i> Capacity: <b>${maxCapacity} Slots</b></span>
       `;
 
+      const thead = document.getElementById('drawer-table-head');
+      if (isPastShift) {
+        thead.innerHTML = `
+          <tr>
+            <th>Casual Worker Name</th>
+            <th style="width: 80px; text-align: center;">Status</th>
+            <th style="width: 120px; text-align: center;">Attendance</th>
+          </tr>`;
+      } else {
+        thead.innerHTML = `
+          <tr>
+            <th>Casual Worker Name</th>
+            <th style="width: 90px; text-align: center;">Status</th>
+            <th style="width: 100px; text-align: center;">Action</th>
+          </tr>`;
+      }
+
       const tbody = document.getElementById('drawer-table-body');
       tbody.innerHTML = '';
 
@@ -570,73 +944,45 @@
       if (applicants.length === 0) {
         tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--text-muted); font-style:italic;">No logged applications found.</td></tr>`;
       } else {
-        
-        // Date Check: Determine if the shift is historical (date has passed)
-        let isPastShift = false;
-        try {
-            let parts = date.includes('.') ? date.split('.') : date.split('/');
-            if (parts.length === 3) {
-                let shiftDate = new Date(parts[2], parts[1] - 1, parts[0]);
-                let today = new Date();
-                today.setHours(0,0,0,0);
-                isPastShift = shiftDate < today;
-            }
-        } catch(e) {}
-
-        // Priority Map: Confirmed (1), Waitlist (2), Cancelled (3)
         const priorityMap = { 'SUBMITTED': 1, 'WAITLIST': 2, 'CANCELLED': 3 };
-
         applicants.sort((a, b) => {
           let pA = priorityMap[String(a.status).toUpperCase()] || 2;
           let pB = priorityMap[String(b.status).toUpperCase()] || 2;
-          
-          if (pA !== pB) return pA - pB; // Sort by Status first
-          // Then sort Alphabetically by Name
+          if (pA !== pB) return pA - pB; 
           return String(a.worker_name || "").trim().toUpperCase().localeCompare(String(b.worker_name || "").trim().toUpperCase());
         });
 
         applicants.forEach(w => {
           const rawStatus = String(w.status).toUpperCase();
           let statusPillMarkup = "";
-          let actionButtonMarkup = "";
+          let actionColumnMarkup = "";
 
-          // Grabbing Timestamp data from Column H safely
-          // Covers common JSON property mappings from Apps Script for Column H
-          let colHTimestamp = w.cancel_time || w.timestamp || w.column_h || w.time_in || w.Col8 || w.col_h || w.h || "";
+          let colHTimestamp = w.attendance || w.ATTENDANCE || w.column_h || w.Col8 || "";
 
-          if (rawStatus === 'CANCELLED') {
-            statusPillMarkup = `<span class="status-pill pill-cancelled">Cancelled</span>`;
+          if (rawStatus === 'CANCELLED') statusPillMarkup = `<span class="status-pill pill-cancelled">Cancelled</span>`;
+          else if (rawStatus === 'WAITLIST' || rawStatus === 'WAITING LIST') statusPillMarkup = `<span class="status-pill pill-wait">Standby</span>`;
+          else statusPillMarkup = `<span class="status-pill pill-sub">Confirmed</span>`;
+
+          if (isPastShift) {
+            let formattedStamp = formatFullTimestamp(colHTimestamp);
             
-            let optimizedCancelTime = formatAttendanceTime(colHTimestamp);
-            if (optimizedCancelTime && optimizedCancelTime.includes(" ")) {
-              let parts = optimizedCancelTime.split(" ");
-              if (parts.length > 1) optimizedCancelTime = parts[1]; 
+            if (rawStatus === 'CANCELLED' || rawStatus === 'WAITLIST' || rawStatus === 'WAITING LIST') {
+                actionColumnMarkup = `<span style="font-size:11px; color:var(--text-muted); font-weight:700;">-</span>`;
+            } else if (!formattedStamp || formattedStamp === "No Show") {
+                actionColumnMarkup = `<span style="font-size:11px; color:var(--accent-warn); font-weight:800; text-transform:uppercase;">No Show</span>`;
+            } else {
+                actionColumnMarkup = `<span style="font-size:11px; color:var(--admin-dark); font-weight:800; font-family:monospace; white-space:nowrap;">${formattedStamp}</span>`;
             }
             
-            actionButtonMarkup = `<span style="font-size:11px; color:var(--text-muted); font-weight:700; font-family:monospace;">Drop: ${optimizedCancelTime || "N/A"}</span>`;
-          
-          } else if (rawStatus === 'WAITLIST' || rawStatus === 'WAITING LIST') {
-            statusPillMarkup = `<span class="status-pill pill-wait">Standby</span>`;
-            
-            if (isPastShift) {
-                actionButtonMarkup = `<span style="font-size:11px; color:var(--text-muted); font-weight:600;">Historical</span>`;
+          } else { 
+            if (rawStatus === 'CANCELLED') {
+                let optDrop = formatAttendanceTime(w.cancel_time || w.timestamp || "");
+                if (optDrop.includes(" ")) optDrop = optDrop.split(" ")[1];
+                actionColumnMarkup = `<span style="font-size:10px; color:var(--text-muted); font-family:monospace;">${optDrop || "Dropped"}</span>`;
+            } else if (rawStatus === 'WAITLIST' || rawStatus === 'WAITING LIST') {
+                actionColumnMarkup = `<button class="btn-approve" onclick="toggleWorkerStatus('${shiftId}', '${w.user_id}', '${date}', '${dept}', '${time}', 'false')">Promote</button>`;
             } else {
-                actionButtonMarkup = `<button class="btn-approve" onclick="toggleWorkerStatus('${shiftId}', '${w.user_id}', '${date}', '${dept}', '${time}', 'false')">Approve</button>`;
-            }
-
-          } else {
-            statusPillMarkup = `<span class="status-pill pill-sub">Confirmed</span>`;
-            
-            if (isPastShift) {
-                if(colHTimestamp) {
-                    let formatted = formatAttendanceTime(colHTimestamp);
-                    if (formatted.includes(" ")) formatted = formatted.split(" ")[1];
-                    actionButtonMarkup = `<span style="font-size:11px; color:var(--admin-dark); font-weight:700;">${formatted}</span>`;
-                } else {
-                    actionButtonMarkup = `<span style="font-size:11px; color:var(--accent-warn); font-weight:700;">No Show</span>`;
-                }
-            } else {
-                actionButtonMarkup = `<button class="btn-demote" onclick="toggleWorkerStatus('${shiftId}', '${w.user_id}', '${date}', '${dept}', '${time}', 'true')">Demote</button>`;
+                actionColumnMarkup = `<button class="btn-demote" onclick="toggleWorkerStatus('${shiftId}', '${w.user_id}', '${date}', '${dept}', '${time}', 'true')">Demote</button>`;
             }
           }
 
@@ -647,7 +993,7 @@
                 <div style="font-size:11px; color:var(--text-muted); margin-top:2px; font-family:monospace;">ID: ${w.user_id}</div>
               </td>
               <td style="text-align:center;">${statusPillMarkup}</td>
-              <td style="text-align:center;">${actionButtonMarkup}</td>
+              <td style="text-align:center;">${actionColumnMarkup}</td>
             </tr>`;
         });
       }
@@ -663,7 +1009,7 @@
       
       const promptMsg = targetToWaitlist === 'true' 
         ? `Demote Worker ID: ${workerId} back to Standby Waitlist?` 
-        : `Confirm registration for Worker ID: ${workerId}?`;
+        : `Promote/Confirm registration for Worker ID: ${workerId}?`;
 
       if (!confirm(promptMsg)) return;
       
@@ -679,104 +1025,6 @@
           loadAdminDataSuite();
         });
     }
-
-    function handleFormSubmission(event) {
-  event.preventDefault();
-
-document.getElementById('form-shift-id').disabled = false;
-
-  const sId = document.getElementById('form-shift-id').value.trim();
-  const sDate = document.getElementById('form-date').value.trim();
-  const sDept = document.getElementById('form-dept').value.trim();
-const sTime = formatAttendanceTime(
-  document.getElementById('form-time').value.trim()
-);
-  const sSlots = document.getElementById('form-slots').value.trim();
-  const sNotes = document.getElementById('form-notes').value.trim();
-
-  const actionType = editModeShift ? "updateShift" : "createShift";
-
-  const loaderText = editModeShift 
-    ? "UPDATING SHIFT NODE..."
-    : "DEPLOYING NEW SHIFT NODE...";
-
-  document.getElementById('sync-loader').querySelector('.loader-text').textContent = loaderText;
-  document.getElementById('sync-loader').style.display = 'flex';
-
-  fetch(`${SCRIPT_URL}?action=${actionType}&userDocNo=${activeAdminKey}&shiftId=${sId}&date=${sDate}&dept=${sDept}&time=${sTime}&slots=${sSlots}&notes=${encodeURIComponent(sNotes)}`)
-    .then(r => r.json())
-    .then(res => {
-      if (res.ok) {
-
-        alert(editModeShift ? "Shift updated successfully!" : "Shift created successfully!");
-
-        document.getElementById('shift-creation-form').reset();
-        switchTab(1);
-        loadAdminDataSuite();
-
-        // RESET MODE (IMPORTANT)
-        editModeShift = false;
-        editingShiftId = null;
-
-        document.querySelector('#shift-creation-form button[type="submit"]').textContent = "CREATE SHIFT";
-
-      } else {
-        alert("Error: " + res.error);
-      }
-
-      document.getElementById('sync-loader').style.display = 'none';
-    })
-    .catch(() => {
-      alert("Network execution exception.");
-      document.getElementById('sync-loader').style.display = 'none';
-    });
-}
-    function enableEditMode() {
-
-  const sId = document.getElementById('form-shift-id').value.trim();
-
-  if (!sId) {
-    alert("Please enter Shift ID first.");
-    return;
-  }
-
-  const shift = cachedShifts.find(
-    s => String(s.id).toUpperCase() === String(sId).toUpperCase()
-  );
-
-  // NOT FOUND = CREATE MODE
-  if (!shift) {
-
-    editModeShift = false;
-    editingShiftId = null;
-
-    document.getElementById('form-date').value = "";
-    document.getElementById('form-dept').value = "";
-    document.getElementById('form-time').value = formatAttendanceTime(shift.time);
-    document.getElementById('form-slots').value = "";
-    document.getElementById('form-notes').value = "";
-
-    document.querySelector('#shift-creation-form button[type="submit"]').textContent = "CREATE SHIFT";
-
-    alert("Shift ID not found. Ready to create new shift.");
-
-    return;
-  }
-
-  // FOUND = EDIT MODE
-  document.getElementById('form-date').value = shift.date;
-  document.getElementById('form-dept').value = shift.dept;
-  document.getElementById('form-time').value = shift.time;
-  document.getElementById('form-slots').value = shift.slots || shift.totalSlots;
-  document.getElementById('form-notes').value = shift.notes || "";
-
-  editModeShift = true;
-  editingShiftId = shift.id;
-
-  document.querySelector('#shift-creation-form button[type="submit"]').textContent = "UPDATE SHIFT";
-
-  alert("Existing shift loaded successfully.");
-}
   </script>
 </body>
 </html>
