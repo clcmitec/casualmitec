@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting to MITEC | Casual Labour Portal</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-base: #f4f5f8; 
+      --card-bg: #ffffff;
+      --text-main: #102544;
+      --text-muted: #6B7C93;
+      --border: #DCE6F2;
+      --shadow-soft: 0 8px 24px rgba(35,74,155,.06);
+      
+      --sapphire: #082567;
+      --primary: #234A9B;
+      --primary-2: #315FB3;
+      --radius: 22px;
+      --radius-sm: 14px;
+
+      --marble-texture: url('dark-blue-marble-plain-photo-wallpapers%20(1).jpg');
+      
+      --chrome-border: linear-gradient(145deg, #ffffff 0%, #cbd5e1 25%, #64748b 50%, #e2e8f0 75%, #ffffff 100%);
+      --chrome-glow: 0 16px 32px rgba(148, 163, 184, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-base);
+      color: var(--text-main);
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .topbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      background: #fff;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 4px;
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-text h1 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .brand-text p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      transition: all .2s ease;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .btn-light {
+      background: #fff;
+      color: var(--text-main);
+    }
+
+    .btn-light:hover {
+      background: #f8fafc;
+      transform: translateY(-1px);
+    }
+
+    .btn-premium {
+      background: linear-gradient(rgba(4, 17, 48, 0.2), rgba(4, 17, 48, 0.2)), var(--marble-texture);
+      background-size: cover;
+      background-position: center;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 12px rgba(8, 34, 92, 0.15);
+    }
+
+    .btn-premium:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(8, 34, 92, 0.25);
+    }
+    
+    .btn-premium:active {
+      transform: scale(0.98);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 26px 18px 50px;
+    }
+
+    /* PREMIUM MARBLE HERO BLOCK */
+    .hero {
+      background: linear-gradient(rgba(4, 17, 48, 0.45), rgba(4, 17, 48, 0.45)), var(--marble-texture);
+      background-size: cover;
+      background-position: center;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 28px rgba(5, 20, 56, 0.15);
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1.4fr .8fr;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      backdrop-filter: blur(4px);
+    }
+
+    .hero h2 {
+      margin: 0 0 12px;
+      font-size: 38px;
+      line-height: 1.1;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .hero p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 650px;
+    }
+
+    .hero-logo-wrap {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .hero-logo-card {
+      width: 220px;
+      min-height: 140px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-logo-card img {
+      max-width: 100%;
+      max-height: 90px;
+      display: block;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+
+    .quick-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .quick-card h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .quick-card p {
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      flex: 1;
+    }
+
+    .quick-card a {
+      width: 100%;
+    }
+
+    .quick-card .btn {
+      width: 100%;
+    }
+
+    /* OFFICIAL GUIDE GRAPHIC STYLING */
+    .infographic-section {
+      margin-bottom: 28px;
+    }
+
+    .infographic-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .infographic-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-sm);
+      display: block;
+    }
+
+    .section-title {
+      margin: 0 0 16px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .transport-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .transport-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .transport-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-2), var(--sapphire));
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(35, 74, 155, 0.15);
+    }
+    
+    .transport-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2;
+    }
+
+    .transport-content h3 {
+      margin: 0 0 6px;
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.01em;
+    }
+
+    .transport-content p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-main);
+    }
+
+    .transport-content strong {
+      color: #000000;
+      font-weight: 700;
+    }
+
+    .tips {
+      margin-top: 24px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+    }
+
+    .tips h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--sapphire);
+    }
+
+    .tips p {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 13.5px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 900px){
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 24px;
+      }
+
+      .hero-logo-wrap {
+        justify-content: flex-start;
+      }
+
+      .quick-links {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px){
+      .page {
+        padding: 20px 14px 40px;
+      }
+
+      .hero h2 {
+        font-size: 28px;
+      }
+
+      .transport-card {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        align-items: flex-start;
+      }
+
+      .nav-actions {
+        width: 100%;
+      }
+
+      .nav-actions .btn {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-logo">
+          <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo">
+        </div>
+        <div class="brand-text">
+          <h1>MITEC Casual Labour Portal</h1>
+          <p>Venue access and transportation guide</p>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <a href="indexc.html" class="btn btn-light">← Back to Portal</a>
+        <a href="#transportSection" class="btn btn-premium">View Transport Options</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Location Guide</div>
+        <h2>Getting to MITEC</h2>
+        <p>
+          Please refer to the transportation options below when planning your journey to MITEC.
+          This page is designed for casual labour staff, so the route information is kept direct and useful,
+          instead of making people dig through pretty posters and vague venue wording.
+        </p>
+      </div>
+
+      <div class="hero-logo-wrap">
+        <div class="hero-logo-card">
+          <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo">
+        </div>
+      </div>
+    </section>
+
+    <section class="quick-links">
+      <div class="quick-card">
+        <h3>Open in Google Maps</h3>
+        <p>
+          Use Google Maps for route guidance to MITEC from your current location.
+        </p>
+        <a href="https://www.google.com/maps/dir//Malaysia+International+Trade+and+Exhibition+Centre,+Kompleks+MITEC,+8,+Jalan+Dutamas+2,+Kompleks+Kerajaan,+50480+Kuala+Lumpur,+Federal+Territory+of+Kuala+Lumpur/@3.178216,101.6682691,17z/data=!4m7!4m6!1m1!4e2!1m2!1m1!1s0x31cc48648f3437bd:0x24f3a3018c45b014!3e0?utm_campaign=ml-ardl&g_ep=Eg1tbF8yMDI2MDMxMV8wIJvbDyoASAJQAQ%3D%3D" target="_blank">
+          <span class="btn btn-premium">Open Maps</span>
+        </a>
+      </div>
+
+      <div class="quick-card">
+        <h3>Open in Waze</h3>
+        <p>
+          Use Waze if you are driving and want real-time traffic routing. KL traffic has no loyalty.
+        </p>
+        <a href="https://ul.waze.com/ul?place=ChIJa6ZhfZFJzDERUEN7iYa18DY&ll=3.17847220%2C101.66731340&navigate=yes" target="_blank">
+          <span class="btn btn-premium">Open Waze</span>
+        </a>
+      </div>
+
+      <div class="quick-card">
+        <h3>Book Grab / E-Hailing</h3>
+        <p>
+          Convenient for staff coming from MRT, KTM, Kuala Lumpur, or Petaling Jaya.
+        </p>
+        <a href="https://grab.onelink.me/2695613898?pid=website" target="_blank">
+          <span class="btn btn-premium">Open Grab</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- OFFICIAL INFOGRAPHIC GRAPHIC REFERENCE -->
+    <section class="infographic-section">
+      <div class="infographic-card">
+        <img src="1000112325.jpg" alt="Official Getting to MITEC Reference Guide">
+      </div>
+    </section>
+
+    <section id="transportSection">
+      <h2 class="section-title">Available Transportation Options</h2>
+
+      <div class="transport-list">
+        <article class="transport-card">
+          <div class="transport-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><line x1="5" y1="12" x2="19" y2="12"/><line x1="9" y1="16" x2="9" y2="16.01"/><line x1="15" y1="16" x2="15" y2="16.01"/><path d="M7 20v2h2v-2"/><path d="M15 20v2h2v-2"/></svg>
+          </div>
+          <div class="transport-content">
+            <h3>Bus</h3>
+            <p>
+              Ride bus <strong>821</strong> or <strong>851</strong> and stop at
+              <strong>KL 1022 MATRADE South bus stop</strong>. From there, MITEC is approximately a
+              <strong>4-minute walk</strong>.
+            </p>
+          </div>
+        </article>
+
+        <article class="transport-card">
+          <div class="transport-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="14" rx="2"/><path d="M4 11h16"/><path d="M8 3v8"/><path d="M16 3v8"/><path d="M6 17l-3 4"/><path d="M18 17l3 4"/></svg>
+          </div>
+          <div class="transport-content">
+            <h3>MRT</h3>
+            <p>
+              Stop at <strong>Semantan Station</strong> and continue your journey to MITEC by
+              <strong>taxi</strong> or <strong>e-hailing service</strong>.
+            </p>
+          </div>
+        </article>
+
+        <article class="transport-card">
+          <div class="transport-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-4 3"/><path d="m16 19 4 3"/></svg>
+          </div>
+          <div class="transport-content">
+            <h3>KTM</h3>
+            <p>
+              Stop at <strong>Segambut Station</strong> and transfer to MITEC using a
+              <strong>taxi</strong> or <strong>e-hailing vehicle</strong>.
+            </p>
+          </div>
+        </article>
+
+        <article class="transport-card">
+          <div class="transport-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2v2"/><path d="M10 2v2"/><path d="m5 9-1.292 2.584A2 2 0 0 0 5.5 14.5h13a2 2 0 0 0 1.792-2.916L19 9H5z"/><rect x="6" y="14" width="12" height="5" rx="1"/><circle cx="8.5" cy="16.5" r="1"/><circle cx="15.5" cy="16.5" r="1"/></svg>
+          </div>
+          <div class="transport-content">
+            <h3>Taxi / E-Hailing</h3>
+            <p>
+              Staff may request drop-off at the <strong>North Entrance</strong> or
+              <strong>South Entrance</strong> of MITEC from anywhere in
+              <strong>Kuala Lumpur</strong> or <strong>Petaling Jaya</strong>.
+            </p>
+          </div>
+        </article>
+
+        <article class="transport-card">
+          <div class="transport-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+          </div>
+          <div class="transport-content">
+            <h3>Car</h3>
+            <p>
+              MITEC is accessible through major highways including <strong>DUKE</strong>,
+              <strong>NKVE</strong>, <strong>SPRINT Highway</strong>, and <strong>Jalan Kuching</strong>.
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <div class="tips">
+        <h3>Travel Tip</h3>
+        <p>
+          On event days, staff should leave earlier than they think is necessary. Around MITEC,
+          “I still have time” is often the exact sentence said before being trapped in traffic.
+          For public transport users, MRT or KTM plus Grab is usually the cleaner move.
+        </p>
+      </div>
+    </section>
+
+    <div class="footer">
+      © 2026 MITEC Casual Labour Portal
+    </div>
+  </main>
+
+</body>
+</html>
