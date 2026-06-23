@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MITEC Event Calendar</title>
+  <style>
+    :root{
+      --brand:#224289;
+      --gold:#d4af37;
+      --bg:#f4f6f8;
+      --card:#ffffff;
+      --text:#17212b;
+      --muted:#667085;
+      --line:#e5e7eb;
+      --shadow:0 10px 30px rgba(2,18,34,.08);
+      --radius:16px;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      padding:16px;
+    }
+
+    .wrap{
+      max-width:1000px;
+      margin:0 auto;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+
+    /* Stack row elements vertically to let subtitle align from the absolute left */
+    .card-head{
+      background:linear-gradient(135deg, var(--brand), #16346d);
+      color:#fff;
+      padding:22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px; 
+    }
+
+    /* Contains only the logo badge and the primary title */
+    .header-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo-badge{
+      background:#ffffff;
+      padding:5px 10px;
+      border-radius:6px;
+      box-shadow:0 4px 10px rgba(0,0,0,.06);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+    }
+
+    .logo-badge img{
+      height:22px;
+      width:auto;
+      display:block;
+    }
+
+    .header-row h1{
+      margin:0;
+      font-size:22px;
+      font-weight:700;
+      letter-spacing: -0.01em;
+      line-height: 1;
+    }
+
+    /* Subtext now spans cleanly from the left edge */
+    .header-subtext{
+      margin:0;
+      font-size:40px;
+      color:rgba(255,255,255,.8);
+      letter-spacing: 0.01em;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      table-layout:fixed;
+    }
+
+    th, td{
+      padding:14px 12px;
+      border-bottom:1px solid var(--line);
+      text-align:left;
+      vertical-align:top;
+      font-size:14px;
+    }
+
+    th{
+      background:#f8fafc;
+      color:#0f172a;
+      font-weight:700;
+    }
+
+    tbody tr:hover td{
+      background:#fafcff;
+    }
+
+    .msg{
+      padding:26px;
+      text-align:center;
+      color:var(--muted);
+    }
+
+    .date-col{
+      width:26%;
+      white-space:normal;
+      word-break:break-word;
+      font-weight:600;
+      color:var(--brand);
+    }
+
+    .name-col{
+      width:49%;
+      white-space:normal;
+      word-break:break-word;
+      line-height:1.45;
+      font-weight:600;
+    }
+
+    .link-col{
+      width:25%;
+      white-space:normal;
+      word-break:break-word;
+    }
+
+    .event-link{
+      color:var(--brand);
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .event-link:hover{
+      text-decoration:underline;
+    }
+
+    .small{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    @media (max-width: 640px){
+      body{
+        padding:10px;
+      }
+
+      .card-head {
+        padding: 16px 14px;
+        gap: 6px;
+      }
+
+      .header-row {
+        gap: 10px;
+      }
+
+      .logo-badge {
+        padding: 4px 8px;
+      }
+
+      .logo-badge img {
+        height: 18px;
+      }
+
+      .header-row h1{
+        font-size:18px;
+      }
+
+      .header-subtext{
+        font-size:13px;
+      }
+
+      th, td{
+        padding:12px 10px;
+        font-size:13px;
+      }
+
+      .date-col{
+        width:28%;
+      }
+
+      .name-col{
+        width:44%;
+      }
+
+      .link-col{
+        width:28%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+    
+      <div class="card-head">
+        <!-- Flex Container containing only Logo and Title inline -->
+        <div class="header-row">
+          <div class="logo-badge">
+            <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo">
+          </div>
+          <h1>Upcoming Events</h1>
+        </div>
+
+        <!-- Corporate Subtitle positioned underneath, beginning from the left -->
+        <p class="header-subtext">MALAYSIA INTERNATIONAL TRADE & EXHIBITION CENTRE</p>
+      </div>
+
+      <table id="eventTable">
+        <thead>
+          <tr>
+            <th class="date-col">Date</th>
+            <th class="name-col">Event Name</th>
+            <th class="link-col">Event Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="3" class="msg">Loading events...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwGKAgTPXd9eAsdNHx_dOvM2CCtq-ejhAL9pEc6tKiAENOgT_PTXXn7ZcgUOqjESeI/exec";
+
+    async function loadEvents() {
+      const tbody = document.querySelector("#eventTable tbody");
+
+      try {
+        const res = await fetch(WEB_APP_URL);
+        const json = await res.json();
+
+        if (!json.ok) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="3" class="msg">Error: ${json.message || "Failed to load data"}</td>
+            </tr>
+          `;
+          return;
+        }
+
+        const data = json.data || [];
+
+        if (!data.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="3" class="msg">No upcoming events found</td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = data.map(row => `
+          <tr>
+            <td class="date-col">${row["Date Display"] || "-"}</td>
+            <td class="name-col">${row["Event Name"] || "-"}</td>
+            <td class="link-col">
+              ${row["Event Link"]
+                ? `<a class="event-link" href="${row["Event Link"]}" target="_blank">Click Here</a>`
+                : `<span class="small">-</span>`
+              }
+            </td>
+          </tr>
+        `).join("");
+
+      } catch (err) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="3" class="msg">Failed to fetch data</td>
+          </tr>
+        `;
+        console.error(err);
+      }
+    }
+
+    loadEvents();
+  </script>
+</body>
+</html>
