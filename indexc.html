@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MITEC — Casual Labour Portal</title>
+  
+  <link class="icon" href="https://mitec.com.my/static/img/logos/logo-footer.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- REAL-TIME QR DECODING ENGINE INTEGRATION -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+
+  <style>
+    :root {
+      --mitec-blue: #092253;
+      --mitec-blue-dark: #07223f;
+      --mitec-accent: #0f4a82;
+      --bg-base: #f4f5f8;
+      --card-bg: #ffffff;
+      --text-main: #1d1d1f;
+      --text-muted: #86868b;
+      --error: #ff3b30;
+      --success: #34c759;
+      --radius: 28px;
+      --shadow-vip: 0 20px 40px rgba(7, 34, 63, 0.1);
+      --marble-url: url('dark-blue-marble-plain-photo-wallpapers (1).jpg');
+    }
+
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+    body {
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      background-color: var(--bg-base);
+      font-family: 'Inter', -apple-system, sans-serif;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    .nav-icon-btn {
+      position: fixed;
+      top: 30px;
+      right: 36px;
+      z-index: 90;
+      background: var(--mitec-blue);
+      color: #ffffff;
+      border: none;
+      border-radius: 14px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 21px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(9, 34, 83, 0.2);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .nav-icon-btn:hover {
+      background: var(--mitec-accent);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 10px 24px rgba(9, 34, 83, 0.25);
+    }
+
+    .nav-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 70vw; height: 70vh;
+      background: rgba(7, 34, 63, 0.35);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      z-index: 99; opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease, backdrop-filter 0.4s ease, -webkit-backdrop-filter 0.4s ease;
+    }
+
+    .nav-overlay.show {
+      opacity: 1; pointer-events: auto;
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    }
+
+    .nav-dropdown {
+      position: fixed;
+      top: 0; right: 0; height: 100vh; width: 320px; max-width: 100vw;
+      background: var(--mitec-blue); z-index: 100;
+      box-shadow: -10px 0 40px rgba(7, 34, 63, 0.3);
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 40px 24px; display: flex; flex-direction: column; gap: 6px;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-dropdown.show { transform: translateX(0); }
+
+    .drawer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px; padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .drawer-title { font-size: 15px; font-weight: 800; color: #ffffff; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .drawer-close-btn {
+      background: none; border: none; font-size: 22px; color: rgba(255, 255, 255, 0.6);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%; transition: all 0.2s ease;
+    }
+
+    .drawer-close-btn:hover { background: rgba(255, 255, 255, 0.1); color: #ff453a; }
+
+    .dropdown-item {
+      display: flex; align-items: center; gap: 16px; padding: 16px 18px;
+      color: rgba(255, 255, 255, 0.85); text-decoration: none;
+      font-size: 15px; font-weight: 600; border-radius: 14px;
+      opacity: 0; transform: translateX(24px);
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease; cursor: pointer;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.1); color: #ffffff;
+      transform: translateX(4px) !important;
+    }
+
+    .dropdown-item i { font-size: 22px; color: rgba(255, 255, 255, 0.7); transition: transform 0.2s ease; }
+    .dropdown-item:hover i { transform: scale(1.1); color: #ffffff; }
+
+    /* Quick Links Sub Drawer Setup */
+    .dropdown-submenu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-left: 16px;
+    }
+
+    .dropdown-submenu.open {
+      max-height: 320px; /* Expanded limit to safely hold all 5 links */
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+
+    .submenu-header {
+      font-size: 10px;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 10px 16px 4px;
+    }
+
+    .submenu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      border-radius: 10px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .submenu-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+    }
+
+    .submenu-item i { font-size: 16px; color: rgba(255, 255, 255, 0.4); }
+
+    .nav-dropdown.show .dropdown-item { animation: drawerItemFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .nav-dropdown.show .dropdown-item:nth-child(2) { animation-delay: 0.05s; }
+    .nav-dropdown.show .dropdown-item:nth-child(3) { animation-delay: 0.10s; }
+    .nav-dropdown.show .dropdown-item:nth-child(4) { animation-delay: 0.15s; }
+    .nav-dropdown.show .dropdown-item:nth-child(5) { animation-delay: 0.20s; }
+
+    @keyframes drawerItemFadeIn {
+      0% { opacity: 0; transform: translateX(24px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Fullscreen QR Scanner Module Overlay */
+    .scanner-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(7, 34, 63, 0.96);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      z-index: 200; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
+      color: #ffffff; padding: 24px;
+    }
+
+    .scanner-overlay.show { opacity: 1; pointer-events: auto; }
+
+    .scanner-close {
+      position: absolute; top: 36px; right: 36px;
+      background: rgba(255, 255, 255, 0.1); border: none; border-radius: 50%;
+      color: #ffffff; width: 48px; height: 48px; font-size: 24px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .scanner-close:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
+
+    .scanner-container { text-align: center; max-width: 400px; width: 100%; }
+
+    .scanner-viewfinder {
+      position: relative; width: 280px; height: 280px; margin: 0 auto 28px;
+      border-radius: 24px; background: #000000; overflow: hidden;
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.12), 0 24px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    .scanner-video-preview { width: 100%; height: 100%; object-fit: cover; background: #041130; }
+
+    .scanner-laser {
+      position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+      background: linear-gradient(90deg, transparent, var(--success), transparent);
+      box-shadow: 0 0 14px var(--success), 0 0 4px var(--success);
+      animation: laserMotion 2.2s linear infinite; z-index: 5;
+    }
+
+    .scanner-viewfinder.success-flash .scanner-laser {
+      background: linear-gradient(90deg, transparent, #2af598, transparent);
+      box-shadow: 0 0 25px #2af598;
+    }
+
+    @keyframes laserMotion {
+      0% { top: 0%; }
+      50% { top: 100%; }
+      100% { top: 0%; }
+    }
+
+    .scanner-title { font-size: 20px; font-weight: 800; margin: 0 0 8px; letter-spacing: -0.01em; }
+    .scanner-desc { font-size: 14px; color: rgba(255,255,255,0.6); margin: 0; font-weight: 500; }
+
+    .shell { width: 100%; max-width: 440px; padding: 24px; }
+    .card {
+      background: var(--card-bg); border-radius: var(--radius); padding: 54px 32px;
+      text-align: center; box-shadow: var(--shadow-vip); border: 1px solid rgba(9, 34, 83, 0.05);
+    }
+
+    .brand { margin-bottom: 54px; }
+    .brand img { width: 130px; height: auto; object-fit: contain; margin-bottom: 24px; }
+    .sub { font-size: 14px; color: var(--text-muted); margin: 0; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .input-group { position: relative; margin-bottom: 20px; text-align: left; margin-top: px;}
+    .input-icon { position: absolute; left: 16px; top: 18px; font-size: 20px; color: var(--mitec-blue); z-index: 2; }
+
+    .input-control {
+      width: 100%; height: 58px; padding: 0 8px 0 24px; font-size: 16px; font-weight: 400;
+      color: var(--text-main); border: 1.5px solid #e5e7eb; border-radius: 16px;
+      background: #f9fafb; outline: none; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .input-control:focus { border-color: var(--mitec-accent); background: #fff; box-shadow: 0 0 0 4px rgba(15, 74, 130, 0.08); }
+
+    .input-label {
+      position: absolute; left: 48px; top: 18px; color: var(--text-muted);
+      font-size: 16px; font-weight: 400; transition: 0.2s ease all; pointer-events: none;
+    }
+
+    .input-control:focus ~ .input-label,
+    .input-control:not(:placeholder-shown) ~ .input-label {
+      top: -10px; left: 12px; font-size: 11px; color: var(--mitec-accent); background: #fff; padding: 0 6px; font-weight: 700;
+    }
+
+    .btn-primary {
+      width: 100%; height: 60px; border: none; border-radius: 17px;
+      background: var(--marble-url) center/cover no-repeat; background-color: var(--mitec-blue);
+      color: #fff; font-size: 16px; font-weight: 700; cursor: pointer;
+      transition: all 0.2s; margin-top: 8px; position: relative; overflow: hidden;
+      box-shadow: 0 10px 25px rgba(9, 34, 83, 0.2);
+    }
+    
+    .btn-primary::before { content: ''; position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.25); transition: opacity 0.2s; }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary span { position: relative; z-index: 1; }
+
+    .btn-link {
+      display: inline-block; margin-top: 36px; font-size: 13px; font-weight: 700;
+      color: var(--mitec-accent); text-decoration: none; padding: 12px 20px; border-radius: 14px;
+      transition: background 0.2s; line-height: 1.5;
+    }
+    .btn-link:hover { background: rgba(15, 74, 130, 0.05); }
+
+    .msg { margin-top: 24px; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 24px; }
+    .msg.error { color: var(--error); }
+    .msg.success { color: var(--success); }
+
+    .footer { width: 100%; max-width: 320px; margin: 54px auto 32px; text-align: center; }
+    .footer-brand { font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 13px; font-weight: 800; color: var(--mitec-blue); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; line-height: 1.4; display: block; }
+    .footer-divider { width: 30px; height: 1.5px; background: var(--mitec-blue); margin: 14px auto; opacity: 0.15; }
+    .footer-system { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.8; }
+    .version-tag { display: inline-block; margin-top: 12px; padding: 3px 10px; background: #eef1f6; border-radius: 6px; font-size: 9px; font-weight: 800; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <button class="nav-icon-btn" onclick="openNavDrawer()" aria-label="Open Navigation Drawer">
+    <i class="ph-bold ph-list"></i>
+  </button>
+
+  <div id="navOverlay" class="nav-overlay" onclick="closeNavDrawer()"></div>
+  
+  <div id="navDropdown" class="nav-dropdown">
+    <div class="drawer-header">
+      <div class="drawer-title">System Menu</div>
+      <button class="drawer-close-btn" onclick="closeNavDrawer()" aria-label="Close Drawer">
+        <i class="ph-bold ph-x"></i>
+      </button>
+    </div>
+    
+    <!-- MAIN NAVIGATION SCROLLWAY -->
+    <a href="home.html" class="dropdown-item"><i class="ph-bold ph-info"></i> About MITEC</a>
+    <a href="casualmitec.online/calendar.html" class="dropdown-item"><i class="ph-bold ph-calendar-blank"></i> Event Calendar</a>
+    <div class="dropdown-item" onclick="openQRScanner()"><i class="ph-bold ph-qr-code"></i> QR Code Scanner</div>
+    <a href="twuw.html" class="dropdown-item"><i class="ph-bold ph-map-pin-line"></i> How to Get to MITEC</a>
+    
+    <!-- REVISED ACCORDION DRAWER FOR QUICK LINKS -->
+    <div class="dropdown-item" onclick="toggleQuickLinks()">
+      <i class="ph-bold ph-link-simple"></i> Quick Links 
+      <i class="ph-bold ph-caret-down" id="quickLinksCaret" style="margin-left: auto; font-size: 14px; transition: transform 0.3s;"></i>
+    </div>
+    <div id="quickLinksSubmenu" class="dropdown-submenu">
+      <!-- Section A: Legal Governance -->
+      <div class="submenu-header">User Notice</div>
+      <a href="https://docs.google.com/document/d/1M5Q6ol49IeireDOHodFfg-dQaL5ZXEcW6uD-_CPR2GM/edit?usp=sharing" target="_blank" class="submenu-item">
+        <i class="ph-bold ph-shield-check"></i> Privacy Policy
+      </a>
+      <a href="https://docs.google.com/document/d/1S0ib_XFouz-HGwIMfo5uk7YVkuBLe1632WTDEriw404/edit?usp=drivesdk" target="_blank" class="submenu-item">
+        <i class="ph-bold ph-file-text"></i> Terms of Use
+      </a>
+      
+      <!-- Section B: Extended Ecosystem Ecosystem Links -->
+      <div class="submenu-header">Official Sites</div>
+      <a href="https://www.mitec.com.my" target="_blank" class="submenu-item">
+        <i class="ph-bold ph-globe-hemisphere-west"></i> MITEC
+      </a>
+      <a href="https://www.qube.com.my" target="_blank" class="submenu-item">
+        <i class="ph-bold ph-buildings"></i> Qube
+      </a>
+      <a href="https://matrade.gov.my" target="_blank" class="submenu-item">
+        <i class="ph-bold ph-landmark"></i> MATRADE Portal
+      </a>
+    </div>
+  </div>
+
+  <!-- Fullscreen QR Scanner Module Overlay -->
+  <div id="scannerOverlay" class="scanner-overlay">
+    <button class="scanner-close" onclick="closeQRScanner()" aria-label="Exit Scanner">
+      <i class="ph-bold ph-x"></i>
+    </button>
+    <div class="scanner-container">
+      <div id="viewfinder" class="scanner-viewfinder">
+        <div class="scanner-laser"></div>
+        <video id="scannerVideo" class="scanner-video-preview" autoplay playsinline muted></video>
+      </div>
+      <h3 class="scanner-title">QR Code Scanner</h3>
+      <p id="scannerStatusDesc" class="scanner-desc">Position the official MITEC deployment code cleanly within the framing lines to authenticate.</p>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="card">
+      <div class="brand">
+        <!-- 1000112358.png Component Representation -->
+        <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo">
+        <p class="sub">Casual Labour Portal</p>
+      </div>
+
+      <div class="input-group">
+        <i class="ph-fill ph-identification-card input-icon"></i>
+        <input id="docInput" class="input-control" type="text" placeholder=" " autocomplete="off">
+        <label class="input-label">IC / Passport Number</label>
+      </div>
+
+      <button id="loginBtn" class="btn-primary" onclick="handleLogin()">
+        <span>Access</span>
+      </button>
+
+      <a href="129c.html" class="btn-link">First Time User?<br>Register / Update Account</a>
+
+      <div id="loginMessage" class="msg"></div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-brand">MALAYSIA INTERNATIONAL TRADE & EXHIBITION CENTRE</div>
+      <div class="footer-divider"></div>
+      <div class="footer-system">Casual Labour Management <br> & Coordination System</div>
+      <div class="version-tag">SYSTEM PROTOCOL V1.2.0</div>
+    </footer>
+  </div>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq0EucoCN7Y1O1k2mik8Ne7bZbPDfPonyJ9ac73UkzpBMCxsBBhVJ__0ZAC-Fr6OT5/exec";
+
+    const docInput = document.getElementById("docInput");
+    const loginBtn = document.getElementById("loginBtn");
+    const msg = document.getElementById("loginMessage");
+    const navDropdown = document.getElementById("navDropdown");
+    const navOverlay = document.getElementById("navOverlay");
+    const scannerOverlay = document.getElementById("scannerOverlay");
+    const videoElement = document.getElementById("scannerVideo");
+    const viewfinder = document.getElementById("viewfinder");
+    const scannerStatusDesc = document.getElementById("scannerStatusDesc");
+
+    let localStream = null;
+    let isScanningActive = false;
+
+    const processingCanvas = document.createElement("canvas");
+    const processingContext = processingCanvas.getContext("2d");
+
+    function openNavDrawer() { navDropdown.classList.add("show"); navOverlay.classList.add("show"); }
+    
+    function closeNavDrawer() { 
+      navDropdown.classList.remove("show"); 
+      navOverlay.classList.remove("show"); 
+      document.getElementById("quickLinksSubmenu").classList.remove("open");
+      document.getElementById("quickLinksCaret").style.transform = "rotate(0deg)";
+    }
+
+    function toggleQuickLinks() {
+      const submenu = document.getElementById("quickLinksSubmenu");
+      const caret = document.getElementById("quickLinksCaret");
+      const isOpen = submenu.classList.toggle("open");
+      caret.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
+    }
+
+    async function openQRScanner() {
+      closeNavDrawer(); 
+      scannerOverlay.classList.add("show");
+      scannerStatusDesc.textContent = "Position the official MITEC deployment code cleanly within the framing lines to authenticate.";
+      viewfinder.classList.remove("success-flash");
+      
+      try {
+        const constraints = {
+          video: { facingMode: "environment", width: { ideal: 640 }, height: { ideal: 640 } },
+          audio: false
+        };
+        
+        localStream = await navigator.mediaDevices.getUserMedia(constraints);
+        videoElement.srcObject = localStream;
+        isScanningActive = true;
+        
+        requestAnimationFrame(analyzeFrameLoop);
+      } catch (err) {
+        console.error("Camera hardware init failed: ", err);
+        alert("Unable to open camera hardware. Please check your browser privacy permissions.");
+        closeQRScanner();
+      }
+    }
+
+    function analyzeFrameLoop() {
+      if (!isScanningActive) return;
+
+      if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+        processingCanvas.height = videoElement.videoHeight;
+        processingCanvas.width = videoElement.videoWidth;
+        processingContext.drawImage(videoElement, 0, 0, processingCanvas.width, processingCanvas.height);
+        
+        const imageData = processingContext.getImageData(0, 0, processingCanvas.width, processingCanvas.height);
+        const decodedQR = jsQR(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: "dontInvert",
+        });
+
+        if (decodedQR) {
+          isScanningActive = false;
+          handleSuccessfulScan(decodedQR.data);
+          return;
+        }
+      }
+      
+      if (isScanningActive) {
+        requestAnimationFrame(analyzeFrameLoop);
+      }
+    }
+
+    function handleSuccessfulScan(scannedContent) {
+      viewfinder.classList.add("success-flash");
+      scannerStatusDesc.innerHTML = `<span style="color:#34c759; font-weight:800;">QR Decoded Successfully!</span>`;
+      
+      setTimeout(() => {
+        closeQRScanner();
+        if (scannedContent.startsWith("http://") || scannedContent.startsWith("https://")) {
+          window.location.href = scannedContent;
+        } else {
+          alert("Scanned MITEC Payload Data:\n" + scannedContent);
+        }
+      }, 500);
+    }
+
+    function closeQRScanner() {
+      isScanningActive = false;
+      scannerOverlay.classList.remove("show");
+      if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+        localStream = null;
+      }
+      videoElement.srcObject = null;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedDoc = localStorage.getItem("mcl_doc_no");
+      const savedRecord = localStorage.getItem("mitecWorkerRecord");
+      if (savedDoc && savedRecord) {
+        window.location.href = "dashboard.html";
+      } else {
+        docInput.focus();
+      }
+    });
+
+    function showStatus(text, isError = true) {
+      msg.textContent = text;
+      msg.className = isError ? "msg error" : "msg success";
+      if (isError && text) {
+        msg.innerHTML = `<i class="ph-bold ph-warning-circle"></i> ${text}`;
+      } else if (text) {
+        msg.innerHTML = `<i class="ph-bold ph-check-circle"></i> ${text}`;
+      }
+    }
+
+    async function handleLogin() {
+      const docNo = docInput.value.trim();
+      if (!docNo) {
+        showStatus("Credentials required for entry.");
+        return;
+      }
+
+      loginBtn.disabled = true;
+      loginBtn.querySelector('span').textContent = "Establishing Protocol...";
+      showStatus("");
+
+      try {
+        const url = `${WEB_APP_URL}?action=check_existing&doc_no=${encodeURIComponent(docNo)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.ok && data.exists) {
+          showStatus("Identity Verified. Entering...", false);
+          localStorage.setItem("mitecWorkerRecord", JSON.stringify(data.record));
+          localStorage.setItem("mcl_doc_no", docNo);
+          setTimeout(() => { window.location.href = "dashboard.html"; }, 800);
+        } else {
+          showStatus(data.message || "Record not found. Access denied.");
+          loginBtn.disabled = false;
+          loginBtn.querySelector('span').textContent = "Authorize & Enter";
+        }
+      } catch (err) {
+        showStatus("Registry Timeout. Please retry.");
+        loginBtn.disabled = false;
+        loginBtn.querySelector('span').textContent = "Authorize & Enter";
+      }
+    }
+
+    docInput.addEventListener("keypress", (e) => { if(e.key === "Enter") handleLogin(); });
+  </script>
+
+</body>
+</html>
