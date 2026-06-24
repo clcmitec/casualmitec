@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | MITEC Worker Portal</title>
+  
+  <link class="icon" href="https://mitec.com.my/static/img/logos/logo-footer.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  <style>
+    :root {
+      --md-surface: #f4f6f9;
+      --md-surface-container: #ffffff;
+      --md-on-surface: #1d1d1f;
+      --md-on-surface-variant: #51525c;
+      --md-outline: #e1e4ea; 
+      
+      --mitec-blue: #092253;         
+      --mitec-blue-hover: #061b42;   
+      --mitec-accent: #0f4a82;       
+      
+      --md-font: 'Inter', -apple-system, sans-serif;
+      --brand-font: 'Trebuchet MS', Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: var(--md-font);
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--md-surface);
+      color: var(--md-on-surface);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* --- Luxurious Deep Sapphire & Navy Marble Header --- */
+    .about-header {
+      background-color: #04122c;
+      background-image: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 1%, transparent 1%, transparent 50%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.02) 52%, transparent 52%),
+        linear-gradient(65deg, transparent 45%, rgba(255, 255, 255, 0.03) 45%, rgba(255, 255, 255, 0.03) 47%, transparent 47%, transparent 70%, rgba(255, 255, 255, 0.02) 70%, rgba(255, 255, 255, 0.02) 71%, transparent 71%),
+        radial-gradient(circle at 20% 30%, rgba(15, 74, 130, 0.55), transparent 65%),
+        radial-gradient(circle at 80% 70%, rgba(9, 34, 83, 0.85), #030c1e);
+      color: white;
+      padding: 60px 5% 55px;
+      text-align: center;
+      border-bottom: 3px solid var(--mitec-accent);
+      box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .header-logo-wrap {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 14px 28px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .header-logo {
+      height: 65px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .about-header h1 {
+      font-family: var(--brand-font);
+      font-size: 38px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .about-header p {
+      font-size: 16px;
+      opacity: 0.9;
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.6;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    /* --- Shared Grid Layout --- */
+    .container {
+      padding: 50px 5%;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section-title-block {
+      text-align: left;
+      margin-bottom: 36px;
+    }
+
+    .section-title-block h2 {
+      font-size: 28px;
+      color: var(--mitec-blue);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .section-title-block p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--md-on-surface-variant);
+      max-width: 800px;
+    }
+
+    /* --- Portal Capabilities Feature Grid --- */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 54px;
+    }
+
+    .feature-card {
+      background: var(--md-surface-container);
+      border: 1px solid rgba(9, 34, 83, 0.05);
+      padding: 36px;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(9, 34, 83, 0.02);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px rgba(9, 34, 83, 0.06);
+    }
+
+    .feature-card span.material-symbols-outlined {
+      font-size: 40px;
+      color: var(--mitec-accent);
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .feature-card h3 {
+      font-size: 19px;
+      margin-bottom: 12px;
+      color: var(--mitec-blue);
+      font-weight: 700;
+    }
+
+    .feature-card p {
+      color: var(--md-on-surface-variant);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* --- Venue Image Banner Integration --- */
+    .venue-showcase-box {
+      width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 32px;
+      box-shadow: 0 10px 30px rgba(9, 34, 83, 0.06);
+      border: 1px solid rgba(0,0,0,0.05);
+      height: 400px;
+    }
+
+    .venue-showcase-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* --- Executive Welcome Card Layout --- */
+    .leadership-card {
+      background: var(--md-surface-container);
+      border-radius: 24px;
+      padding: 44px;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.02);
+      border: 1px solid rgba(9, 34, 83, 0.04);
+      margin-bottom: 54px;
+    }
+
+    .leader-photo {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background-color: var(--md-surface);
+      border: 4px solid var(--mitec-blue);
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .leader-message h2 {
+      font-size: 26px;
+      color: var(--mitec-blue);
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .leader-message h4 {
+      font-size: 14px;
+      color: var(--mitec-accent);
+      margin-bottom: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .leader-message p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--md-on-surface-variant);
+      margin-bottom: 14px;
+    }
+
+    .leader-message p.quote {
+      font-style: italic;
+      color: var(--md-on-surface);
+      font-weight: 500;
+    }
+
+    /* --- Core Expectations Grid Framework --- */
+    .expectations-grid {
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+      gap: 20px;
+      margin-bottom: 54px;
+    }
+
+    .expectation-item {
+      background: var(--md-surface-container); 
+      padding: 26px 22px; 
+      border-radius: 16px; 
+      border-top: 4px solid var(--mitec-accent); 
+      box-shadow: 0 4px 14px rgba(0,0,0,0.02);
+    }
+
+    .expectation-item .material-symbols-outlined {
+      color: var(--mitec-blue); 
+      font-size: 32px; 
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .expectation-item h4 {
+      color: var(--md-on-surface); 
+      font-size: 16px; 
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .expectation-item p {
+      color: var(--md-on-surface-variant); 
+      font-size: 13.5px; 
+      line-height: 1.5;
+    }
+
+    /* --- Location Routing Map Section --- */
+    .location-section {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      align-items: stretch;
+    }
+
+    .location-text {
+      flex: 1;
+      min-width: 320px;
+    }
+
+    .location-text h2 {
+      font-size: 26px;
+      color: var(--mitec-blue);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .location-text p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--md-on-surface-variant);
+    }
+
+    .location-card {
+      background: var(--md-surface-container);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 20px;
+      border-left: 4px solid var(--mitec-accent);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.02);
+    }
+
+    .location-card h4 {
+      margin-bottom: 8px;
+      color: var(--md-on-surface);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+    }
+
+    .location-card h4 .material-symbols-outlined {
+      color: var(--mitec-accent);
+      font-size: 22px;
+    }
+
+    .location-card p {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--md-on-surface-variant);
+    }
+
+    .map-placeholder {
+      flex: 1;
+      min-width: 320px;
+      height: 380px;
+      background: #e0e2e0;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid rgba(9, 34, 83, 0.05);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .map-placeholder iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* --- Premium Corporate Footer --- */
+    .footer {
+      text-align: center;
+      padding: 40px 5% 32px;
+      background-color: var(--md-surface-container);
+      border-top: 1px solid rgba(9, 34, 83, 0.06);
+      margin-top: auto;
+    }
+
+    .footer p {
+      font-size: 14px;
+      color: var(--md-on-surface-variant);
+      font-weight: 500;
+    }
+
+    /* --- MOBILE RESPONSIVE ADAPTATIONS --- */
+    @media (max-width: 768px) {
+      .about-header { padding: 48px 4% 44px; }
+      .about-header h1 { font-size: 30px; }
+      .leadership-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 32px 24px;
+      }
+      .venue-showcase-box { height: 260px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Premium Unified Header Container with Marble Layout -->
+  <header class="about-header">
+    <div class="header-logo-wrap">
+      <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo" class="header-logo">
+    </div>
+    <h1>Casual Labour Portal</h1>
+    <p>Empowering dynamic field coordination and transparency across Malaysia's premier operational environment.</p>
+  </header>
+
+  <main class="container">
+    
+    <!-- Portal Capabilities Core Grid -->
+    <section class="section-title-block">
+      <h2>Portal Capabilities</h2>
+      <p>The Casual Labour Management System serves as a central hub to manage flexible operations and maintain real-time shift verification metrics across the venue footprint.</p>
+    </section>
+
+    <section class="feature-grid">
+      <div class="feature-card">
+        <span class="material-symbols-outlined">dashboard_customize</span>
+        <h3>Smart Scheduling</h3>
+        <p>Review open shift listings dynamically matched to pending event scales across our massive exhibition spaces.</p>
+      </div>
+      <div class="feature-card">
+        <span class="material-symbols-outlined">fenced</span>
+        <h3>Geofenced Sign-In</h3>
+        <p>Clock-in operations interface securely with localized venue coordinates to confirm arrival on station flawlessly.</p>
+      </div>
+      <div class="feature-card">
+        <span class="material-symbols-outlined">lock_clock</span>
+        <h3>Roster Integrity</h3>
+        <p>The system enforces an automated allocation rule framework to ensure baseline operational rest and performance focus.</p>
+      </div>
+    </section>
+    
+    <!-- Verified Visual Asset Showcase -->
+    <div class="venue-showcase-box">
+      <img src="1000112100.jpg" alt="MITEC Venue Operations Facade" class="venue-showcase-img">
+    </div>
+
+    <!-- Restored Authoritative Leadership Statement -->
+    <div class="leadership-card">
+      <img src="https://mitec.com.my/media/media/leadership/1d49ebb4-c0dd-4e95-b480-240215aaa47d6829d231be.jpg" alt="Madam Mala Dorasamy" class="leader-photo">
+      <div class="leader-message">
+        <h2>Welcome to the Team</h2>
+        <h4>Message from Madam Mala Dorasamy, Chief Executive Officer</h4>
+        <p class="quote">"Our workers are the absolute backbone of everything we do here at MITEC. Without your hard work on the ground, none of the world-class events we host would be possible."</p>
+        <p class="quote">"We built this portal to make your lives easier. Whether you are checking your shifts, updating your details, or tracking your earnings, we want you to have the best tools at your fingertips. Thank you for your continued dedication to making MITEC Malaysia's premier exhibition centre."</p>
+      </div>
+    </div>
+
+    <!-- Core Governance Framework Section -->
+    <div class="expectations-section" style="margin-top: 40px; margin-bottom: 50px;">
+      <div class="section-title-block">
+        <h2>Worker Core Expectations</h2>
+        <p>To maintain MITEC's reputation as a world-class venue, we require all prospective and active team members to uphold these foundational principles.</p>
+      </div>
+
+      <div class="expectations-grid">
+        <div class="expectation-item">
+          <span class="material-symbols-outlined">schedule</span>
+          <h4>Punctuality</h4>
+          <p>Events run on strict timelines. Arriving on time for briefings and honoring committed shifts is strictly enforced.</p>
+        </div>
+        <div class="expectation-item">
+          <span class="material-symbols-outlined">dry_cleaning</span>
+          <h4>Presentation</h4>
+          <p>You are the face of MITEC. Maintaining a neat appearance and adhering to specific uniform guidelines is mandatory.</p>
+        </div>
+        <div class="expectation-item">
+          <span class="material-symbols-outlined">handshake</span>
+          <h4>Professionalism</h4>
+          <p>Treat guests, clients, and fellow crew members with utmost respect. Courtesy is our standard.</p>
+        </div>
+        <div class="expectation-item">
+          <span class="material-symbols-outlined">health_and_safety</span>
+          <h4>Safety First</h4>
+          <p>Never compromise on safety. Strict adherence to venue safety protocols and emergency procedures is required.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Venue Logistics & Location Grid -->
+    <div class="location-section">
+      <div class="location-text">
+        <h2>Getting Here</h2>
+        <p>Malaysia International Trade & Exhibition Centre (MITEC) is located in the KL Metropolis precinct, surrounded by the affluent neighborhoods of Mont Kiara and Publika.</p>
+        
+        <div class="location-card">
+          <h4><span class="material-symbols-outlined">location_on</span> MITEC Address</h4>
+          <p>Kompleks MITEC, No. 8, Jalan Dutamas 2,<br>Kompleks Kerajaan, 50480 Kuala Lumpur,<br>Wilayah Persekutuan Kuala Lumpur, Malaysia</p>
+        </div>
+
+        <div class="location-card">
+          <h4><span class="material-symbols-outlined">badge</span> Staff Entrance & Parking</h4>
+          <p>All registered workers must enter through the designated <strong>Staff Entrance at Gate C</strong>. Please ensure your digital ID from the portal is ready for scanning upon arrival. Dedicated staff parking is available on Basement Level 2 (B2).</p>
+        </div>
+      </div>
+
+      <div class="map-placeholder">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.7431326466395!2d101.66442631165448!3d3.1752317529819974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc48580227bb3d%3A0xea2c42dcd44a33ed!2sMITEC%20(Malaysia%20International%20Trade%20and%20Exhibition%20Centre)!5e0!3m2!1sen!2smy!4v1712849000000!5m2!1sen!2smy" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Malaysia International Trade & Exhibition Centre. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>
