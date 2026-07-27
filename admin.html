@@ -101,14 +101,12 @@
 
     /* Performance & Filtering Control Blocks */
     .filter-panel-card { background: #fff; border: 1px solid var(--border-thin); border-radius: 14px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-    .filter-date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
 
-    /* Premium Pivot Interactive Accordion Tree Layout Styles */
+    /* Pivot Interactive Accordion Styles */
     details.pivot-cat-card, details.pivot-date-block, details.pivot-dept-block, details.pivot-shift-item { display: block; width: 100%; }
     summary.pivot-summary { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; outline: none; list-style: none; }
     summary.pivot-summary::-webkit-details-marker { display: none; }
     
-    /* Global Caret Dynamic Icon Transition Mechanics */
     .pivot-chevron { font-size: 13px; color: var(--text-muted); transition: transform 0.2s ease; display: inline-block; }
     details[open] > summary.pivot-summary .pivot-chevron { transform: rotate(180deg); }
 
@@ -136,6 +134,25 @@
     .metrics-pill-pack { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
     .mini-badge { font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; display: inline-block; text-align: center; min-width: 76px; }
 
+    /* Worker Manager Card & Roster Layout */
+    .wm-card { background: #fff; border: 1px solid var(--border-thin); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .wm-header-title { font-size: 24px; font-weight: 800; color: var(--admin-dark); margin: 0 0 10px 0; text-transform: uppercase; }
+    .wm-meta-line { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+
+    .wm-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; text-align: left; }
+    .wm-table th { background: #f8fafc; padding: 12px 8px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-thin); }
+    .wm-table td { padding: 14px 8px; border-bottom: 1px solid var(--border-thin); vertical-align: middle; }
+
+    /* Status Interactive CTA Buttons */
+    .btn-status-cta { background: var(--admin-dark); color: #fff; font-size: 10px; font-weight: 800; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.15s ease; min-width: 105px; text-align: center; display: inline-block; }
+    .btn-status-cta:hover { transform: scale(1.03); opacity: 0.95; }
+    .btn-status-cta:active { transform: scale(0.96); }
+    .btn-status-cta.cta-waitlist { background: var(--pill-amber-bg); color: var(--pill-amber-text); border: 1px solid var(--pill-amber-border); }
+
+    /* Call Action Button */
+    .btn-call-action { background: #fff; color: var(--admin-dark); border: 1.5px solid var(--admin-dark); font-size: 11px; font-weight: 800; padding: 6px 14px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: 0.15s; width: 100%; max-width: 100px; }
+    .btn-call-action:active { background: #f1f5f9; transform: scale(0.96); }
+
     /* Waitlist Matrices Settings */
     .waitlist-group-box { background: #fff; border: 1px solid var(--border-thin); border-radius: 16px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
     .waitlist-header-title { font-size: 15px; font-weight: 800; color: var(--admin-dark); margin: 0 0 12px 0; display: flex; justify-content: space-between; align-items: center; }
@@ -149,7 +166,7 @@
     .view-drawable-name { color: var(--admin-dark); font-weight: 700; cursor: pointer; display: inline-block; transition: all 0.2s ease; }
     .view-drawable-name:hover { color: #0d9488; text-decoration: underline; }
 
-    /* Drawers overlays */
+    /* Drawers Overlays */
     .drawer-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); z-index: 2000; display: none; align-items: flex-end; }
     .drawer-content { background: #fff; width: 100%; max-height: 85vh; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px 20px; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); }
     .drawer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid var(--border-thin); padding-bottom: 14px; }
@@ -184,6 +201,7 @@
 </head>
 <body>
 
+  <!-- LOGIN OVERLAY -->
   <div id="login-overlay">
     <div class="login-card">
       <div class="login-logo"><i class="ph ph-shield-check"></i></div>
@@ -199,24 +217,28 @@
     </div>
   </div>
 
+  <!-- SYNC LOADER -->
   <div id="sync-loader">
     <i class="ph ph-gear-six ph-spin" style="font-size: 40px; color: var(--admin-dark);"></i>
     <div class="loader-text">LOADING MANAGEMENT PORTAL...</div>
   </div>
 
+  <!-- HEADER -->
   <header class="header">
     <img class="brand-img" src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC">
     <div id="adminUserDisplayTag" class="user-profile-tag">SUPER ADMIN</div>
   </header>
 
+  <!-- NAVIGATION TAB BAR -->
   <nav class="tab-bar">
     <div id="tab-btn-1" class="tab-item active" onclick="switchTab(1)">Statistics & Deployment</div>
     <div id="tab-btn-2" class="tab-item" onclick="switchTab(2)">Rosters</div>
-    <div id="tab-btn-3" class="tab-item" onclick="switchTab(3)">Casual Labour Info</div>
+    <div id="tab-btn-3" class="tab-item" onclick="switchTab(3)">Shift Manager</div>
   </nav>
 
   <div class="container">
     
+    <!-- PAGE 1: STATISTICS & DEPLOYMENT -->
     <div id="page-1" class="app-page active">
       <div id="matrixFilterActiveLabel" class="section-label">Global Matrix <span class="matrix-title-badge">All Data</span></div>
       <div class="dashboard-grid">
@@ -244,54 +266,37 @@
       </div>
     </div>
 
+    <!-- PAGE 2: ROSTERS (PIVOT TREE) -->
     <div id="page-2" class="app-page">
       <div id="pivot-roster-root-container"></div>
     </div>
 
+    <!-- PAGE 3: SHIFT MANAGER -->
     <div id="page-3" class="app-page">
       
-      <div class="section-label">Section 1: Top Performer Suite</div>
+      <div class="section-label">Section 1: Worker Manager</div>
+      
+      <!-- Upcoming Shift Selector Card -->
       <div class="filter-panel-card">
-        <div class="filter-date-row">
-          <div class="form-group" style="margin-bottom:0;">
-            <label style="font-size:10px;">Date Start</label>
-            <input type="date" id="perf-start-date" class="form-control" style="height:38px; font-size:12px;" onchange="calculateTopPerformers()" />
-          </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label style="font-size:10px;">Date End</label>
-            <input type="date" id="perf-end-date" class="form-control" style="height:38px; font-size:12px;" onchange="calculateTopPerformers()" />
-          </div>
-        </div>
-        <div class="form-group" style="margin-bottom:0; margin-top:8px;">
-          <label style="font-size:10px;">Document Identification Layer</label>
-          <select id="perf-doc-type" class="form-control" style="height:38px; font-size:12px;" onchange="calculateTopPerformers()">
-            <option value="ALL">Select All (Rank Complete Database)</option>
-            <option value="MyKAD">MyKAD Profiles Only (Generates Top 10)</option>
-            <option value="PASSPORT">Passport Profiles Only (Generates Top 10)</option>
+        <div class="form-group" style="margin-bottom:0;">
+          <label style="font-size:10px;">Select Upcoming Shift</label>
+          <select id="wm-shift-select" class="form-control" style="height:42px; font-weight:700;" onchange="renderWorkerManagerTable()">
+            <option value="">-- Loading Shifts --</option>
           </select>
         </div>
       </div>
 
-      <div style="overflow-x:auto; background:#fff; border:1px solid var(--border-thin); border-radius:14px; margin-bottom:20px; box-shadow:0 3px 8px rgba(0,0,0,0.02);">
-        <table class="roster-table" style="margin-top:0;">
-          <thead>
-            <tr style="background:#f8fafc;">
-              <th style="width:50px; text-align:center;">Rank</th>
-              <th>Casual Labour Name</th>
-              <th style="width:110px; text-align:center;">Attended</th>
-              <th style="width:100px; text-align:center;">No Show</th>
-            </tr>
-          </thead>
-          <tbody id="top-performer-table-body"></tbody>
-        </table>
-      </div>
+      <!-- Active Shift Card & Worker Roster Table -->
+      <div id="worker-manager-root"></div>
 
-      <div class="section-label">Section 2: Standby Priority Table</div>
+      <div class="section-label" style="margin-top:30px;">Section 2: Standby Priority Table</div>
       <div id="waitlist-queues-container"></div>
+
     </div>
 
   </div>
 
+  <!-- WORKER PROFILE DRAWER OVERLAY -->
   <div id="worker-profile-drawer" class="drawer-overlay" onclick="closeWorkerProfileDrawer()">
     <div class="drawer-content" onclick="event.stopPropagation()">
       <div class="drawer-header">
@@ -316,6 +321,7 @@
     </div>
   </div>
 
+  <!-- CREATE / EDIT SHIFT DRAWER OVERLAY -->
   <div id="shift-drawer" class="drawer-overlay" onclick="closeShiftDrawer()">
     <div class="drawer-content" onclick="event.stopPropagation()">
       <div class="drawer-header">
@@ -411,9 +417,6 @@
     let calYear = calDate.getFullYear();
 
     window.onload = () => {
-      document.getElementById('perf-start-date').value = "2026-01-01";
-      document.getElementById('perf-end-date').value = "2026-12-31";
-
       let sessionKey = null;
       try {
         sessionKey = localStorage.getItem("mitec_admin_key") || localStorage.getItem("mcl_doc_no");
@@ -524,7 +527,7 @@
             updateMatrixNumbers(calSelectedDateStr, calSelectedShiftId);
             renderStatisticsPage(); 
             renderPivotRostersPage();
-            calculateTopPerformers();
+            populateWorkerManagerShifts();
             renderWaitlistQueuesPage();
             
             document.getElementById('sync-loader').style.display = 'none';
@@ -539,6 +542,7 @@
         });
     }
 
+    /* Tab 1 Functions */
     function updateMatrixNumbers(targetDate, targetShiftId) {
       let scopedShifts = cachedShifts;
       let scopedBookings = cachedBookings;
@@ -559,7 +563,7 @@
 
       let totalCap = 0;
       scopedShifts.forEach(s => { totalCap += Number(s.slots || s.totalSlots || s.Slots || 0); });
-      const totalConf = scopedBookings.filter(b => b.status === 'SUBMITTED').length;
+      const totalConf = scopedBookings.filter(b => b.status === 'SUBMITTED' || b.status === 'CONFIRMED').length;
       const totalWait = scopedBookings.filter(b => b.status === 'WAITLIST' || b.status === 'WAITING LIST').length;
       const totalDrop = scopedBookings.filter(b => b.status === 'CANCELLED').length;
 
@@ -645,11 +649,11 @@
                    totalMetric = shiftsToday.reduce((sum, s) => sum + Number(s.slots || s.totalSlots || s.Slots || 0), 0);
                    if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:#e2e8f0; color:var(--text-main);">Cap ${totalMetric}</div>`;
               } else if (currentActiveFilter === 'CONF') {
-                   totalMetric = cachedBookings.filter(b => shiftsToday.some(s => s.id === b.shift_id) && b.status === 'SUBMITTED').length;
+                   totalMetric = cachedBookings.filter(b => shiftsToday.some(s => s.id === b.shift_id) && (b.status === 'SUBMITTED' || b.status === 'CONFIRMED')).length;
                    if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:var(--pill-teal-bg); color:var(--admin-dark);">+${totalMetric}</div>`;
               } else if (currentActiveFilter === 'WAIT') {
-                   totalMetric = cachedBookings.filter(b => shiftsToday.some(s => s.id === b.shift_id) && b.status === 'WAITLIST').length;
-                   if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:var(--pill-amber-bg); color:var(--accent-amber);">+${totalMetric}</div>`;
+                   totalMetric = cachedBookings.filter(b => shiftsToday.some(s => s.id === b.shift_id) && (b.status === 'WAITLIST' || b.status === 'WAITING LIST')).length;
+                   if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:var(--pill-amber-bg); color:var(--pill-amber-text);">+${totalMetric}</div>`;
               } else if (currentActiveFilter === 'DROP') {
                    totalMetric = cachedBookings.filter(b => shiftsToday.some(s => s.id === b.shift_id) && b.status === 'CANCELLED').length;
                    if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:var(--pill-red-bg); color:var(--accent-warn);">-${totalMetric}</div>`;
@@ -677,7 +681,7 @@
       } else {
           let visibleCards = 0;
           shiftsToday.forEach(s => {
-              const confirmedCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'SUBMITTED').length;
+              const confirmedCount = cachedBookings.filter(b => b.shift_id === s.id && (b.status === 'SUBMITTED' || b.status === 'CONFIRMED')).length;
               const waitlistCount = cachedBookings.filter(b => b.shift_id === s.id && (b.status === 'WAITLIST' || b.status === 'WAITING LIST')).length;
               const cancelledCount = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'CANCELLED').length;
 
@@ -795,7 +799,7 @@
         }).catch(() => { document.getElementById('sync-loader').style.display = 'none'; });
     }
 
-    /* Tab 2: Pivot Table Interactive Collapse/Expand Nesting Architecture Builder */
+    /* Tab 2 Functions: Pivot Tree Architecture */
     function renderPivotRostersPage() {
       const container = document.getElementById('pivot-roster-root-container');
       container.innerHTML = '';
@@ -866,10 +870,9 @@
 
             shifts.forEach(s => {
               let displayTime = formatAttendanceTime(s.time);
-              let confirmedApplicants = cachedBookings.filter(b => b.shift_id === s.id && b.status === 'SUBMITTED');
+              let confirmedApplicants = cachedBookings.filter(b => b.shift_id === s.id && (b.status === 'SUBMITTED' || b.status === 'CONFIRMED'));
               let capacity = s.slots || s.totalSlots || s.Slots || 0;
 
-              // Shift parameters converted to native collapsible details layout with standard Phosphor custom Caret Icons
               catMarkup += `
                 <details class="pivot-shift-item" style="padding:0;" ${catOpenState}>
                   <summary class="pivot-summary pivot-shift-header" style="padding:12px;">
@@ -898,14 +901,11 @@
                   let attStamp = w.attendance || "";
                   let attDisplay = "";
                   if (attStamp.toLowerCase() === "no show" || attStamp === "" || attStamp === "-" || attStamp === "0") {
-                    
-                    // If category context matches UPCOMING, suppress "No Show" string presentation layer
                     if (cat === "UPCOMING") {
                       attDisplay = ``;
                     } else {
                       attDisplay = `<span style="color:var(--accent-warn); font-weight:800;">No Show</span>`;
                     }
-                    
                   } else {
                     attDisplay = `<span style="color:var(--admin-dark); font-weight:700; font-family:monospace;">${formatFullTimestamp(attStamp)}</span>`;
                   }
@@ -932,74 +932,137 @@
       });
     }
 
-    /* Tab 3: Specialized Performance Auditing Engine Calculation Layer */
-    function calculateTopPerformers() {
-      const startInput = document.getElementById('perf-start-date').value;
-      const endInput = document.getElementById('perf-end-date').value;
-      const docFilter = document.getElementById('perf-doc-type').value;
-      const tbody = document.getElementById('top-performer-table-body');
+    /* Tab 3 Functions: Shift Manager (Worker Manager & Standby Priority) */
+    function populateWorkerManagerShifts() {
+      const selectEl = document.getElementById('wm-shift-select');
+      if (!selectEl) return;
+
+      let today = new Date(); today.setHours(0,0,0,0);
+      const upcomingShifts = cachedShifts.filter(s => getShiftDateObj(s.date) >= today);
       
-      tbody.innerHTML = '';
-      if (!startInput || !endInput) return;
-
-      let startDate = new Date(startInput); startDate.setHours(0,0,0,0);
-      let endDate = new Date(endInput); endDate.setHours(23,59,59,999);
-
-      let clRegistry = {};
-
-      cachedBookings.forEach(b => {
-        let bDateObj = getShiftDateObj(b.date);
-        if (bDateObj < startDate || bDateObj > endDate) return; 
-
-        let userId = String(b.user_id).trim();
-        if (!userId) return;
-
-        let inferredDocType = b.document_type || (/[A-Z]/.test(userId) ? "PASSPORT" : "MyKAD");
-        if (docFilter !== "ALL" && inferredDocType !== docFilter) return; 
-
-        if (!clRegistry[userId]) {
-          clRegistry[userId] = { name: b.worker_name, attended: 0, noShows: 0 };
-        }
-
-        const rawStatus = String(b.status).toUpperCase();
-        const attStr = String(b.attendance || "").trim().toLowerCase();
-
-        if (rawStatus === "SUBMITTED" || rawStatus === "CONFIRMED") {
-          let isNoShow = (attStr === "no show" || attStr === "" || attStr === "-" || attStr === "0");
-          if (isNoShow) clRegistry[userId].noShows++;
-          else clRegistry[userId].attended++;
-        }
-      });
-
-      let rankingArray = Object.keys(clRegistry).map(key => ({ id: key, ...clRegistry[key] }));
-
-      rankingArray.sort((a, b) => {
-        if (b.attended !== a.attended) return b.attended - a.attended;
-        return a.noShows - b.noShows;
-      });
-
-      if (docFilter !== "ALL") {
-        rankingArray = rankingArray.slice(0, 10);
-      }
-
-      if (rankingArray.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:var(--text-muted); font-style:italic;">No attendance history matches these criteria.</td></tr>`;
+      if (upcomingShifts.length === 0) {
+        selectEl.innerHTML = '<option value="">No upcoming shifts found</option>';
+        document.getElementById('worker-manager-root').innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted); font-style:italic;">No upcoming shift parameters registered.</p>';
         return;
       }
 
-      rankingArray.forEach((user, idx) => {
-        tbody.innerHTML += `
-          <tr>
-            <td style="text-align:center; font-weight:800; color:${idx === 0 ? '#0d9488' : 'var(--admin-dark)'};">${idx + 1}</td>
-            <td>
-              <div class="view-drawable-name" onclick="openWorkerProfileDrawer('${user.id}', '${user.name.replace(/'/g, "\\'")}')">${user.name}</div>
-              <div style="font-size:10px; color:var(--text-muted);">Doc ID: ${user.id}</div>
-            </td>
-            <td style="text-align:center; font-weight:700; color:var(--admin-dark);">${user.attended} Shifts</td>
-            <td style="text-align:center; font-weight:700; color:${user.noShows > 0 ? 'var(--accent-warn)' : 'var(--text-muted)'};">${user.noShows} Cases</td>
-          </tr>`;
-      });
+      upcomingShifts.sort((a, b) => getShiftDateObj(a.date) - getShiftDateObj(b.date));
+
+      let currentSelection = selectEl.value;
+      selectEl.innerHTML = upcomingShifts.map(s => `
+        <option value="${s.id}">[${s.dept}] ${s.date} (${formatAttendanceTime(s.time)}) — ID: ${s.id}</option>
+      `).join('');
+
+      if (currentSelection && upcomingShifts.some(s => s.id === currentSelection)) {
+        selectEl.value = currentSelection;
+      } else {
+        selectEl.value = upcomingShifts[0].id;
+      }
+
+      renderWorkerManagerTable();
     }
+
+    function renderWorkerManagerTable() {
+      const selectEl = document.getElementById('wm-shift-select');
+      const rootEl = document.getElementById('worker-manager-root');
+      if (!selectEl || !rootEl) return;
+
+      const shiftId = selectEl.value;
+      const shift = cachedShifts.find(s => s.id === shiftId);
+
+      if (!shift) {
+        rootEl.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">Please select a shift above.</p>';
+        return;
+      }
+
+      const shiftBookings = cachedBookings.filter(b => b.shift_id === shift.id && String(b.status).toUpperCase() !== 'CANCELLED');
+      const totalSlots = shift.slots || shift.totalSlots || shift.Slots || 0;
+
+      let html = `
+        <div class="wm-card">
+          <h2 class="wm-header-title">${shift.dept}</h2>
+          <div class="wm-meta-line"><i class="ph ph-fingerprint"></i> Shift ID: <b>${shift.id}</b></div>
+          <div class="wm-meta-line"><i class="ph ph-calendar"></i> Date: <b>${shift.date} (${formatAttendanceTime(shift.time)})</b></div>
+          <div class="wm-meta-line"><i class="ph ph-users-three"></i> Capacity: <b>${totalSlots} Slots</b></div>
+
+          <div style="overflow-x:auto; margin-top:15px;">
+            <table class="wm-table">
+              <thead>
+                <tr>
+                  <th>Casual Worker Name</th>
+                  <th style="text-align:center; width:130px;">Status</th>
+                  <th style="text-align:center; width:110px;">Action</th>
+                </tr>
+              </thead>
+              <tbody>`;
+
+      if (shiftBookings.length === 0) {
+        html += `<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--text-muted); font-style:italic;">No workers assigned to this shift.</td></tr>`;
+      } else {
+        shiftBookings.forEach(w => {
+          const isConfirmed = (String(w.status).toUpperCase() === 'SUBMITTED' || String(w.status).toUpperCase() === 'CONFIRMED');
+          const statusLabel = isConfirmed ? "CONFIRMED" : "WAITING LIST";
+          const statusClass = isConfirmed ? "" : "cta-waitlist";
+          const targetToWaitlist = isConfirmed ? "true" : "false";
+
+          const phoneNum = w.phone ? String(w.phone).replace(/[^0-9+]/g, '') : '';
+          const callLink = phoneNum ? `tel:${phoneNum}` : `javascript:alert('No phone number on record');`;
+
+          html += `
+            <tr>
+              <td>
+                <div style="font-weight:800; color:var(--admin-dark); text-transform:uppercase; line-height:1.2;">${w.worker_name}</div>
+                <div style="font-size:10px; color:var(--text-muted); margin-top:3px; font-weight:600;">${w.user_id}</div>
+              </td>
+              <td style="text-align:center;">
+                <button class="btn-status-cta ${statusClass}" onclick="toggleWorkerStatus('${shift.id}', '${w.user_id}', '${targetToWaitlist}')">
+                  ${statusLabel}
+                </button>
+              </td>
+              <td style="text-align:center;">
+                <a href="${callLink}" class="btn-call-action">
+                  <i class="ph ph-phone"></i> CALL
+                </a>
+              </td>
+            </tr>`;
+        });
+      }
+
+      html += `</tbody></table></div></div>`;
+      rootEl.innerHTML = html;
+    }
+
+
+function toggleWorkerStatus(shiftId, workerId, targetToWaitlist) {
+  const promptMsg = targetToWaitlist === 'true' 
+    ? `Demote Worker ID: ${workerId} back to Standby Waitlist?` 
+    : `Promote & Confirm registration for Worker ID: ${workerId}?`;
+
+  if (!confirm(promptMsg)) return;
+  
+  document.getElementById('sync-loader').querySelector('.loader-text').textContent = "SYNCHRONIZING STATUS TRANSACTION...";
+  document.getElementById('sync-loader').style.display = 'flex';
+  
+  fetch(`${SCRIPT_URL}?action=updateStatus&shiftId=${encodeURIComponent(shiftId)}&userDocNo=${encodeURIComponent(workerId)}&isWaitlist=${targetToWaitlist}&adminDocNo=${encodeURIComponent(activeAdminKey)}`)
+    .then(r => r.json())
+    .then(res => {
+      document.getElementById('sync-loader').style.display = 'none';
+      if (res.ok) {
+        alert("Database matrix successfully updated!");
+      } else {
+        alert("Update Failed: " + (res.error || "Matching record not found."));
+      }
+      loadAdminDataSuite();
+    })
+    .catch(err => {
+      document.getElementById('sync-loader').style.display = 'none';
+      alert("An error occurred while transmitting transaction variables.");
+      console.error(err);
+      loadAdminDataSuite();
+    });
+}
+
+
 
     function renderWaitlistQueuesPage() {
       const container = document.getElementById('waitlist-queues-container');
@@ -1014,7 +1077,7 @@
         let docNo = String(b.user_id).trim();
         if (!docNo) return;
         if (!clHistory[docNo]) clHistory[docNo] = { totalConfirmed: 0, noShows: 0 };
-        if (String(b.status).toUpperCase() === 'SUBMITTED') clHistory[docNo].totalConfirmed++;
+        if (String(b.status).toUpperCase() === 'SUBMITTED' || String(b.status).toUpperCase() === 'CONFIRMED') clHistory[docNo].totalConfirmed++;
         if (String(b.attendance || "").trim().toLowerCase() === "no show") clHistory[docNo].noShows++;
       });
 
@@ -1077,6 +1140,7 @@
       }
     }
 
+    /* Drawer Functions */
     function openWorkerProfileDrawer(workerId, workerName) {
       document.getElementById('wp-drawer-name').textContent = workerName;
       let totalConfirmed = 0, noShows = 0, profileRowsMarkup = "";
