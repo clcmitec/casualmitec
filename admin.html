@@ -166,6 +166,38 @@
     .view-drawable-name { color: var(--admin-dark); font-weight: 700; cursor: pointer; display: inline-block; transition: all 0.2s ease; }
     .view-drawable-name:hover { color: #0d9488; text-decoration: underline; }
 
+/* Bulk Action UI Elements */
+.bulk-action-bar { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  background: #f8fafc; 
+  padding: 12px 16px; 
+  border-bottom: 1px solid var(--border-thin); 
+  border-top: 1px solid var(--border-thin);
+}
+.btn-bulk { 
+  background: var(--admin-dark); 
+  color: #fff; 
+  border: none; 
+  padding: 8px 14px; 
+  border-radius: 6px; 
+  font-size: 10px; 
+  font-weight: 800; 
+  text-transform: uppercase; 
+  cursor: pointer; 
+  transition: 0.15s; 
+  letter-spacing: 0.5px;
+}
+.btn-bulk:active { transform: scale(0.95); }
+.cb-custom { 
+  width: 18px; 
+  height: 18px; 
+  accent-color: var(--admin-dark); 
+  cursor: pointer; 
+}
+
+
     /* Drawers Overlays */
     .drawer-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); z-index: 2000; display: none; align-items: flex-end; }
     .drawer-content { background: #fff; width: 100%; max-height: 85vh; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px 20px; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); }
@@ -959,78 +991,146 @@
         selectEl.value = upcomingShifts[0].id;
       }
 
-      renderWorkerManagerTable();
-    }
+      function renderWorkerManagerTable() {
+  const selectEl = document.getElementById('wm-shift-select');
+  const rootEl = document.getElementById('worker-manager-root');
+  if (!selectEl || !rootEl) return;
 
-    function renderWorkerManagerTable() {
-      const selectEl = document.getElementById('wm-shift-select');
-      const rootEl = document.getElementById('worker-manager-root');
-      if (!selectEl || !rootEl) return;
+  const shiftId = selectEl.value;
+  const shift = cachedShifts.find(s => s.id === shiftId);
 
-      const shiftId = selectEl.value;
-      const shift = cachedShifts.find(s => s.id === shiftId);
+  if (!shift) {
+    rootEl.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">Please select a shift above.</p>';
+    return;
+  }
 
-      if (!shift) {
-        rootEl.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">Please select a shift above.</p>';
-        return;
-      }
+  const shiftBookings = cachedBookings.filter(b => b.shift_id === shift.id && String(b.status).toUpperCase() !== 'CANCELLED');
+  const totalSlots = shift.slots || shift.totalSlots || shift.Slots || 0;
 
-      const shiftBookings = cachedBookings.filter(b => b.shift_id === shift.id && String(b.status).toUpperCase() !== 'CANCELLED');
-      const totalSlots = shift.slots || shift.totalSlots || shift.Slots || 0;
+  // Group workers by status
+  const confirmedBookings = shiftBookings.filter(b => String(b.status).toUpperCase() === 'SUBMITTED' || String(b.status).toUpperCase() === 'CONFIRMED');
+  const waitlistBookings = shiftBookings.filter(b => String(b.status).toUpperCase() === 'WAITLIST' || String(b.status).toUpperCase() === 'WAITING LIST');
 
-      let html = `
-        <div class="wm-card">
-          <h2 class="wm-header-title">${shift.dept}</h2>
-          <div class="wm-meta-line"><i class="ph ph-fingerprint"></i> Shift ID: <b>${shift.id}</b></div>
-          <div class="wm-meta-line"><i class="ph ph-calendar"></i> Date: <b>${shift.date} (${formatAttendanceTime(shift.time)})</b></div>
-          <div class="wm-meta-line"><i class="ph ph-users-three"></i> Capacity: <b>${totalSlots} Slots</b></div>
+  let html = `
+    <div class="wm-card" style="padding: 0; overflow: hidden;">
+      <div style="padding: 20px;">
+        <h2 class="wm-header-title">${shift.dept}</h2>
+        <div class="wm-meta-line"><i class="ph ph-fingerprint"></i> Shift ID: <b>${shift.id}</b></div>
+        <div class="wm-meta-line"><i class="ph ph-calendar"></i> Date: <b>${shift.date} (${formatAttendanceTime(shift.time)})</b></div>
+        <div class="wm-meta-line"><i class="ph ph-users-three"></i> Capacity: <b>${confirmedBookings.length} / ${totalSlots} Slots Filled</b></div>
+      </div>
+  `;
 
-          <div style="overflow-x:auto; margin-top:15px;">
-            <table class="wm-table">
-              <thead>
-                <tr>
-                  <th>Casual Worker Name</th>
-                  <th style="text-align:center; width:130px;">Status</th>
-                  <th style="text-align:center; width:110px;">Action</th>
-                </tr>
-              </thead>
-              <tbody>`;
+  // Helper to construct the individual grouped tables
+  const generateTable = (groupName, data, isConfirmedGroup) => {
+    if (data.length === 0) return `<div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 12px; font-style: italic; border-top: 1px solid var(--border-thin);">No workers currently in ${groupName}.</div>`;
+    
+    const cbClass = isConfirmedGroup ? 'cb-conf' : 'cb-wait';
+    const targetToWaitlist = isConfirmedGroup ? 'true' : 'false';
+    const btnLabel = isConfirmedGroup ? 'Demote to Standby' : 'Confirm Selected';
+    const btnColor = isConfirmedGroup ? 'background: var(--pill-amber-bg); color: var(--pill-amber-text); border: 1px solid var(--pill-amber-border);' : 'background: var(--admin-dark); color: #fff;';
 
-      if (shiftBookings.length === 0) {
-        html += `<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--text-muted); font-style:italic;">No workers assigned to this shift.</td></tr>`;
-      } else {
-        shiftBookings.forEach(w => {
-          const isConfirmed = (String(w.status).toUpperCase() === 'SUBMITTED' || String(w.status).toUpperCase() === 'CONFIRMED');
-          const statusLabel = isConfirmed ? "CONFIRMED" : "WAITING LIST";
-          const statusClass = isConfirmed ? "" : "cta-waitlist";
-          const targetToWaitlist = isConfirmed ? "true" : "false";
-
-          const phoneNum = w.phone ? String(w.phone).replace(/[^0-9+]/g, '') : '';
-          const callLink = phoneNum ? `tel:${phoneNum}` : `javascript:alert('No phone number on record');`;
-
-          html += `
+    let tableHtml = `
+      <div class="bulk-action-bar">
+        <span style="font-size: 12px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase;">${groupName} (${data.length})</span>
+        <button class="btn-bulk" style="${btnColor}" onclick="executeBulkUpdate('${shift.id}', '${cbClass}', '${targetToWaitlist}')">${btnLabel}</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="wm-table" style="margin-top: 0;">
+          <thead>
             <tr>
-              <td>
-                <div style="font-weight:800; color:var(--admin-dark); text-transform:uppercase; line-height:1.2;">${w.worker_name}</div>
-                <div style="font-size:10px; color:var(--text-muted); margin-top:3px; font-weight:600;">${w.user_id}</div>
-              </td>
-              <td style="text-align:center;">
-                <button class="btn-status-cta ${statusClass}" onclick="toggleWorkerStatus('${shift.id}', '${w.user_id}', '${targetToWaitlist}')">
-                  ${statusLabel}
-                </button>
-              </td>
-              <td style="text-align:center;">
-                <a href="${callLink}" class="btn-call-action">
-                  <i class="ph ph-phone"></i> CALL
-                </a>
-              </td>
-            </tr>`;
-        });
-      }
+              <th style="width: 40px; text-align: center;">
+                <input type="checkbox" class="cb-custom" onchange="toggleAllCheckboxes(this, '${cbClass}')">
+              </th>
+              <th>Casual Worker Name</th>
+              <th style="text-align:center; width:110px;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
 
-      html += `</tbody></table></div></div>`;
-      rootEl.innerHTML = html;
+    data.forEach(w => {
+      const phoneNum = w.phone ? String(w.phone).replace(/[^0-9+]/g, '') : '';
+      const callLink = phoneNum ? `tel:${phoneNum}` : `javascript:alert('No phone number on record');`;
+      tableHtml += `
+        <tr>
+          <td style="text-align: center;">
+            <input type="checkbox" class="cb-custom ${cbClass}" value="${w.user_id}">
+          </td>
+          <td>
+            <div class="view-drawable-name" onclick="openWorkerProfileDrawer('${w.user_id}', '${w.worker_name.replace(/'/g, "\\'")}')" style="font-weight:800; text-transform:uppercase; line-height:1.2;">${w.worker_name}</div>
+            <div style="font-size:10px; color:var(--text-muted); margin-top:3px; font-weight:600;">${w.user_id}</div>
+          </td>
+          <td style="text-align:center;">
+            <a href="${callLink}" class="btn-call-action">
+              <i class="ph ph-phone"></i> CALL
+            </a>
+          </td>
+        </tr>
+      `;
+    });
+    tableHtml += `</tbody></table></div>`;
+    return tableHtml;
+  };
+
+  html += generateTable('Confirmed Roster', confirmedBookings, true);
+  html += `<div style="height: 8px; background: var(--bg-slate);"></div>`; // Visual gap between tables
+  html += generateTable('Standby Waitlist', waitlistBookings, false);
+  html += `</div>`; 
+
+  rootEl.innerHTML = html;
+}
+
+function toggleAllCheckboxes(masterCheckbox, className) {
+  const checkboxes = document.querySelectorAll(`.${className}`);
+  checkboxes.forEach(cb => cb.checked = masterCheckbox.checked);
+}
+
+async function executeBulkUpdate(shiftId, className, targetToWaitlist) {
+  const checkboxes = document.querySelectorAll(`.${className}:checked`);
+  if (checkboxes.length === 0) {
+    alert("Please select at least one casual worker to update.");
+    return;
+  }
+
+  const isDemoting = targetToWaitlist === 'true';
+  const actionText = isDemoting ? "demote to standby" : "confirm roster for";
+  
+  if (!confirm(`Are you sure you want to ${actionText} ${checkboxes.length} selected worker(s)?`)) return;
+
+  document.getElementById('sync-loader').querySelector('.loader-text').textContent = "PROCESSING BULK TRANSACTION...";
+  document.getElementById('sync-loader').style.display = 'flex';
+
+  let successCount = 0;
+  let failCount = 0;
+
+  // Process sequentially to prevent GAS execution locks and ensure shift rules validate properly
+  for (let cb of checkboxes) {
+    const workerId = cb.value;
+    try {
+      const response = await fetch(`${SCRIPT_URL}?action=updateStatus&shiftId=${encodeURIComponent(shiftId)}&userDocNo=${encodeURIComponent(workerId)}&isWaitlist=${targetToWaitlist}&adminDocNo=${encodeURIComponent(activeAdminKey)}`);
+      const res = await response.json();
+      if (res.ok) {
+        successCount++;
+      } else {
+        failCount++;
+      }
+    } catch (error) {
+      failCount++;
+      console.error("Bulk update failed for ID:", workerId, error);
     }
+  }
+
+  document.getElementById('sync-loader').style.display = 'none';
+  
+  if (failCount > 0) {
+    alert(`Transaction Complete with Errors.\nSuccessful: ${successCount}\nFailed: ${failCount}\n\nReview the logs or ensure workers don't conflict with active policies.`);
+  } else {
+    alert(`Success: Matrix updated for ${successCount} worker(s).`);
+  }
+  
+  loadAdminDataSuite(); // Refresh the UI with the new matrices
+}
 
 
 function toggleWorkerStatus(shiftId, workerId, targetToWaitlist) {
