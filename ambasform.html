@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MITEC Campus Ambassador Application</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --mitec-navy: #1e3a8a;
+      --mitec-navy-hover: #172554;
+      --mitec-accent-blue: #38bdf8;
+      --mitec-orange: #f97316;
+      
+      --apple-bg: #f5f5f7;
+      --apple-card-bg: rgba(255, 255, 255, 0.92);
+      --apple-text-primary: #1d1d1f;
+      --apple-text-secondary: #86868b;
+      --apple-input-bg: rgba(0, 0, 0, 0.03);
+      --apple-input-border: rgba(0, 0, 0, 0.1);
+      --apple-radius-card: 20px;
+      --apple-radius-input: 12px;
+      
+      --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      --font-question: 'Open Sans', var(--font-system);
+      --font-input: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--apple-bg);
+      color: var(--apple-text-primary);
+      font-family: var(--font-system);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 32px 16px;
+    }
+
+    .form-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--apple-card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--apple-radius-card);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-top-line {
+      height: 4px;
+      background: linear-gradient(90deg, var(--mitec-navy) 0%, var(--mitec-accent-blue) 50%, var(--mitec-orange) 100%);
+      border-radius: 20px 20px 0 0;
+    }
+
+    .card-body {
+      padding: 36px 30px;
+    }
+
+    .header-group {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .header-logo {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .header-text h2 {
+      font-family: var(--font-question);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--apple-text-primary);
+      line-height: 1.2;
+    }
+
+    .header-text p {
+      font-family: var(--font-question);
+      font-size: 0.85rem;
+      color: var(--apple-text-secondary);
+      margin-top: 3px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-family: var(--font-question);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--apple-text-primary);
+    }
+
+    .field-hint {
+      font-family: var(--font-question);
+      font-size: 0.75rem;
+      color: var(--apple-text-secondary);
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+
+    input[type="text"], 
+    input[type="email"], 
+    select, 
+    .custom-select-trigger {
+      font-family: var(--font-input);
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--apple-input-bg);
+      border: 1px solid var(--apple-input-border);
+      border-radius: var(--apple-radius-input);
+      color: var(--apple-text-primary);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    #fullName {
+      text-transform: uppercase;
+    }
+
+    .custom-select-trigger {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      color: #8e8e93;
+      user-select: none;
+    }
+
+    .custom-select-trigger.selected {
+      color: var(--apple-text-primary);
+    }
+
+    .phone-input-wrapper {
+      display: flex;
+      align-items: center;
+      background: var(--apple-input-bg);
+      border: 1px solid var(--apple-input-border);
+      border-radius: var(--apple-radius-input);
+      padding: 0 14px;
+    }
+
+    .phone-input-wrapper:focus-within {
+      background: #ffffff;
+      border-color: var(--mitec-navy);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+    }
+
+    .phone-prefix {
+      font-family: var(--font-input);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--apple-text-secondary);
+      margin-right: 8px;
+      user-select: none;
+    }
+
+    .phone-input-wrapper input {
+      font-family: var(--font-input);
+      width: 100%;
+      padding: 12px 0;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 0.95rem;
+      color: var(--apple-text-primary);
+    }
+
+    input:focus, select:focus {
+      background: #ffffff;
+      border-color: var(--mitec-navy);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+    }
+
+    .btn-submit, .btn-secondary, .btn-outline {
+      font-family: var(--font-question);
+      width: 100%;
+      padding: 14px;
+      background: var(--mitec-navy);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--apple-radius-input);
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-submit:hover {
+      background: var(--mitec-navy-hover);
+    }
+
+    .btn-submit:disabled {
+      background: #a1a1a6;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    .btn-secondary:hover {
+      background: #059669;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--apple-input-border);
+      color: var(--apple-text-primary);
+    }
+
+    .btn-outline:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    /* Summary & Confirmation Styles */
+    #summaryView {
+      display: none;
+    }
+
+    .status-banner {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .summary-title {
+      font-family: var(--font-question);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--apple-text-primary);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .green-check {
+      color: #10b981;
+      font-size: 1.3rem;
+      display: none;
+      line-height: 1;
+    }
+
+    .summary-subtitle {
+      font-family: var(--font-question);
+      font-size: 0.85rem;
+      color: var(--apple-text-secondary);
+    }
+
+    .summary-details-box {
+      background: rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: var(--apple-radius-input);
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .summary-row {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .summary-row:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .summary-label {
+      font-family: var(--font-question);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--apple-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .summary-value {
+      font-family: var(--font-input);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--apple-text-primary);
+      margin-top: 2px;
+      word-break: break-word;
+    }
+
+    .action-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999999;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex !important;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 460px;
+      height: 70vh;
+      background: #ffffff;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header-search {
+      padding: 16px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      background: #f9f9fb;
+    }
+
+    .modal-search-input {
+      font-family: var(--font-input);
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--apple-input-border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      background: #ffffff;
+    }
+
+    .modal-options-list {
+      overflow-y: auto;
+      flex: 1;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .option-item {
+      font-family: var(--font-input);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--apple-text-primary);
+    }
+
+    .option-item:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .radio-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #c7c7cc;
+      flex-shrink: 0;
+    }
+
+    .option-item.selected .radio-circle {
+      border-color: var(--mitec-navy);
+      background: var(--mitec-navy);
+      box-shadow: inset 0 0 0 3px #ffffff;
+    }
+
+    /* Print Styles for PDF Generation */
+    @media print {
+      @page {
+        margin: 0.5cm;
+      }
+      body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: block !important;
+        align-items: flex-start !important;
+      }
+      .form-card {
+        box-shadow: none !important;
+        border: none !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .card-body {
+        padding: 10px 0 !important;
+      }
+      .status-banner, .card-top-line, .action-group, .modal-overlay {
+        display: none !important;
+      }
+      .header-group {
+        margin-bottom: 16px !important;
+        padding-bottom: 12px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-card">
+    <div class="card-top-line"></div>
+    
+    <!-- Input Form View -->
+    <div id="formView" class="card-body">
+      <div class="header-group">
+        <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo" class="header-logo" />
+        <div class="header-text">
+          <h2>Campus Ambassador</h2>
+          <p>Join MITEC and represent your institution</p>
+        </div>
+      </div>
+
+      <form id="ambassadorForm">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" placeholder="ENTER YOUR FULL NAME" required />
+        </div>
+
+        <div class="form-group">
+          <label for="mykad">MyKad No.</label>
+          <input type="text" id="mykad" placeholder="Enter 12-digit MyKad number" maxlength="12" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="Enter your email address" required />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <div class="phone-input-wrapper">
+            <span class="phone-prefix">+60</span>
+            <input type="tel" id="phone" placeholder="123456789" maxlength="10" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>College / University</label>
+          <div id="collegeTrigger" class="custom-select-trigger">
+            <span id="triggerText">Select institution...</span>
+            <span style="font-size: 0.75rem;"></span>
+          </div>
+          <input type="hidden" id="selectedInstitution" required />
+        </div>
+
+        <div class="form-group">
+          <label for="fieldOfStudy">Field of Study</label>
+          <p class="field-hint">e.g., Diploma in Event Management, Bachelor of Computer Science, etc.</p>
+          <input type="text" id="fieldOfStudy" placeholder="Enter your field of study" required />
+        </div>
+
+        <div class="form-group">
+          <label for="semester">Semester</label>
+          <select id="semester" required>
+            <option value="" disabled selected>Select semester</option>
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+            <option value="3">Semester 3</option>
+            <option value="4">Semester 4</option>
+            <option value="5">Semester 5</option>
+            <option value="6">Semester 6</option>
+            <option value="7">Semester 7</option>
+            <option value="8">Semester 8</option>
+            <option value="9">Semester 9</option>
+            <option value="10">Semester 10</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-submit">Review Application</button>
+      </form>
+    </div>
+
+    <!-- Summary & Confirmation View -->
+    <div id="summaryView" class="card-body">
+      <div class="header-group">
+        <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo" class="header-logo" />
+        <div class="header-text">
+          <h2>Campus Ambassador Application</h2>
+          <p id="headerSubtext">Official Submission Summary</p>
+        </div>
+      </div>
+
+      <div class="status-banner">
+        <h3 id="summaryTitle" class="summary-title">
+          <span id="summaryTitleText">Review Your Details</span>
+          <span id="greenCheck" class="green-check"></span>
+        </h3>
+        <p id="summarySubtitle" class="summary-subtitle">Please verify your information before confirming submission.</p>
+      </div>
+
+      <div class="summary-details-box">
+        <div class="summary-row">
+          <span class="summary-label">Full Name</span>
+          <span id="sumFullName" class="summary-value">-</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">MyKad No.</span>
+          <span id="sumMykad" class="summary-value">-</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Email Address</span>
+          <span id="sumEmail" class="summary-value">-</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Phone Number</span>
+          <span id="sumPhone" class="summary-value">-</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">College / University</span>
+          <span id="sumInstitution" class="summary-value">-</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Field of Study</span>
+          <span id="sumFieldOfStudy" class="summary-value">-</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Semester</span>
+          <span id="sumSemester" class="summary-value">-</span>
+        </div>
+        <div id="dateOfAppRow" class="summary-row" style="display: none;">
+          <span class="summary-label">Date of Application</span>
+          <span id="sumDateOfApp" class="summary-value">-</span>
+        </div>
+      </div>
+
+      <div class="action-group">
+        <!-- Pre-Submission Buttons -->
+        <div id="preSubmitActions">
+          <button type="button" id="btnConfirmSubmit" class="btn-submit">Confirm Submission</button>
+          <button type="button" id="btnBackEdit" class="btn-outline"> Go Back & Edit</button>
+        </div>
+
+        <!-- Post-Submission Download/Reset Buttons -->
+        <div id="postSubmitActions" style="display: none;">
+          <button type="button" id="btnDownload" class="btn-secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Download Confirmation (PDF)
+          </button>
+          <button type="button" id="btnReset" class="btn-outline">Submit Another Application</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Institution Modal Search -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header-search">
+        <input type="text" id="modalSearchInput" class="modal-search-input" placeholder="Search institution..." />
+      </div>
+      <div id="modalOptionsList" class="modal-options-list"></div>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDp7s8kkEjKO1bDt-Cd9cdQmMDGNNzGMG1Vz4jqJI6D_nQ-oqWdazaTT9SAZNf-XsAqA/exec';
+
+    const institutions = [
+      "Academy of Digital Animation and Media (ADAM)", "Admal Aviation College", "Adroit College", "Advance Tertiary College (ATC)", "Al-Madinah International University (MEDIU)", "ALFA University College", "Alpha College of Technology", "ASA College", "Asia College of Exercise and Sport Medicine (ACESM)", "Asia e University (AeU)", "Asia Metropolitan University (AMU)", "Asia Metropolitan University (AMU) Kuala Lumpur Campus", "Asia Pacific Institute of Information Technology (APIIT)", "Asia Pacific University of Technology & Innovation (APU)", "Asia School of Business", "Astin College", "Axismatics Professional Institute", "Berjaya College", "BERJAYA University College", "Binary College", "Binary University", "Bostonweb College of Technology and Management", "Brickfields Asia College (BAC)", "Central Metropolitan College", "City Academy", "City College of Business Management", "City University Malaysia", "Clara International Aesthetic College", "Claz'room College", "College MCS", "CONSIST College", "Cosmopoint College Kuala Lumpur", "Cyberjaya College", "Dasein Academy of Art", "Equator College", "Erican College", "First City College", "First City University College", "Genovasi University College", "Goon International College", "HELP Academy", "HELP College", "HELP University", "Heriot-Watt University Malaysia", "IACT College", "Imperium International College", "INCEIF University", "Institut Latihan Kehakiman dan Perundangan (ILKAP)", "Institut Sains dan Teknologi Darul Takzim (ISTD)", "Institut Teknologi Maklumat Malaysia (ITM)", "Institut Teknologi Pertama", "INTEC Education College", "International College of Music (ICOM)", "International Design School (IDS)", "International Hotel Management Institute Malaysia (IHM)", "International Islamic University Malaysia (IIUM)", "International Medical University (IMU)", "International University of Malaya-Wales (IUMW)", "INTI International College Kuala Lumpur", "INTI International College Subang", "KDU College Glenmarie", "Kings University College", "Kolej ASA", "Kolej Damansara Utama (KDU)", "Kolej Poly-Tech MARA Bangi", "Kolej Poly-Tech MARA Kuala Lumpur (KPTM KL)", "Kolej Sentral", "Kolej Teknologi Antarabangsa Cybernetics (KTAC)", "Kolej Teknologi Timur", "Kolej UNITI Selangor Campus", "Kolej Victoria International", "Kolej WIT", "Kolej Yayasan Melaka Kuala Lumpur Campus", "Kuala Lumpur Metropolitan University College (KLMUC)", "Le Cordon Bleu Malaysia (Sunway)", "Limkokwing University of Creative Technology", "Lincoln University College", "London College of Creative Media", "Mahsa College", "MAHSA University", "Malaysia Institute of Management (MIM)", "Malaysia University of Science and Technology (MUST)", "Malaysian Institute of Accountants (MIA)", "Malaysian Institute of Art (MIA)", "Malaysian Institute of Aviation Technology (MIAT)", "Malaysian Institute of Baking (MIB)", "Malaysian Institute of Banking and Finance (IBFIM)", "Malaysian Institute of Chartered Secretaries and Administrators (MAICSA)", "Malaysian Institute of Food Technology (MIFT)", "Malaysian Institute of Human Resource Management (MIHRM)", "Malvern International Academy", "Management & Science University (MSU)", "MDIS Malaysia", "Methodist College Kuala Lumpur (MCKL)", "Metropolitan College", "Metropolitan College Kuala Lumpur", "MIMOS Academy", "Monash University Malaysia", "Multimedia University (MMU)", "Nilai University Kuala Lumpur Campus", "Open University Malaysia (OUM)", "Perdana University", "PJ College of Art & Design", "Point College", "PORTMAN College", "Premier College", "President College", "PTPL Kuala Lumpur", "Putra Business School", "Putra Intelek International College", "Raffles College of Higher Education", "Regent School of Economics", "Saito University College", "SEGi College Kota Damansara", "SEGi College Kuala Lumpur", "SEGi College Subang Jaya", "SEGi University", "Smart College Kuala Lumpur", "Stamford College", "Sunway College", "Sunway University", "Swiss Hotel Management Institute Malaysia (SHMI)", "Taylor's College", "Taylor's University", "The One Academy (TOA)", "Tung Shin Academy of Nursing", "Tunku Abdul Rahman University of Management and Technology (TAR UMT)", "Twintech International University College of Technology", "UCSI University", "UNITAR International University", "Universiti Geomatika Malaysia", "Universiti Geomatika Malaysia International Campus", "Universiti Kebangsaan Malaysia (UKM)", "Universiti Kuala Lumpur (UniKL)", "Universiti Malaya", "Universiti Malaya-Wales (UM-Wales)", "Universiti Pertahanan Nasional Malaysia (UPNM)", "Universiti Putra Malaysia (UPM)", "Universiti Teknologi MARA (UiTM) Puncak Alam", "Universiti Teknologi MARA (UiTM) Puncak Perdana", "Universiti Teknologi MARA (UiTM) Shah Alam", "Universiti Tenaga Nasional (UNITEN)", "University College of MAIWP International (UCMI)", "University of Cyberjaya", "University of Nottingham Malaysia", "University of Reading Malaysia", "UOW Malaysia KDU College", "Veritas University College"
+    ];
+
+    const formView = document.getElementById('formView');
+    const summaryView = document.getElementById('summaryView');
+    const fullNameInput = document.getElementById('fullName');
+    const mykadInput = document.getElementById('mykad');
+    const phoneInput = document.getElementById('phone');
+    const collegeTrigger = document.getElementById('collegeTrigger');
+    const triggerText = document.getElementById('triggerText');
+    const hiddenInput = document.getElementById('selectedInstitution');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalSearchInput = document.getElementById('modalSearchInput');
+    const modalOptionsList = document.getElementById('modalOptionsList');
+    const form = document.getElementById('ambassadorForm');
+    
+    const preSubmitActions = document.getElementById('preSubmitActions');
+    const postSubmitActions = document.getElementById('postSubmitActions');
+    const btnConfirmSubmit = document.getElementById('btnConfirmSubmit');
+    const btnBackEdit = document.getElementById('btnBackEdit');
+    const btnDownload = document.getElementById('btnDownload');
+    const btnReset = document.getElementById('btnReset');
+
+    fullNameInput.addEventListener('input', function() {
+      this.value = this.value.toUpperCase();
+    });
+
+    phoneInput.addEventListener('input', function() {
+      let val = this.value.replace(/\D/g, '');
+      if (val.startsWith('0')) val = val.substring(1);
+      this.value = val.slice(0, 10);
+    });
+
+    mykadInput.addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').slice(0, 12);
+    });
+
+    collegeTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      modalOverlay.classList.add('active');
+      modalSearchInput.value = '';
+      renderOptions(institutions);
+      setTimeout(() => modalSearchInput.focus(), 100);
+    });
+
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.remove('active');
+      }
+    });
+
+    modalSearchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      const filtered = institutions.filter(item => item.toLowerCase().includes(query));
+      renderOptions(filtered);
+    });
+
+    function renderOptions(items) {
+      modalOptionsList.innerHTML = '';
+      items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'option-item' + (hiddenInput.value === item ? ' selected' : '');
+        div.innerHTML = `
+          <span>${item}</span>
+          <div class="radio-circle"></div>
+        `;
+        div.addEventListener('click', () => {
+          hiddenInput.value = item;
+          triggerText.textContent = item;
+          collegeTrigger.classList.add('selected');
+          modalOverlay.classList.remove('active');
+        });
+        modalOptionsList.appendChild(div);
+      });
+    }
+
+    function formatSubtitleTimestamp(date) {
+      const day = String(date.getDate()).padStart(2, '0');
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      return `${day} ${month} ${year} ${hours}:${minutes}`;
+    }
+
+    function formatFieldTimestamp(date) {
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      if (phoneInput.value.length < 9 || phoneInput.value.length > 10) {
+        alert('Phone number must be between 9 and 10 digits long (excluding +60).');
+        return;
+      }
+
+      if (!hiddenInput.value) {
+        alert('Please select a college/university.');
+        return;
+      }
+
+      if (mykadInput.value.length !== 12) {
+        alert('MyKad number must be exactly 12 digits.');
+        return;
+      }
+
+      document.getElementById('sumFullName').textContent = fullNameInput.value;
+      document.getElementById('sumMykad').textContent = mykadInput.value;
+      document.getElementById('sumEmail').textContent = document.getElementById('email').value;
+      document.getElementById('sumPhone').textContent = '+60 ' + phoneInput.value;
+      document.getElementById('sumInstitution').textContent = hiddenInput.value;
+      document.getElementById('sumFieldOfStudy').textContent = document.getElementById('fieldOfStudy').value;
+      document.getElementById('sumSemester').textContent = 'Semester ' + document.getElementById('semester').value;
+
+      formView.style.display = 'none';
+      summaryView.style.display = 'block';
+    });
+
+    btnBackEdit.addEventListener('click', () => {
+      summaryView.style.display = 'none';
+      formView.style.display = 'block';
+    });
+
+    btnConfirmSubmit.addEventListener('click', function() {
+      btnConfirmSubmit.disabled = true;
+      btnConfirmSubmit.textContent = 'Submitting...';
+
+      const formData = new URLSearchParams();
+      formData.append('fullName', fullNameInput.value);
+      formData.append('mykad', mykadInput.value);
+      formData.append('email', document.getElementById('email').value);
+      formData.append('phone', phoneInput.value);
+      formData.append('institution', hiddenInput.value);
+      formData.append('fieldOfStudy', document.getElementById('fieldOfStudy').value);
+      formData.append('semester', document.getElementById('semester').value);
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
+      })
+      .then(() => {
+        const now = new Date();
+        
+        // 1. Set title to Application Submitted! and show green check directly beside it
+        document.getElementById('summaryTitleText').textContent = 'Application Submitted!';
+        document.getElementById('greenCheck').style.display = 'inline-block';
+
+        // 2. Subtitle timestamp
+        document.getElementById('summarySubtitle').textContent = `Your details have been successfully recorded at ${formatSubtitleTimestamp(now)}`;
+
+        // 3. Date of Application under Semester in details box
+        document.getElementById('sumDateOfApp').textContent = formatFieldTimestamp(now);
+        document.getElementById('dateOfAppRow').style.display = 'flex';
+
+        document.getElementById('headerSubtext').textContent = 'Official Submission Copy';
+
+        preSubmitActions.style.display = 'none';
+        postSubmitActions.style.display = 'block';
+      })
+      .catch(err => {
+        alert('An error occurred during submission. Please try again.');
+        console.error('Submission error:', err);
+      })
+      .finally(() => {
+        btnConfirmSubmit.disabled = false;
+        btnConfirmSubmit.textContent = 'Confirm Submission';
+      });
+    });
+
+    btnDownload.addEventListener('click', () => {
+      window.print();
+    });
+
+    btnReset.addEventListener('click', () => {
+      form.reset();
+      triggerText.textContent = 'Select institution...';
+      collegeTrigger.classList.remove('selected');
+      hiddenInput.value = '';
+      
+      document.getElementById('summaryTitleText').textContent = 'Review Your Details';
+      document.getElementById('greenCheck').style.display = 'none';
+      document.getElementById('summarySubtitle').textContent = 'Please verify your information before confirming submission.';
+      document.getElementById('headerSubtext').textContent = 'Official Submission Summary';
+      document.getElementById('dateOfAppRow').style.display = 'none';
+
+      preSubmitActions.style.display = 'block';
+      postSubmitActions.style.display = 'none';
+
+      summaryView.style.display = 'none';
+      formView.style.display = 'block';
+    });
+  </script>
+
+</body>
+</html>
