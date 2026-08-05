@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About Us | MITEC Casual Labour Portal</title>
-  
+
   <link class="icon" href="https://mitec.com.my/static/img/logos/logo-footer.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-  
+
   <!-- Phosphor Icons for side navigation -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  
+
   <style>
     :root {
       --md-surface: #f4f6f9;
@@ -21,11 +21,11 @@
       --md-on-surface: #1d1d1f;
       --md-on-surface-variant: #51525c;
       --md-outline: #e1e4ea; 
-      
+
       --mitec-blue: #1B365D;         
       --mitec-blue-hover: #2D68C4;   
       --mitec-accent: #0f4a82;       
-      
+
       --md-font: 'Inter', -apple-system, sans-serif;
       --brand-font: 'Trebuchet MS', Arial, sans-serif;
     }
@@ -391,6 +391,27 @@
       font-weight: 600;
     }
 
+    /* Feature Banner (New Image Section) */
+    .vote-banner-container {
+      background: var(--md-surface-container);
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid rgba(9, 34, 83, 0.08);
+      box-shadow: 0 8px 24px rgba(9, 34, 83, 0.04);
+      margin-bottom: 54px;
+      text-align: center;
+    }
+
+    .vote-banner-img {
+      max-width: 100%;
+      height: auto;
+      max-height: 650px;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+      object-fit: contain;
+    }
+
     /* Awards Timeline Grid */
     .awards-grid {
       display: grid;
@@ -470,6 +491,7 @@
       .about-header { padding: 48px 4% 44px; }
       .about-header h1 { font-size: 30px; }
       .container { padding: 36px 4%; }
+      .vote-banner-container { padding: 12px; }
     }
   </style>
 </head>
@@ -483,22 +505,22 @@
   <button class="close-btn" id="closeBtn" aria-label="Close Navigation">
     <span class="material-symbols-outlined">close</span>
   </button>
-  
+
   <a href="industry .html" class="dropdown-item"><i class="ph-bold ph-info"></i> About MITEC</a>
   <a href="calendar.html" class="dropdown-item"><i class="ph-bold ph-calendar-blank"></i> Event Calendar</a>
   <a href="student.html" class="dropdown-item"><i class="ph-bold ph-student"></i> Student Ambassador Programme</a>
   <a href="twuw.html" class="dropdown-item"><i class="ph-bold ph-map-pin-line"></i> How to Get to MITEC</a>
-  
+
   <div class="dropdown-item" onclick="toggleQuickLinks()">
     <i class="ph-bold ph-link-simple"></i> Quick Links 
     <i class="ph-bold ph-caret-down" id="quickLinksCaret" style="margin-left: auto; font-size: 14px; transform: rotate(0deg); transition: transform 0.3s;"></i>
   </div>
-  
+
   <div id="quickLinksSubmenu" class="dropdown-submenu">
     <div class="submenu-header">User Notice</div>
     <a href="https://docs.google.com/document/d/1M5Q6ol49IeireDOHodFfg-dQaL5ZXEcW6uD-_CPR2GM/edit?usp=sharing" target="_blank" class="submenu-item"><i class="ph-bold ph-shield-check"></i> Privacy Policy</a>
     <a href="https://docs.google.com/document/d/1S0ib_XFouz-HGwIMfo5uk7YVkuBLe1632WTDEriw404/edit?usp=drivesdk" target="_blank" class="submenu-item"><i class="ph-bold ph-file-text"></i> Terms of Use</a>
-    
+
     <div class="submenu-header">Official Sites</div>
     <a href="https://www.mitec.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-globe-hemisphere-west"></i> MITEC</a>
     <a href="https://www.qube.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-buildings"></i> Qube</a>
@@ -528,19 +550,18 @@
   </header>
 
   <main class="container">
-    
+
     <!-- Overview Section -->
     <div class="section-title-block">
       <h2>Behind the World-Class Stage</h2>
-<p class="subtitle">Setting the Benchmark for World-Class Event Crew Values</p>
+      <p class="subtitle">Setting the Benchmark for World-Class Event Crew Values</p>
     </div>
 
     <div class="about-overview">
       <p>Spanning 52,000 m² of exhibition and convention space across 11 expansive halls, the Malaysia International Trade and Exhibition Centre (MITEC) is the flagship development of KL Metropolis. Designed with architectural inspiration drawn from the rubber seed and traditional <i>songket</i> weave, MITEC stands as an iconic landmark for international commerce.</p>
       <p>As a key economic catalyst for Malaysia's business tourism, MITEC hosts hundreds of international and regional events annually, welcoming millions of delegates, trade buyers, and visitors to Kuala Lumpur.</p>
 
-
-<p>By bringing your energy, dedication, and talent to our show floors, you become the essential force behind our shared success. Connected by our core values and driven by cutting-edge workforce innovations, together we cultivate a culture of operational precision while striving every day to uphold and continuously elevate MITEC’s world-class reputation.</p>
+      <p>By bringing your energy, dedication, and talent to our show floors, you become the essential force behind our shared success. Connected by our core values and driven by cutting-edge workforce innovations, together we cultivate a culture of operational precision while striving every day to uphold and continuously elevate MITEC’s world-class reputation.</p>
     </div>
 
     <!-- Key Facts & Stats -->
@@ -566,6 +587,16 @@
         <div class="stat-number">650+</div>
         <div class="stat-label">Events Hosted Annually</div>
       </div>
+    </div>
+
+    <!-- World Travel Awards Campaign Poster Banner -->
+    <div class="section-title-block">
+      <h2>Support MITEC on the Global Stage</h2>
+      <p>Vote for MITEC in the World Travel Awards 2026.</p>
+    </div>
+
+    <div class="vote-banner-container">
+      <img src="1000140410.jpg" alt="Vote for MITEC in the World Travel Awards 2026 - World's Leading Meetings & Conference Centre" class="vote-banner-img" />
     </div>
 
     <!-- Achievements & Awards Section -->
@@ -631,9 +662,9 @@
     function toggleQuickLinks() {
       const submenu = document.getElementById('quickLinksSubmenu');
       const caret = document.getElementById('quickLinksCaret');
-      
+
       submenu.classList.toggle('open');
-      
+
       if (submenu.classList.contains('open')) {
         caret.style.transform = 'rotate(180deg)';
       } else {
