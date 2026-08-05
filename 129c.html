@@ -5,43 +5,50 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MITEC Casual Labour Portal - Application Form</title>
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  <link class="icon" href="https://mitec.com.my/static/img/logos/logo-footer.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
+  <style>
     :root {
-      /* Frost & Steel Executive Palette */
-      --midnight: #224289;
-      --midnight-light: #1E293B;
-      --steel: #64748B;
-      --steel-light: #94A3B8;
-      --silver: #E2E8F0;
-      --frost: #F8FAFC;
-      --white: #FFFFFF;
-      --accent: #2563EB;
-      --danger: #DC2626;
-      --danger-bg: #FEF2F2;
-      --ok: #059669;
-      --ok-bg: #ECFDF5;
+      /* MITEC Light Executive & Deep Sapphire Palette */
+      --md-surface: #f4f6f9;
+      --md-surface-container: #ffffff;
+      --md-on-surface: #1d1d1f;
+      --md-on-surface-variant: #51525c;
+      --md-outline: #e1e4ea; 
       
-      --radius: 12px;
-      --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.04);
-      --shadow-md: 0 10px 25px rgba(15, 23, 42, 0.08);
-      --font-stack: 'Inter', system-ui, -apple-system, sans-serif;
+      --mitec-blue: #1B365D;         
+      --mitec-blue-hover: #2D68C4;   
+      --mitec-accent: #0f4a82;
+
+      --danger: #EF4444;
+      --danger-bg: rgba(239, 68, 68, 0.08);
+      --ok: #10B981;
+      --ok-bg: rgba(16, 185, 129, 0.08);
+
+      --radius: 16px;
+      --shadow-card: 0 6px 20px rgba(9, 34, 83, 0.04);
+      --font-stack: 'Inter', -apple-system, sans-serif;
+      --brand-font: 'Trebuchet MS', Arial, sans-serif;
     }
 
     * { box-sizing: border-box; }
-    
+
     body {
       margin: 0;
       font-family: var(--font-stack);
-      background: var(--frost);
-      color: var(--midnight);
+      background-color: var(--md-surface);
+      color: var(--md-on-surface);
       -webkit-font-smoothing: antialiased;
       line-height: 1.5;
+      min-height: 100vh;
     }
 
     .wrap {
-      max-width: 760px;
+      max-width: 800px;
       margin: 32px auto;
       padding: 0 16px 40px;
     }
@@ -62,7 +69,7 @@
     }
 
     .mitecLogo {
-      height: 42px;
+      height: 40px;
       width: auto;
       display: block;
       object-fit: contain;
@@ -70,10 +77,11 @@
 
     .brand h1 {
       font-size: 18px;
+      font-family: var(--brand-font);
       font-weight: 800;
       letter-spacing: 0.5px;
       margin: 0;
-      color: var(--midnight);
+      color: var(--mitec-blue);
       text-transform: uppercase;
     }
 
@@ -81,81 +89,89 @@
       margin: 2px 0 0;
       font-size: 13px;
       font-weight: 500;
-      color: var(--steel);
-      letter-spacing: 0.2px;
+      color: var(--md-on-surface-variant);
     }
 
     /* Step Indicator Pill */
     .chip {
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       padding: 6px 14px;
-      border: 1px solid var(--silver);
-      border-radius: 999px;
-      background: var(--white);
-      color: var(--steel);
+      border: 1px solid var(--md-outline);
+      border-radius: 30px;
+      background: var(--md-surface-container);
+      color: var(--mitec-blue);
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 2px 8px rgba(9, 34, 83, 0.05);
     }
 
-    /* Premium Card Design */
+    /* Main Card Container */
     .card {
-      background: var(--white);
-      border: 1px solid var(--silver);
+      background: var(--md-surface-container);
+      border: 1px solid rgba(9, 34, 83, 0.08);
       border-radius: var(--radius);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-card);
       overflow: hidden;
     }
 
-    .header {
-      padding: 24px 28px 20px;
-      border-bottom: 1px solid var(--silver);
-      background: var(--white);
+    /* Luxurious Deep Sapphire Header Container */
+    .about-header {
+      background-color: #0e3581;
+      background-image: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 1%, transparent 1%, transparent 50%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.02) 52%, transparent 52%),
+        linear-gradient(65deg, transparent 45%, rgba(255, 255, 255, 0.04) 45%, rgba(255, 255, 255, 0.04) 47%, transparent 47%, transparent 70%, rgba(255, 255, 255, 0.02) 70%, rgba(255, 255, 255, 0.02) 71%, transparent 71%),
+        radial-gradient(circle at 20% 30%, rgba(20, 80, 160, 0.45), transparent 65%),
+        radial-gradient(circle at 80% 70%, #0e3581, #082154);
+      color: white;
+      padding: 28px 32px;
+      border-bottom: 3px solid var(--mitec-accent);
     }
 
-    .header h2 {
+    .about-header h2 {
       margin: 0;
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--midnight);
-      letter-spacing: -0.3px;
+      font-family: var(--brand-font);
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
-    .header .sub {
+    .about-header .sub {
       margin-top: 6px;
       font-size: 14px;
-      color: var(--steel);
+      color: rgba(255, 255, 255, 0.9);
     }
 
-    /* Sleek Progress Bar */
+    /* Progress Bar */
     .progressWrap { padding: 0; }
     .progressLine {
-      height: 3px;
-      background: var(--silver);
+      height: 4px;
+      background: rgba(9, 34, 83, 0.08);
       width: 100%;
     }
     .progressLine > div {
       height: 100%;
       width: 0%;
-      background: var(--midnight);
+      background: var(--mitec-blue-hover);
       transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    form { padding: 28px; }
+    form { padding: 32px; }
 
     .sectionTitle {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--midnight);
+      font-size: 14px;
+      font-family: var(--brand-font);
+      font-weight: 800;
+      color: var(--mitec-blue);
       margin: 0 0 6px;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
     .sectionDesc {
-      font-size: 13px;
-      color: var(--steel);
+      font-size: 13.5px;
+      color: var(--md-on-surface-variant);
       margin: 0 0 20px;
       line-height: 1.6;
     }
@@ -169,15 +185,15 @@
     @media (max-width: 640px) {
       .grid { grid-template-columns: 1fr; }
       form { padding: 20px; }
-      .header { padding: 20px; }
+      .about-header { padding: 20px; }
     }
 
-    /* Typography & Spacing for Inputs */
+    /* Input Controls */
     label {
       display: block;
       font-size: 13px;
       font-weight: 600;
-      color: var(--midnight-light);
+      color: var(--md-on-surface);
       margin: 16px 0 8px;
       letter-spacing: 0.2px;
     }
@@ -189,38 +205,43 @@
 
     input[type="text"], input[type="tel"], input[type="email"], select, textarea {
       width: 100%;
-      border: 1px solid var(--steel-light);
+      border: 1px solid var(--md-outline);
       border-radius: 8px;
       padding: 12px 16px;
       font-size: 14px;
       font-family: var(--font-stack);
-      background: var(--white);
-      color: var(--midnight);
+      background: var(--md-surface);
+      color: var(--md-on-surface);
       outline: none;
       transition: all 0.2s ease;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
     }
 
     textarea { resize: vertical; min-height: 80px; }
 
-    input::placeholder, textarea::placeholder { color: var(--steel-light); }
+    input::placeholder, textarea::placeholder { color: #a1a5b7; }
 
     input:focus, select:focus, textarea:focus {
-      border-color: var(--midnight);
-      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
+      border-color: var(--mitec-blue);
+      box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.12);
+      background: #ffffff;
     }
 
     input[readonly] {
-      background: var(--frost);
-      color: var(--steel);
-      border-color: var(--silver);
+      background: #eef2f7;
+      color: var(--md-on-surface-variant);
+      border-color: var(--md-outline);
       cursor: not-allowed;
     }
 
-    /* Lookups & Hints */
+    select option {
+      background: #ffffff;
+      color: var(--md-on-surface);
+    }
+
+    /* Hints & Alerts */
     #lookupDocNo {
-      font-size: 16px;
-      letter-spacing: 1px;
+      font-size: 15px;
+      letter-spacing: 0.5px;
       font-weight: 600;
     }
 
@@ -233,7 +254,7 @@
     }
     .hint.show { display: block; }
 
-    /* Modernized Radio/Checkbox Rows */
+    /* Custom Radio & Checkbox Containers */
     .radioRow, .checkRow {
       display: flex;
       flex-wrap: wrap;
@@ -243,12 +264,12 @@
     .radioItem, .checkItem {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       font-size: 14px;
       font-weight: 500;
-      color: var(--midnight);
-      background: var(--white);
-      border: 1px solid var(--silver);
+      color: var(--md-on-surface);
+      background: var(--md-surface);
+      border: 1px solid var(--md-outline);
       padding: 10px 16px;
       border-radius: 8px;
       cursor: pointer;
@@ -257,50 +278,57 @@
       min-width: fit-content;
     }
 
-    .radioItem:hover, .checkItem:hover { border-color: var(--steel-light); }
-    
+    .radioItem:hover, .checkItem:hover {
+      border-color: var(--mitec-blue-hover);
+      background: rgba(9, 34, 83, 0.03);
+    }
+
     .radioItem input, .checkItem input {
-      accent-color: var(--midnight);
+      accent-color: var(--mitec-blue);
       width: 16px;
       height: 16px;
       margin: 0;
       cursor: pointer;
     }
 
-    /* File Upload Area */
+    /* File Upload Box */
     .fileBox {
-      border: 1.5px dashed var(--steel-light);
+      border: 1.5px dashed var(--md-outline);
       border-radius: var(--radius);
       padding: 20px;
-      background: var(--frost);
+      background: var(--md-surface);
       text-align: center;
       transition: border-color 0.2s ease;
     }
-    .fileBox:hover { border-color: var(--midnight); }
+    .fileBox:hover { border-color: var(--mitec-blue); }
     .fileBox input {
       width: 100%;
       font-size: 13px;
-      color: var(--steel);
+      color: var(--md-on-surface-variant);
       cursor: pointer;
     }
     .fileBox input::file-selector-button {
-      background: var(--white);
-      border: 1px solid var(--silver);
+      background: var(--md-surface-container);
+      border: 1px solid var(--md-outline);
       border-radius: 6px;
       padding: 6px 12px;
       font-size: 12px;
       font-weight: 600;
-      color: var(--midnight);
+      color: var(--mitec-blue);
       cursor: pointer;
       margin-right: 12px;
       transition: all 0.2s;
     }
-    .fileBox input::file-selector-button:hover { background: var(--frost); }
-    
+    .fileBox input::file-selector-button:hover {
+      border-color: var(--mitec-blue);
+      background: var(--mitec-blue);
+      color: #ffffff;
+    }
+
     .fileMeta {
       margin-top: 8px;
       font-size: 12px;
-      color: var(--steel);
+      color: var(--md-on-surface-variant);
       font-weight: 500;
     }
 
@@ -311,7 +339,7 @@
       justify-content: space-between;
       margin-top: 32px;
       padding-top: 24px;
-      border-top: 1px solid var(--silver);
+      border-top: 1px solid var(--md-outline);
     }
 
     .btn {
@@ -327,28 +355,33 @@
     }
 
     .btnSecondary {
-      background: var(--white);
-      color: var(--midnight);
-      border: 1px solid var(--silver);
+      background: var(--md-surface);
+      color: var(--md-on-surface);
+      border: 1px solid var(--md-outline);
     }
-    .btnSecondary:hover { background: var(--frost); }
+    .btnSecondary:hover {
+      border-color: var(--mitec-blue);
+      background: #ffffff;
+    }
 
     .btnPrimary {
-      background: var(--midnight);
-      color: var(--white);
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+      background: var(--mitec-blue);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(27, 54, 93, 0.15);
     }
     .btnPrimary:hover {
-      background: var(--midnight-light);
-      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.2);
+      background: var(--mitec-blue-hover);
+      box-shadow: 0 6px 16px rgba(27, 54, 93, 0.25);
     }
     .btnPrimary:disabled {
-      background: var(--steel-light);
+      background: var(--md-surface);
+      color: #a1a5b7;
+      border: 1px solid var(--md-outline);
       cursor: not-allowed;
       box-shadow: none;
     }
 
-    /* Alerts & Notes */
+    /* Alerts */
     .alert {
       margin: 16px 0 0;
       padding: 14px 16px;
@@ -368,7 +401,7 @@
 
     .step { display: none; animation: fadeIn 0.3s ease; }
     .step.active { display: block; }
-    
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
@@ -376,7 +409,7 @@
 
     .miniNote {
       font-size: 12px;
-      color: var(--steel);
+      color: var(--md-on-surface-variant);
       margin-top: 12px;
       line-height: 1.5;
     }
@@ -385,22 +418,24 @@
       display: inline-block;
       padding: 2px 8px;
       border-radius: 4px;
-      background: var(--frost);
-      border: 1px solid var(--silver);
+      background: var(--md-surface);
+      border: 1px solid var(--md-outline);
       font-size: 11px;
-      color: var(--steel);
+      color: var(--mitec-accent);
       margin-left: 8px;
       text-transform: uppercase;
+      font-weight: 700;
       letter-spacing: 0.5px;
     }
 
+    /* Summary Presentation */
     .summaryBox {
-      border: 1px solid var(--silver);
+      border: 1px solid var(--md-outline);
       border-radius: var(--radius);
-      background: var(--frost);
+      background: var(--md-surface);
       padding: 16px;
       font-size: 13px;
-      color: var(--midnight);
+      color: var(--md-on-surface);
     }
     .summaryGrid {
       display: grid;
@@ -410,12 +445,31 @@
     .summaryItem {
       display: flex;
       justify-content: space-between;
-      border-bottom: 1px dashed var(--silver);
+      border-bottom: 1px dashed var(--md-outline);
       padding-bottom: 8px;
     }
     .summaryItem:last-child { border-bottom: none; padding-bottom: 0; }
-    .summaryLabel { color: var(--steel); font-weight: 500; }
-    .summaryValue { font-weight: 600; text-align: right; max-width: 60%; word-break: break-word; }
+    .summaryLabel { color: var(--md-on-surface-variant); font-weight: 500; }
+    .summaryValue { font-weight: 600; text-align: right; max-width: 60%; word-break: break-word; color: var(--mitec-blue); }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 24px 0 0;
+      margin-top: 32px;
+    }
+    .footer-brand {
+      font-family: var(--brand-font);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mitec-blue);
+      margin-bottom: 4px;
+    }
+    .footer p {
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+      font-weight: 500;
+    }
   </style>
 </head>
 
@@ -434,8 +488,8 @@
 
     <div class="card">
       <div class="progressWrap"><div class="progressLine"><div id="bar"></div></div></div>
-      
-      <div class="header">
+
+      <div class="about-header">
         <h2 id="stepHeading">Application Form</h2>
         <div class="sub" id="stepSub">Please complete all required fields.</div>
       </div>
@@ -446,9 +500,9 @@
 
         <section class="step active" data-title="System Verification" data-sub="Secure authorization and record lookup.">
           <div class="sectionTitle">Data Privacy Protocol</div>
-          <div class="summaryBox" style="margin-bottom: 24px; background: var(--white);">
-            <p class="sectionDesc" style="margin:0; font-size: 13px;">
-              <b>Private & Confidential (P&amp;C)</b><br><br>
+          <div class="summaryBox" style="margin-bottom: 24px;">
+            <p class="sectionDesc" style="margin:0; font-size: 13px; color: var(--md-on-surface);">
+              <b style="color: var(--mitec-blue);">Private &amp; Confidential (P&amp;C)</b><br><br>
               Information is strictly accessible only to authorized MITEC personnel for official coordination and administration. Your data is processed via secure Workspace infrastructure.
             </p>
           </div>
@@ -465,12 +519,12 @@
           </div>
 
           <div id="lookupPreviewCard" style="display:none; margin-top:16px;">
-            <div class="summaryBox" style="display:flex; gap:16px; align-items:center; background: var(--white); border-color: var(--midnight);">
-              <img id="lookupPreviewPhoto" src="" alt="Profile" style="width:70px; height:70px; object-fit:cover; border-radius:50%; border:2px solid var(--silver);" />
+            <div class="summaryBox" style="display:flex; gap:16px; align-items:center;">
+              <img id="lookupPreviewPhoto" src="" alt="Profile" style="width:70px; height:70px; object-fit:cover; border-radius:50%; border:2px solid var(--mitec-blue);" />
               <div style="flex:1;">
-                <div style="font-size:12px; font-weight:700; color:var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom:4px;">Profile Located</div>
-                <div style="font-size:15px; font-weight:700; color:var(--midnight);" id="previewName">-</div>
-                <div style="font-size:13px; color:var(--steel);" id="previewDocNo">-</div>
+                <div style="font-size:12px; font-weight:700; color:var(--mitec-accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom:4px;">Profile Located</div>
+                <div style="font-size:15px; font-weight:700; color:var(--mitec-blue);" id="previewName">-</div>
+                <div style="font-size:13px; color:var(--md-on-surface-variant);" id="previewDocNo">-</div>
               </div>
             </div>
           </div>
@@ -488,7 +542,7 @@
 
           <div class="nav">
             <span></span>
-            <button type="button" class="btn btnPrimary nextBtn">Verify & Proceed</button>
+            <button type="button" class="btn btnPrimary nextBtn">Verify &amp; Proceed</button>
           </div>
         </section>
 
@@ -515,11 +569,11 @@
             <label class="radioItem"><input type="radio" name="doc_type" value="MYKAD" required checked> MyKAD</label>
             <label class="radioItem"><input type="radio" name="doc_type" value="PASSPORT" required> Passport</label>
           </div>
-          
+
           <label class="req" id="docLabel">MyKAD Number</label>
           <input type="text" name="mykad_passport_no" id="docNumber" required autocomplete="off" placeholder="12 digits without dashes">
           <div class="hint" id="docHint">Invalid document format.</div>
-          <div class="hint" id="docLockedHint" style="color:var(--steel);">Locked during profile update.</div>
+          <div class="hint" id="docLockedHint" style="color:var(--md-on-surface-variant);">Locked during profile update.</div>
 
           <label class="req">Document Scan / Copy</label>
           <div class="fileBox" style="padding: 12px 20px;">
@@ -557,18 +611,18 @@
               <div class="fileMeta" id="cameraMetaText">Live capture required for identity verification.</div>
               <button type="button" class="btn btnSecondary" id="startCameraBtn" style="margin-top: 12px; width: 100%;">Initialize Camera</button>
             </div>
-            
-            <video id="cameraFeed" autoplay playsinline style="width: 100%; border-radius: 8px; display: none; background: var(--midnight);"></video>
-            <img id="cameraPreview" style="width: 100%; border-radius: 8px; display: none; border: 1px solid var(--silver);" />
-            
+
+            <video id="cameraFeed" autoplay playsinline style="width: 100%; border-radius: 8px; display: none; background: #000;"></video>
+            <img id="cameraPreview" style="width: 100%; border-radius: 8px; display: none; border: 1px solid var(--md-outline);" />
+
             <div id="cameraControls" style="display: none; justify-content: center; margin-top: 12px;">
               <button type="button" class="btn btnPrimary" id="captureBtn" style="width: 100%;">Snap Photo</button>
             </div>
-            
+
             <div id="previewControls" style="display: none; justify-content: space-between; margin-top: 12px; gap: 10px;">
               <button type="button" class="btn btnSecondary" id="retakeBtn" style="flex: 1;">Retake</button>
             </div>
-            
+
             <input type="hidden" id="capturedPhotoData">
             <div class="hint" id="gambarHint">Photo capture is required.</div>
           </div>
@@ -604,7 +658,7 @@
         </section>
 
         <section class="step" data-title="Professional Background" data-sub="Skills and logistical capabilities.">
-          <label class="req">Skills & Experience</label>
+          <label class="req">Skills &amp; Experience</label>
           <textarea name="kebolehan" id="kebolehan" required placeholder="Briefly detail your event, hospitality, or relevant experience..."></textarea>
           <div class="hint">Experience detail is required.</div>
 
@@ -648,7 +702,7 @@
         </section>
 
         <section class="step" data-title="Financial Details" data-sub="Banking registry for remuneration processing.">
-          <div class="alert" style="display:block; border-color:var(--silver); background:var(--frost); color:var(--midnight); margin-bottom: 20px;">
+          <div class="alert" style="display:block; border-color:var(--md-outline); background:var(--md-surface); color:var(--md-on-surface); margin-bottom: 20px;">
             Ensure the account belongs to the applicant. Third-party accounts are strictly prohibited.
           </div>
 
@@ -734,10 +788,9 @@
         </section>
 
         <section class="step" data-title="Final Submission" data-sub="Review and finalize your registry input.">
-          
+
           <div class="sectionTitle">Registry Summary</div>
-          <div class="summaryBox" id="summaryBox" style="margin-bottom: 24px;">
-            </div>
+          <div class="summaryBox" id="summaryBox" style="margin-bottom: 24px;"></div>
 
           <div class="sectionTitle">Applicant Declarations</div>
           <div class="checkRow" style="flex-direction:column; align-items:flex-start; margin-top: 12px;">
@@ -760,7 +813,17 @@
         </section>
       </form>
     </div>
+
+    <footer class="footer">
+      <div class="footer-brand">MITEC Casual Labour Registry</div>
+      <p>© 2026 Malaysia International Trade &amp; Exhibition Centre. All Rights Reserved.</p>
+    </footer>
   </div>
+</body>
+</html>
+
+
+
 
   <script>
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq0EucoCN7Y1O1k2mik8Ne7bZbPDfPonyJ9ac73UkzpBMCxsBBhVJ__0ZAC-Fr6OT5/exec";
