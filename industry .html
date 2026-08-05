@@ -478,32 +478,33 @@
   <!-- OVERLAY -->
   <div class="overlay" id="overlay"></div>
 
-  <!-- SIDE NAVIGATION -->
-  <div class="side-nav" id="sideNav">
-    <button class="close-btn" id="closeBtn">
-      <span class="material-symbols-outlined">close</span>
-    </button>
-    
-    <a href="home.html" class="dropdown-item"><i class="ph-bold ph-info"></i> About MITEC</a>
-    <a href="calendar.html" class="dropdown-item"><i class="ph-bold ph-calendar-blank"></i> Event Calendar</a>
-    <a href="twuw.html" class="dropdown-item"><i class="ph-bold ph-map-pin-line"></i> How to Get to MITEC</a>
-    
-    <div class="dropdown-item" onclick="toggleQuickLinks()">
-      <i class="ph-bold ph-link-simple"></i> Quick Links 
-      <i class="ph-bold ph-caret-down" id="quickLinksCaret" style="margin-left: auto; font-size: 14px; transform: rotate(180deg); transition: transform 0.3s;"></i>
-    </div>
-    
-    <div id="quickLinksSubmenu" class="dropdown-submenu open">
-      <div class="submenu-header">User Notice</div>
-      <a href="https://docs.google.com/document/d/1M5Q6ol49IeireDOHodFfg-dQaL5ZXEcW6uD-_CPR2GM/edit?usp=sharing" target="_blank" class="submenu-item"><i class="ph-bold ph-shield-check"></i> Privacy Policy</a>
-      <a href="https://docs.google.com/document/d/1S0ib_XFouz-HGwIMfo5uk7YVkuBLe1632WTDEriw404/edit?usp=drivesdk" target="_blank" class="submenu-item"><i class="ph-bold ph-file-text"></i> Terms of Use</a>
-      
-      <div class="submenu-header">Official Sites</div>
-      <a href="https://www.mitec.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-globe-hemisphere-west"></i> MITEC</a>
-      <a href="https://www.qube.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-buildings"></i> Qube</a>
-      <a href="https://matrade.gov.my" target="_blank" class="submenu-item"><i class="ph-bold ph-briefcase"></i> MATRADE</a>
-    </div>
+  <!-- SIDE NAVIGATION DRAWER -->
+<div class="side-nav" id="sideNav">
+  <button class="close-btn" id="closeBtn" aria-label="Close Navigation">
+    <span class="material-symbols-outlined">close</span>
+  </button>
+  
+  <a href="industry .html" class="dropdown-item"><i class="ph-bold ph-info"></i> About MITEC</a>
+  <a href="calendar.html" class="dropdown-item"><i class="ph-bold ph-calendar-blank"></i> Event Calendar</a>
+  <a href="student.html" class="dropdown-item"><i class="ph-bold ph-student"></i> Student Ambassador Programme</a>
+  <a href="twuw.html" class="dropdown-item"><i class="ph-bold ph-map-pin-line"></i> How to Get to MITEC</a>
+  
+  <div class="dropdown-item" onclick="toggleQuickLinks()">
+    <i class="ph-bold ph-link-simple"></i> Quick Links 
+    <i class="ph-bold ph-caret-down" id="quickLinksCaret" style="margin-left: auto; font-size: 14px; transform: rotate(0deg); transition: transform 0.3s;"></i>
   </div>
+  
+  <div id="quickLinksSubmenu" class="dropdown-submenu">
+    <div class="submenu-header">User Notice</div>
+    <a href="https://docs.google.com/document/d/1M5Q6ol49IeireDOHodFfg-dQaL5ZXEcW6uD-_CPR2GM/edit?usp=sharing" target="_blank" class="submenu-item"><i class="ph-bold ph-shield-check"></i> Privacy Policy</a>
+    <a href="https://docs.google.com/document/d/1S0ib_XFouz-HGwIMfo5uk7YVkuBLe1632WTDEriw404/edit?usp=drivesdk" target="_blank" class="submenu-item"><i class="ph-bold ph-file-text"></i> Terms of Use</a>
+    
+    <div class="submenu-header">Official Sites</div>
+    <a href="https://www.mitec.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-globe-hemisphere-west"></i> MITEC</a>
+    <a href="https://www.qube.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-buildings"></i> Qube</a>
+    <a href="https://matrade.gov.my" target="_blank" class="submenu-item"><i class="ph-bold ph-briefcase"></i> MATRADE</a>
+  </div>
+</div>
 
   <!-- FIXED TOP HEADER -->
   <header class="header">
