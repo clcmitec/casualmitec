@@ -164,16 +164,6 @@
     .btn-call-action { background: #fff; color: var(--admin-dark); border: 1.5px solid var(--admin-dark); font-size: 11px; font-weight: 800; padding: 6px 14px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: 0.15s; width: 100%; max-width: 100px; }
     .btn-call-action:active { background: #f1f5f9; transform: scale(0.96); }
 
-    /* Waitlist Matrices Settings */
-    .waitlist-group-box { background: #fff; border: 1px solid var(--border-thin); border-radius: 16px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
-    .waitlist-header-title { font-size: 15px; font-weight: 800; color: var(--admin-dark); margin: 0 0 12px 0; display: flex; justify-content: space-between; align-items: center; }
-    .waitlist-count-indicator { background: var(--pill-amber-bg); color: var(--pill-amber-text); border: 1px solid var(--pill-amber-border); padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 800; }
-    .waitlist-row-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--border-thin); }
-    .waitlist-row-item:last-child { border-bottom: none; }
-    .waitlist-rank-badge { width: 24px; height: 24px; border-radius: 50%; background: var(--admin-dark); color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
-    .waitlist-rank-badge.rank-1 { background: #0d9488; }
-    .waitlist-meta-stats { margin-left: auto; text-align: right; font-size: 11px; color: var(--text-muted); font-weight: 600; display: flex; flex-direction: column; gap: 2px; }
-
     .view-drawable-name { color: var(--admin-dark); font-weight: 700; cursor: pointer; display: inline-block; transition: all 0.2s ease; }
     .view-drawable-name:hover { color: #0d9488; text-decoration: underline; }
 
@@ -282,10 +272,9 @@
       <div id="pivot-roster-root-container"></div>
     </div>
 
-    <!-- PAGE 3: SHIFT MANAGER -->
+    <!-- PAGE 3: SHIFT MANAGER (MINI VERSION IMPLEMENTATION) -->
     <div id="page-3" class="app-page">
-      
-      <div class="section-label">Section 1: Worker Manager</div>
+      <div class="section-label">Worker Manager</div>
       
       <!-- Upcoming Shift Selector Card -->
       <div class="filter-panel-card">
@@ -299,10 +288,6 @@
 
       <!-- Active Shift Card & Worker Roster Table -->
       <div id="worker-manager-root"></div>
-
-      <div class="section-label" style="margin-top:30px;">Section 2: Standby Priority Table</div>
-      <div id="waitlist-queues-container"></div>
-
     </div>
 
   </div>
@@ -467,6 +452,21 @@
       }
     }
 
+    // Phone Number Formatter for tel: URIs (converts 60XXXXXXXXX to +60XXXXXXXXX)
+    function formatPhoneForDialing(phone) {
+      if (!phone) return '';
+      let cleaned = String(phone).replace(/[^0-9+]/g, '');
+      if (!cleaned) return '';
+      
+      if (cleaned.startsWith('60')) {
+        return '+' + cleaned;
+      }
+      if (!cleaned.startsWith('+') && !cleaned.startsWith('0')) {
+        return '+' + cleaned;
+      }
+      return cleaned;
+    }
+
     function formatAttendanceTime(timeVal) {
       if (!timeVal) return "";
       const str = String(timeVal).trim();
@@ -539,7 +539,6 @@
             renderStatisticsPage(); 
             renderPivotRostersPage();
             populateWorkerManagerShifts();
-            renderWaitlistQueuesPage();
             
             document.getElementById('sync-loader').style.display = 'none';
           } else {
@@ -943,7 +942,7 @@
       });
     }
 
-    /* Tab 3 Functions: Shift Manager (Worker Manager & Standby Priority) */
+    /* Tab 3 Functions: Shift Manager (Mini Version Logic) */
     function populateWorkerManagerShifts() {
       const selectEl = document.getElementById('wm-shift-select');
       if (!selectEl) return;
@@ -1024,8 +1023,8 @@
           const defaultAvatar = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>`;
           const photoUrl = w.photo_url || w.photo || defaultAvatar;
 
-          const phoneNum = w.phone ? String(w.phone).replace(/[^0-9+]/g, '') : '';
-          const callLink = phoneNum ? `tel:${phoneNum}` : `javascript:alert('No phone number on record');`;
+          const dialablePhone = formatPhoneForDialing(w.phone);
+          const callLink = dialablePhone ? `tel:${dialablePhone}` : `javascript:alert('No phone number on record');`;
 
           html += `
             <tr>
@@ -1059,7 +1058,6 @@
       html += `</tbody></table></div></div>`;
       rootEl.innerHTML = html;
     }
-
 
     function downloadRosterCSV(shiftId) {
       const shift = cachedShifts.find(s => s.id === shiftId);
@@ -1111,82 +1109,6 @@
           console.error(err);
           loadAdminDataSuite();
         });
-    }
-
-    function renderWaitlistQueuesPage() {
-      const container = document.getElementById('waitlist-queues-container');
-      if (!container) return;
-      container.innerHTML = '';
-
-      let today = new Date(); today.setHours(0,0,0,0);
-      const activeShifts = cachedShifts.filter(s => getShiftDateObj(s.date) >= today);
-      
-      let clHistory = {};
-      cachedBookings.forEach(b => {
-        let docNo = String(b.user_id).trim();
-        if (!docNo) return;
-        if (!clHistory[docNo]) clHistory[docNo] = { totalConfirmed: 0, noShows: 0 };
-        if (String(b.status).toUpperCase() === 'SUBMITTED' || String(b.status).toUpperCase() === 'CONFIRMED') clHistory[docNo].totalConfirmed++;
-        if (String(b.attendance || "").trim().toLowerCase() === "no show") clHistory[docNo].noShows++;
-      });
-
-      let displayedQueuesCount = 0;
-
-      activeShifts.forEach(s => {
-        let rawWaitlist = cachedBookings.filter(b => b.shift_id === s.id && (String(b.status).toUpperCase() === 'WAITLIST' || String(b.status).toUpperCase() === 'WAITING LIST'));
-        if (rawWaitlist.length === 0) return; 
-        displayedQueuesCount++;
-
-        let prioritizedList = rawWaitlist.map(w => {
-          let docNo = String(w.user_id).trim();
-          let stats = clHistory[docNo] || { totalConfirmed: 0, noShows: 0 };
-          let docType = w.document_type || (/[A-Z]/.test(docNo) ? "PASSPORT" : "MyKAD");
-          return {
-            raw: w, docType: docType, isFirstTime: (stats.totalConfirmed === 0),
-            noShowRate: (stats.totalConfirmed === 0 ? 0 : stats.noShows / stats.totalConfirmed),
-            timestamp: new Date(w.timestamp || 0)
-          };
-        });
-
-        prioritizedList.sort((a, b) => {
-          if (a.docType !== b.docType) return a.docType === "MyKAD" ? -1 : 1;
-          if (a.isFirstTime !== b.isFirstTime) return a.isFirstTime ? -1 : 1;
-          if (a.noShowRate !== b.noShowRate) return a.noShowRate - b.noShowRate;
-          return a.timestamp - b.timestamp;
-        });
-
-        let displayTime = formatAttendanceTime(s.time);
-        let queueHTML = `
-          <div class="waitlist-group-box">
-            <div class="waitlist-header-title">
-              <div>${s.dept} <span style="font-size:11px; font-weight:600; color:var(--text-muted); margin-left:6px;">${s.date} (${displayTime})</span></div>
-              <span class="waitlist-count-indicator">${prioritizedList.length} Waiting</span>
-            </div>
-            <div style="margin-top:8px;">`;
-
-        prioritizedList.forEach((candidate, index) => {
-          let rank = index + 1; let w = candidate.raw;
-          let ratePercentage = candidate.isFirstTime ? "New CL" : `${(candidate.noShowRate * 100).toFixed(0)}% Infraction`;
-
-          queueHTML += `
-            <div class="waitlist-row-item">
-              <div class="waitlist-rank-badge ${rank === 1 ? 'rank-1' : ''}">${rank}</div>
-              <div>
-                <div class="view-drawable-name" onclick="openWorkerProfileDrawer('${w.user_id}', '${w.worker_name.replace(/'/g, "\\'")}')">${w.worker_name}</div>
-                <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">ID: ${w.user_id} • <span style="font-weight:800; color:${candidate.docType === "MyKAD" ? "var(--admin-dark)" : "var(--accent-warn)"};">${candidate.docType}</span></div>
-              </div>
-              <div class="waitlist-meta-stats">
-                <span style="color:var(--admin-dark); font-weight:700;">${ratePercentage}</span>
-                <span>${w.phone || 'No Phone'}</span>
-              </div>
-            </div>`;
-        });
-        queueHTML += `</div></div>`; container.innerHTML += queueHTML;
-      });
-
-      if (displayedQueuesCount === 0) {
-        container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted); font-style:italic;">No active standby queues discovered.</p>';
-      }
     }
 
     /* Drawer Functions */
