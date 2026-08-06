@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MITEC — Admin Command Suite</title>
+  <title>MITEC — Booking Manager</title>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     :root {
@@ -136,18 +136,29 @@
 
     /* Worker Manager Card & Roster Layout */
     .wm-card { background: #fff; border: 1px solid var(--border-thin); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .wm-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
     .wm-header-title { font-size: 24px; font-weight: 800; color: var(--admin-dark); margin: 0 0 10px 0; text-transform: uppercase; }
     .wm-meta-line { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+
+    .btn-download-roster { background: #f1f5f9; color: var(--admin-dark); border: 1px solid var(--border-thin); border-radius: 8px; padding: 8px 12px; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 700; transition: 0.15s; }
+    .btn-download-roster:active { transform: scale(0.95); background: #e2e8f0; }
 
     .wm-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; text-align: left; }
     .wm-table th { background: #f8fafc; padding: 12px 8px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-thin); }
     .wm-table td { padding: 14px 8px; border-bottom: 1px solid var(--border-thin); vertical-align: middle; }
 
-    /* Status Interactive CTA Buttons */
-    .btn-status-cta { background: var(--admin-dark); color: #fff; font-size: 10px; font-weight: 800; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.15s ease; min-width: 105px; text-align: center; display: inline-block; }
-    .btn-status-cta:hover { transform: scale(1.03); opacity: 0.95; }
-    .btn-status-cta:active { transform: scale(0.96); }
-    .btn-status-cta.cta-waitlist { background: var(--pill-amber-bg); color: var(--pill-amber-text); border: 1px solid var(--pill-amber-border); }
+    /* Worker Photo Layout */
+    .worker-profile-cell { display: flex; align-items: center; gap: 10px; }
+    .worker-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background-color: #e2e8f0; flex-shrink: 0; border: 1px solid var(--border-thin); }
+
+    /* Status Custom Select Dropdown with Chevron Icon */
+    .wm-status-select-wrapper { position: relative; display: inline-block; width: 100%; max-width: 135px; }
+    .wm-status-select { width: 100%; padding: 8px 24px 8px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; appearance: none; -webkit-appearance: none; cursor: pointer; text-align: center; transition: all 0.15s ease; font-family: var(--font-main); }
+    .wm-status-select.status-confirmed { background-color: var(--admin-dark); color: #ffffff; border: 1px solid var(--admin-dark); }
+    .wm-status-select.status-waitlist { background-color: var(--pill-amber-bg); color: var(--pill-amber-text); border: 1px solid var(--pill-amber-border); }
+    .wm-status-chevron { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 12px; }
+    .status-confirmed + .wm-status-chevron { color: #ffffff; }
+    .status-waitlist + .wm-status-chevron { color: var(--pill-amber-text); }
 
     /* Call Action Button */
     .btn-call-action { background: #fff; color: var(--admin-dark); border: 1.5px solid var(--admin-dark); font-size: 11px; font-weight: 800; padding: 6px 14px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: 0.15s; width: 100%; max-width: 100px; }
@@ -365,8 +376,6 @@
           <label>Operational Reporting Time</label>
           <select id="form-time" class="form-control" required>
             <option value="" disabled selected hidden>Scheduled Shift</option>
-            <option value="0500">05:00</option>
-            <option value="0600">06:00</option>            
             <option value="0700">07:00</option>
             <option value="0800">08:00</option>
             <option value="0900">09:00</option>
@@ -982,18 +991,25 @@
 
       let html = `
         <div class="wm-card">
-          <h2 class="wm-header-title">${shift.dept}</h2>
-          <div class="wm-meta-line"><i class="ph ph-fingerprint"></i> Shift ID: <b>${shift.id}</b></div>
-          <div class="wm-meta-line"><i class="ph ph-calendar"></i> Date: <b>${shift.date} (${formatAttendanceTime(shift.time)})</b></div>
-          <div class="wm-meta-line"><i class="ph ph-users-three"></i> Capacity: <b>${totalSlots} Slots</b></div>
+          <div class="wm-card-header">
+            <div>
+              <h2 class="wm-header-title" style="margin: 0 0 6px 0;">${shift.dept}</h2>
+              <div class="wm-meta-line"><i class="ph ph-fingerprint"></i> Shift ID: <b>${shift.id}</b></div>
+              <div class="wm-meta-line"><i class="ph ph-calendar"></i> Date: <b>${shift.date} (${formatAttendanceTime(shift.time)})</b></div>
+              <div class="wm-meta-line"><i class="ph ph-users-three"></i> Capacity: <b>${totalSlots} Slots</b></div>
+            </div>
+            <button class="btn-download-roster" onclick="downloadRosterCSV('${shift.id}')" title="Download Roster">
+              <i class="ph ph-download-simple"></i>
+            </button>
+          </div>
 
           <div style="overflow-x:auto; margin-top:15px;">
             <table class="wm-table">
               <thead>
                 <tr>
                   <th>Casual Worker Name</th>
-                  <th style="text-align:center; width:130px;">Status</th>
-                  <th style="text-align:center; width:110px;">Action</th>
+                  <th style="text-align:center; width:135px;">Status</th>
+                  <th style="text-align:center; width:100px;">Action</th>
                 </tr>
               </thead>
               <tbody>`;
@@ -1003,9 +1019,10 @@
       } else {
         shiftBookings.forEach(w => {
           const isConfirmed = (String(w.status).toUpperCase() === 'SUBMITTED' || String(w.status).toUpperCase() === 'CONFIRMED');
-          const statusLabel = isConfirmed ? "CONFIRMED" : "WAITING LIST";
-          const statusClass = isConfirmed ? "" : "cta-waitlist";
-          const targetToWaitlist = isConfirmed ? "true" : "false";
+          const selectClass = isConfirmed ? "status-confirmed" : "status-waitlist";
+
+          const defaultAvatar = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>`;
+          const photoUrl = w.photo_url || w.photo || defaultAvatar;
 
           const phoneNum = w.phone ? String(w.phone).replace(/[^0-9+]/g, '') : '';
           const callLink = phoneNum ? `tel:${phoneNum}` : `javascript:alert('No phone number on record');`;
@@ -1013,13 +1030,22 @@
           html += `
             <tr>
               <td>
-                <div style="font-weight:800; color:var(--admin-dark); text-transform:uppercase; line-height:1.2;">${w.worker_name}</div>
-                <div style="font-size:10px; color:var(--text-muted); margin-top:3px; font-weight:600;">${w.user_id}</div>
+                <div class="worker-profile-cell">
+                  <img src="${photoUrl}" class="worker-avatar" alt="Photo" onerror="this.onerror=null; this.src='${defaultAvatar}';" />
+                  <div>
+                    <div style="font-weight:800; color:var(--admin-dark); text-transform:uppercase; line-height:1.2;">${w.worker_name}</div>
+                    <div style="font-size:10px; color:var(--text-muted); margin-top:3px; font-weight:600;">${w.user_id}</div>
+                  </div>
+                </div>
               </td>
               <td style="text-align:center;">
-                <button class="btn-status-cta ${statusClass}" onclick="toggleWorkerStatus('${shift.id}', '${w.user_id}', '${targetToWaitlist}')">
-                  ${statusLabel}
-                </button>
+                <div class="wm-status-select-wrapper">
+                  <select class="wm-status-select ${selectClass}" onchange="toggleWorkerStatus('${shift.id}', '${w.user_id}', this.value === 'WAITLIST' ? 'true' : 'false')">
+                    <option value="CONFIRMED" ${isConfirmed ? 'selected' : ''}>CONFIRMED</option>
+                    <option value="WAITLIST" ${!isConfirmed ? 'selected' : ''}>WAITLIST</option>
+                  </select>
+                  <i class="ph ph-caret-down wm-status-chevron"></i>
+                </div>
               </td>
               <td style="text-align:center;">
                 <a href="${callLink}" class="btn-call-action">
@@ -1035,36 +1061,57 @@
     }
 
 
-function toggleWorkerStatus(shiftId, workerId, targetToWaitlist) {
-  const promptMsg = targetToWaitlist === 'true' 
-    ? `Demote Worker ID: ${workerId} back to Standby Waitlist?` 
-    : `Promote & Confirm registration for Worker ID: ${workerId}?`;
-
-  if (!confirm(promptMsg)) return;
-  
-  document.getElementById('sync-loader').querySelector('.loader-text').textContent = "SYNCHRONIZING STATUS TRANSACTION...";
-  document.getElementById('sync-loader').style.display = 'flex';
-  
-  fetch(`${SCRIPT_URL}?action=updateStatus&shiftId=${encodeURIComponent(shiftId)}&userDocNo=${encodeURIComponent(workerId)}&isWaitlist=${targetToWaitlist}&adminDocNo=${encodeURIComponent(activeAdminKey)}`)
-    .then(r => r.json())
-    .then(res => {
-      document.getElementById('sync-loader').style.display = 'none';
-      if (res.ok) {
-        alert("Database matrix successfully updated!");
-      } else {
-        alert("Update Failed: " + (res.error || "Matching record not found."));
+    function downloadRosterCSV(shiftId) {
+      const shift = cachedShifts.find(s => s.id === shiftId);
+      const bookings = cachedBookings.filter(b => b.shift_id === shiftId && String(b.status).toUpperCase() !== 'CANCELLED');
+      
+      if (!bookings || bookings.length === 0) {
+        alert("No workers available to download.");
+        return;
       }
-      loadAdminDataSuite();
-    })
-    .catch(err => {
-      document.getElementById('sync-loader').style.display = 'none';
-      alert("An error occurred while transmitting transaction variables.");
-      console.error(err);
-      loadAdminDataSuite();
-    });
-}
 
+      let csvContent = "data:text/csv;charset=utf-8,Worker Name,User ID,Status,Phone\n";
+      bookings.forEach(b => {
+        csvContent += `"${b.worker_name}","${b.user_id}","${b.status}","${b.phone || ''}"\n`;
+      });
 
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `Roster_${shiftId}_${shift ? shift.dept : ''}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function toggleWorkerStatus(shiftId, workerId, targetToWaitlist) {
+      const promptMsg = targetToWaitlist === 'true' 
+        ? `Demote Worker ID: ${workerId} back to Standby Waitlist?` 
+        : `Promote & Confirm registration for Worker ID: ${workerId}?`;
+
+      if (!confirm(promptMsg)) return;
+      
+      document.getElementById('sync-loader').querySelector('.loader-text').textContent = "SYNCHRONIZING STATUS TRANSACTION...";
+      document.getElementById('sync-loader').style.display = 'flex';
+      
+      fetch(`${SCRIPT_URL}?action=updateStatus&shiftId=${encodeURIComponent(shiftId)}&userDocNo=${encodeURIComponent(workerId)}&isWaitlist=${targetToWaitlist}&adminDocNo=${encodeURIComponent(activeAdminKey)}`)
+        .then(r => r.json())
+        .then(res => {
+          document.getElementById('sync-loader').style.display = 'none';
+          if (res.ok) {
+            alert("Database matrix successfully updated!");
+          } else {
+            alert("Update Failed: " + (res.error || "Matching record not found."));
+          }
+          loadAdminDataSuite();
+        })
+        .catch(err => {
+          document.getElementById('sync-loader').style.display = 'none';
+          alert("An error occurred while transmitting transaction variables.");
+          console.error(err);
+          loadAdminDataSuite();
+        });
+    }
 
     function renderWaitlistQueuesPage() {
       const container = document.getElementById('waitlist-queues-container');
