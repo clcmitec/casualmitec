@@ -281,20 +281,6 @@
       box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.2);
     }
 
-    .badge-pill {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 6px 16px;
-      border-radius: 30px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      backdrop-filter: blur(6px);
-    }
-
     .about-header h1 {
       font-family: var(--brand-font);
       font-size: 38px;
@@ -413,7 +399,7 @@
       padding: 44px;
       display: flex;
       gap: 40px;
-      align-items: center;
+      align-items: flex-start;
       box-shadow: 0 6px 20px rgba(0,0,0,0.02);
       border: 1px solid rgba(9, 34, 83, 0.04);
       margin-bottom: 54px;
@@ -434,16 +420,7 @@
       color: var(--mitec-blue);
       font-family: var(--brand-font);
       font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .leader-message h4 {
-      font-size: 14px;
-      color: var(--mitec-accent);
-      margin-bottom: 18px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      margin-bottom: 16px;
     }
 
     .leader-message p {
@@ -454,9 +431,8 @@
     }
 
     .leader-message p.quote {
-      font-style: italic;
       color: var(--md-on-surface);
-      font-weight: 500;
+      font-weight: 400;
     }
 
     /* Eligibility Criteria Grid */
@@ -553,7 +529,7 @@
       gap: 40px;
       flex-wrap: wrap;
       align-items: stretch;
-      margin-bottom: 54px; /* <--- ADD THIS LINE */
+      margin-bottom: 54px;
     }
 
     .location-text {
@@ -623,7 +599,6 @@
       width: 100%;
       height: 100%;
       border: none;
-      
     }
 
     /* Premium Corporate Footer */
@@ -657,7 +632,8 @@
       .about-header h1 { font-size: 30px; }
       .leadership-card {
         flex-direction: column;
-        text-align: center;
+        align-items: center;
+        text-align: left;
         padding: 32px 24px;
       }
       .responsibilities-wrapper { padding: 28px 20px; }
@@ -670,32 +646,32 @@
   <div class="overlay" id="overlay"></div>
 
   <!-- SIDE NAVIGATION DRAWER -->
-<div class="side-nav" id="sideNav">
-  <button class="close-btn" id="closeBtn" aria-label="Close Navigation">
-    <span class="material-symbols-outlined">close</span>
-  </button>
-  
-  <a href="industry .html" class="dropdown-item"><i class="ph-bold ph-info"></i> About MITEC</a>
-  <a href="calendar.html" class="dropdown-item"><i class="ph-bold ph-calendar-blank"></i> Event Calendar</a>
-  <a href="student.html" class="dropdown-item"><i class="ph-bold ph-student"></i> Student Ambassador Programme</a>
-  <a href="twuw.html" class="dropdown-item"><i class="ph-bold ph-map-pin-line"></i> How to Get to MITEC</a>
-  
-  <div class="dropdown-item" onclick="toggleQuickLinks()">
-    <i class="ph-bold ph-link-simple"></i> Quick Links 
-    <i class="ph-bold ph-caret-down" id="quickLinksCaret" style="margin-left: auto; font-size: 14px; transform: rotate(0deg); transition: transform 0.3s;"></i>
-  </div>
-  
-  <div id="quickLinksSubmenu" class="dropdown-submenu">
-    <div class="submenu-header">User Notice</div>
-    <a href="https://docs.google.com/document/d/1M5Q6ol49IeireDOHodFfg-dQaL5ZXEcW6uD-_CPR2GM/edit?usp=sharing" target="_blank" class="submenu-item"><i class="ph-bold ph-shield-check"></i> Privacy Policy</a>
-    <a href="https://docs.google.com/document/d/1S0ib_XFouz-HGwIMfo5uk7YVkuBLe1632WTDEriw404/edit?usp=drivesdk" target="_blank" class="submenu-item"><i class="ph-bold ph-file-text"></i> Terms of Use</a>
+  <div class="side-nav" id="sideNav">
+    <button class="close-btn" id="closeBtn" aria-label="Close Navigation">
+      <span class="material-symbols-outlined">close</span>
+    </button>
     
-    <div class="submenu-header">Official Sites</div>
-    <a href="https://www.mitec.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-globe-hemisphere-west"></i> MITEC</a>
-    <a href="https://www.qube.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-buildings"></i> Qube</a>
-    <a href="https://matrade.gov.my" target="_blank" class="submenu-item"><i class="ph-bold ph-briefcase"></i> MATRADE</a>
+    <a href="industry .html" class="dropdown-item"><i class="ph-bold ph-info"></i> About MITEC</a>
+    <a href="calendar.html" class="dropdown-item"><i class="ph-bold ph-calendar-blank"></i> Event Calendar</a>
+    <a href="student.html" class="dropdown-item"><i class="ph-bold ph-student"></i> Student Ambassador Programme</a>
+    <a href="twuw.html" class="dropdown-item"><i class="ph-bold ph-map-pin-line"></i> How to Get to MITEC</a>
+    
+    <div class="dropdown-item" onclick="toggleQuickLinks()">
+      <i class="ph-bold ph-link-simple"></i> Quick Links 
+      <i class="ph-bold ph-caret-down" id="quickLinksCaret" style="margin-left: auto; font-size: 14px; transform: rotate(0deg); transition: transform 0.3s;"></i>
+    </div>
+    
+    <div id="quickLinksSubmenu" class="dropdown-submenu">
+      <div class="submenu-header">User Notice</div>
+      <a href="https://docs.google.com/document/d/1M5Q6ol49IeireDOHodFfg-dQaL5ZXEcW6uD-_CPR2GM/edit?usp=sharing" target="_blank" class="submenu-item"><i class="ph-bold ph-shield-check"></i> Privacy Policy</a>
+      <a href="https://docs.google.com/document/d/1S0ib_XFouz-HGwIMfo5uk7YVkuBLe1632WTDEriw404/edit?usp=drivesdk" target="_blank" class="submenu-item"><i class="ph-bold ph-file-text"></i> Terms of Use</a>
+      
+      <div class="submenu-header">Official Sites</div>
+      <a href="https://www.mitec.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-globe-hemisphere-west"></i> MITEC</a>
+      <a href="https://www.qube.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-buildings"></i> Qube</a>
+      <a href="https://matrade.gov.my" target="_blank" class="submenu-item"><i class="ph-bold ph-briefcase"></i> MATRADE</a>
+    </div>
   </div>
-</div>
 
   <!-- FIXED TOP HEADER -->
   <header class="header">
@@ -703,13 +679,11 @@
       <button class="menu-btn" id="menuBtn" aria-label="Open Navigation">
         <span class="material-symbols-outlined">menu</span>
       </button>
-      <!-- LOGO DIRECTS TO STUDENT.HTML -->
       <a href="student.html">
         <img class="nav-logo" src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo">
       </a>
     </div>
 
-    <!-- PROFILE / LOGIN ICON DIRECTS TO INDEX.HTML -->
     <a href="index.html" class="login-btn" title="Login / Portal Home">
       <span class="material-symbols-outlined">account_circle</span>
     </a>
@@ -717,7 +691,6 @@
 
   <!-- Sapphire & Navy Marble Header Container -->
   <header class="about-header">
-    
     <h1>MITEC Student Ambassador Programme</h1>
     <p>Step onto the stage of Malaysia’s premier trade and event hub. Gain hands-on operational experience, enjoy flexible work shifts with dedicated campus transport, and earn performance rewards that boost your financial independence while quietly broadening your professional horizons.</p>
     <a href="ambasform.html" class="cta-btn">
@@ -761,8 +734,6 @@
         <p>Receive official certificates of accomplishment and reference letters for top-performing student crew members upon graduation.</p>
       </div>
     </section>
-
-    
 
     <!-- Step 3: Eligibility Criteria -->
     <div class="section-title-block">
@@ -843,9 +814,6 @@
       </div>
     </div>
 
-
-
-
     <!-- Step 5: Location & Campus Access Section -->
     <div class="location-section" id="apply-now">
       <div class="location-text">
@@ -868,18 +836,28 @@
       </div>
     </div>
     
-   
-<!-- Step 2: CEO Welcome Message -->
+    <!-- Step 2: CEO Welcome Message -->
     <div class="leadership-card">
-      <img src="https://mitec.com.my/media/media/leadership/1d49ebb4-c0dd-4e95-b480-240215aaa47d6829d231be.jpg" alt="Madam Mala Dorasamy" class="leader-photo">
-      <div class="leader-message">
+      <img src="https://mitec.com.my/media/media/leadership/1d49ebb4-c0dd-4e95-b480-240215aaa47d6829d231be.jpg" alt="Mala Dorasamy" class="leader-photo">
+      <div class="leader-message" style="text-align: left;">
         <h2>Empowering the Next Generation</h2>
-        <h4>Message from Madam Mala Dorasamy, Chief Executive Officer</h4>
-        <p class="quote">"Youth and university talent represent the future of Malaysia’s business events and hospitality sectors. Our Student Crew Programme is designed not just as a job, but as a stepping stone."</p>
-        <p class="quote">"Here at MITEC, you will gain hands-on operational leadership, work alongside international event organizers, and build a professional network while managing your studies. We welcome you to take part in powering Southeast Asia's top venue."</p>
+        
+        <p class="quote">“Young talent represents the future of Malaysia’s business events and hospitality industry. At MITEC, our Crew Programme is more than an opportunity to earn while you study, it is a chance to gain real-world experience, build confidence and develop skills beyond the classroom.</p>
+        
+        <p class="quote">Whether supporting international events, welcoming delegates, gaining culinary experience, serving guests or working behind the scenes in operations, you will have the opportunity to learn alongside industry professionals and experience first-hand what it takes to deliver world-class events.</p>
+        
+        <p class="quote">We want MITEC to be a place where young people can work, learn, connect and grow, while building valuable experience and professional networks for the future.</p>
+        
+        <p class="quote">I invite you to join the MITEC Crew, be part of the experience, and most importantly, be part of our journey as we continue connecting Malaysia to the world.”</p>
+        
+        <div style="margin-top: 20px;">
+          <h4 style="margin-bottom: 2px; color: var(--mitec-blue); font-size: 16px; font-weight: 800; text-transform: none; letter-spacing: normal;">Mala Dorasamy</h4>
+          <p style="margin-bottom: 2px; color: var(--mitec-accent); font-weight: 700; font-size: 13.5px;">Chief Executive Officer</p>
+          <p style="margin-bottom: 0; color: var(--md-on-surface-variant); font-size: 13px; font-weight: 500;">Malaysia International Trade and Exhibition Centre (MITEC)</p>
+        </div>
       </div>
     </div>
- 
+
   </main>
 
   <footer class="footer">
@@ -887,7 +865,6 @@
     <p>© 2026 Malaysia International Trade & Exhibition Centre. All Rights Reserved.</p>
   </footer>
 
-  <!-- SCRIPT FOR NAVIGATION CONTROLS -->
   <script>
     const menuBtn = document.getElementById('menuBtn');
     const sideNav = document.getElementById('sideNav');
