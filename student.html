@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
   
   <!-- Phosphor Icons for side navigation -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -98,9 +98,10 @@
       background: #ffffff;
     }
 
-    .menu-btn span {
-      color: var(--mitec-blue);
-      font-size: 30px;
+    /* Fixed Menu Icon Color */
+    .menu-btn span, .menu-btn i {
+      color: var(--mitec-blue) !important;
+      font-size: 26px;
     }
 
     .nav-logo {
@@ -130,8 +131,9 @@
       background: #ffffff;
     }
 
-    .login-btn span {
-      color: var(--mitec-blue);
+    /* Fixed Login Icon Color */
+    .login-btn span, .login-btn i {
+      color: var(--mitec-blue) !important;
       font-size: 26px;
     }
 
@@ -177,7 +179,7 @@
       background: #e2e8f0;
     }
 
-    .close-btn span {
+    .close-btn span, .close-btn i {
       font-size: 24px;
       color: #111827;
     }
@@ -321,6 +323,28 @@
       background: #f8fafc;
     }
 
+    .cta-btn-dark {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--mitec-blue);
+      color: #ffffff;
+      font-family: var(--brand-font);
+      font-weight: 700;
+      font-size: 15px;
+      padding: 12px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 18px rgba(9, 34, 83, 0.15);
+    }
+
+    .cta-btn-dark:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(9, 34, 83, 0.25);
+      background: var(--mitec-accent);
+    }
+
     /* --- Shared Layout & Components --- */
     .container {
       padding: 50px 5%;
@@ -371,7 +395,8 @@
       box-shadow: 0 12px 28px rgba(9, 34, 83, 0.06);
     }
 
-    .feature-card span.material-symbols-outlined {
+    /* Fixed Feature Icons Color */
+    .feature-card span.material-symbols-outlined, .feature-card i {
       font-size: 38px;
       color: var(--mitec-accent);
       margin-bottom: 16px;
@@ -405,15 +430,20 @@
       margin-bottom: 54px;
     }
 
-    .leader-photo {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      background-color: var(--md-surface);
-      border: 4px solid var(--mitec-blue);
-      object-fit: cover;
-      flex-shrink: 0;
-    }
+.leader-photo {
+  width: 100%;
+  max-width: 240px;          /* Controls max size on desktop/mobile */
+  height: auto;              /* Keeps image aspect ratio intact */
+  aspect-ratio: 1 / 1;       /* Ensures square proportions */
+  border-radius: 24px;
+  background-color: var(--md-surface);
+  border: 2px solid var(--mitec-blue);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+
+
 
     .leader-message h2 {
       font-size: 26px;
@@ -435,6 +465,42 @@
       font-weight: 400;
     }
 
+    /* Youthful Closing Remarks Card Styling */
+    .closing-card {
+      background: var(--md-surface-container);
+      border-radius: 24px;
+      padding: 40px;
+      border: 1px solid rgba(9, 34, 83, 0.05);
+      border-left: 6px solid var(--mitec-blue);
+      box-shadow: 0 6px 20px rgba(9, 34, 83, 0.02);
+      margin-bottom: 54px;
+      text-align: left;
+    }
+
+    .closing-card h2 {
+      font-size: 26px;
+      color: var(--mitec-blue);
+      font-family: var(--brand-font);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .closing-card p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--md-on-surface-variant);
+      margin-bottom: 18px;
+    }
+
+    .youth-tagline {
+      font-family: var(--brand-font);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--mitec-accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+
     /* Eligibility Criteria Grid */
     .criteria-grid {
       display: grid;
@@ -451,7 +517,8 @@
       box-shadow: 0 4px 14px rgba(0,0,0,0.02);
     }
 
-    .criteria-item .material-symbols-outlined {
+    /* Fixed Criteria Icons Color */
+    .criteria-item .material-symbols-outlined, .criteria-item i {
       color: var(--mitec-accent);
       font-size: 32px;
       margin-bottom: 12px;
@@ -483,7 +550,7 @@
 
     .resp-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
       margin-top: 24px;
     }
@@ -505,7 +572,8 @@
       flex-shrink: 0;
     }
 
-    .resp-icon span {
+    /* Fixed Responsibilities Icons Color */
+    .resp-icon span, .resp-icon i {
       color: var(--mitec-blue);
       font-size: 24px;
     }
@@ -570,7 +638,8 @@
       font-size: 15px;
     }
 
-    .location-card h4 .material-symbols-outlined {
+    /* Fixed Location Map Icons Color */
+    .location-card h4 .material-symbols-outlined, .location-card h4 i {
       color: var(--mitec-accent);
       font-size: 22px;
     }
@@ -624,6 +693,94 @@
       font-weight: 500;
     }
 
+    .footer .footer-meta {
+      font-size: 12.5px;
+      color: var(--md-on-surface-variant);
+      font-weight: 600;
+      margin-top: 6px;
+      opacity: 0.85;
+    }
+/* Shiny Glowing Animated Button */
+.cta-btn-dark {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  background-color: #1B365D; /* MITEC Blue */
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  
+  /* Continuous Outer Glow Animation */
+  animation: buttonGlow 2.5s infinite ease-in-out;
+}
+
+/* Ensure inner elements stay above the light shine overlay */
+.cta-btn-dark span,
+.cta-btn-dark i {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+}
+
+/* Shiny Light Sweep Effect */
+.cta-btn-dark::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.65) 50%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  transform: rotate(25deg);
+  animation: shineSweep 3.25s infinite ease-in-out;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Hover Lift Effect */
+.cta-btn-dark:hover {
+  transform: translateY(-3px) scale(1.02);
+  background-color: #2D68C4;
+}
+
+/* Glow Keyframes */
+@keyframes buttonGlow {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(27, 54, 93, 0.4), 0 0 15px rgba(45, 104, 196, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 22px rgba(27, 54, 93, 0.7), 0 0 30px rgba(45, 104, 196, 0.6);
+  }
+}
+
+/* Shine Sweep Keyframes */
+@keyframes shineSweep {
+  0% {
+    left: -60%;
+  }
+  25% {
+    left: 140%;
+  }
+  100% {
+    left: 140%;
+  }
+}
+
+
     /* Mobile Adaptations */
     @media (max-width: 768px) {
       body { padding-top: 70px; }
@@ -636,6 +793,8 @@
         text-align: left;
         padding: 32px 24px;
       }
+      .closing-card { padding: 32px 24px; }
+      .youth-tagline { font-size: 17px; }
       .responsibilities-wrapper { padding: 28px 20px; }
     }
   </style>
@@ -676,16 +835,18 @@
   <!-- FIXED TOP HEADER -->
   <header class="header">
     <div class="header-left">
+      <!-- Changed to Phosphor icon to ensure rendering -->
       <button class="menu-btn" id="menuBtn" aria-label="Open Navigation">
-        <span class="material-symbols-outlined">menu</span>
+        <i class="ph-bold ph-list"></i>
       </button>
       <a href="student.html">
         <img class="nav-logo" src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo">
       </a>
     </div>
 
+    <!-- Changed to Phosphor icon to ensure rendering -->
     <a href="index.html" class="login-btn" title="Login / Portal Home">
-      <span class="material-symbols-outlined">account_circle</span>
+      <i class="ph-bold ph-user-circle"></i>
     </a>
   </header>
 
@@ -695,7 +856,7 @@
     <p>Step onto the stage of Malaysia’s premier trade and event hub. Gain hands-on operational experience, enjoy flexible work shifts with dedicated campus transport, and earn performance rewards that boost your financial independence while quietly broadening your professional horizons.</p>
     <a href="ambasform.html" class="cta-btn">
       <span>Apply Now</span>
-      <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+      <i class="ph-bold ph-arrow-right" style="font-size: 18px;"></i>
     </a>
   </header>
 
@@ -707,29 +868,30 @@
       <p>Designed specifically to fit around university course schedules while providing premium perks and financial rewards.</p>
     </section>
 
+    <!-- Changed Feature grid to Phosphor icons -->
     <section class="feature-grid">
       <div class="feature-card">
-        <span class="material-symbols-outlined">payments</span>
+        <i class="ph-bold ph-currency-dollar-simple"></i>
         <h3>Competitive & Fast Pay</h3>
         <p>Earn premium hourly rates with reliable digital shift tracking and swift payout schedules directly tied to your portal profile.</p>
       </div>
       <div class="feature-card">
-        <span class="material-symbols-outlined">directions_bus</span>
+        <i class="ph-bold ph-bus"></i>
         <h3>Direct Campus Shuttles</h3>
         <p>Dedicated direct transportation service provided to and from partner colleges and campus pick-up points across Klang Valley.</p>
       </div>
       <div class="feature-card">
-        <span class="material-symbols-outlined">card_membership</span>
+        <i class="ph-bold ph-trophy"></i>
         <h3>Project Bonuses & Incentives</h3>
         <p>Student Ambassadors are entitled to exclusive performance bonuses and financial incentives for every event project completed.</p>
       </div>
       <div class="feature-card">
-        <span class="material-symbols-outlined">edit_calendar</span>
+        <i class="ph-bold ph-calendar-check"></i>
         <h3>100% Flexible Shifts</h3>
         <p>Choose your shifts via our digital booking system. Work on weekends or during semester breaks without affecting your classes.</p>
       </div>
       <div class="feature-card">
-        <span class="material-symbols-outlined">workspace_premium</span>
+        <i class="ph-bold ph-certificate"></i>
         <h3>Certified Experience</h3>
         <p>Receive official certificates of accomplishment and reference letters for top-performing student crew members upon graduation.</p>
       </div>
@@ -741,24 +903,25 @@
       <p>We are searching for enthusiastic, reliable student leaders currently enrolled in institutions across Kuala Lumpur and Selangor.</p>
     </div>
 
+    <!-- Changed Criteria to Phosphor icons -->
     <div class="criteria-grid">
       <div class="criteria-item">
-        <span class="material-symbols-outlined">school</span>
+        <i class="ph-bold ph-graduation-cap"></i>
         <h4>Active Student</h4>
         <p>Currently enrolled in a Diploma or Degree programme at an accredited university or college (preference given to Klang Valley campuses).</p>
       </div>
       <div class="criteria-item">
-        <span class="material-symbols-outlined">badge</span>
+        <i class="ph-bold ph-identification-badge"></i>
         <h4>Malaysian Citizen / PR</h4>
         <p>Must be aged 18 and above with valid NRIC and an active personal Malaysian bank account for automated payouts.</p>
       </div>
       <div class="criteria-item">
-        <span class="material-symbols-outlined">record_voice_over</span>
+        <i class="ph-bold ph-chat-circle-text"></i>
         <h4>Communication</h4>
         <p>Conversational fluency in English and Bahasa Malaysia. Fluency in additional languages is a strong added advantage.</p>
       </div>
       <div class="criteria-item">
-        <span class="material-symbols-outlined">groups</span>
+        <i class="ph-bold ph-users-three"></i>
         <h4>Positive Mindset</h4>
         <p>Punctual, energetic, customer-centric, and eager to thrive in high-profile, fast-paced international event environments.</p>
       </div>
@@ -766,49 +929,70 @@
 
     <!-- Step 4: Student Crew Responsibilities -->
     <div class="responsibilities-wrapper">
-      <div class="section-title-block" style="margin-bottom: 20px;">
+      <div class="section-title-block" style="margin-bottom: 24px;">
         <h2>What You'll Be Doing</h2>
-        <p>Gain exposure across diverse operational tracks during mega-exhibitions, conventions, and international summits.</p>
+        <p>Gain hands-on experience across diverse operational areas while supporting exhibitions, conventions, corporate functions and international events at MITEC.</p>
       </div>
 
+      <!-- Changed Responsibilities to Phosphor icons -->
       <div class="resp-grid">
         <div class="resp-card">
           <div class="resp-icon">
-            <span class="material-symbols-outlined">confirmation_number</span>
+            <i class="ph-bold ph-ticket"></i>
           </div>
           <div class="resp-content">
             <h4>Delegate Registration</h4>
-            <p>Welcome VIPs, manage digital check-in counters, and issue event badges for trade delegates.</p>
+            <p>Welcome delegates and VIPs, support digital check-in and assist with event registration.</p>
           </div>
         </div>
 
         <div class="resp-card">
           <div class="resp-icon">
-            <span class="material-symbols-outlined">explore</span>
+            <i class="ph-bold ph-compass"></i>
           </div>
           <div class="resp-content">
-            <h4>Halls Wayfinding & Info</h4>
-            <p>Guide visitors across MITEC's 11 expansive halls and assist with guest inquiries.</p>
+            <h4>Guest Experience & Wayfinding</h4>
+            <p>Welcome visitors, provide directions and help guests navigate MITEC’s exhibition halls and event spaces.</p>
           </div>
         </div>
 
         <div class="resp-card">
           <div class="resp-icon">
-            <span class="material-symbols-outlined">room_service</span>
+            <i class="ph-bold ph-martini"></i>
           </div>
           <div class="resp-content">
             <h4>Banquet & Event Operations</h4>
-            <p>Support international gala dinners, press briefings, and executive lounge services.</p>
+            <p>Support gala dinners, conferences, corporate events and VIP functions while gaining practical event-service experience.</p>
           </div>
         </div>
 
         <div class="resp-card">
           <div class="resp-icon">
-            <span class="material-symbols-outlined">security</span>
+            <i class="ph-bold ph-cooking-pot"></i>
           </div>
           <div class="resp-content">
-            <h4>Access & Hall Coordination</h4>
-            <p>Monitor hall entrances, assist floor marshals, and ensure safety protocol compliance.</p>
+            <h4>Culinary Experience</h4>
+            <p>Work alongside MITEC’s culinary team and gain practical exposure to food preparation, kitchen operations and large-scale event catering.</p>
+          </div>
+        </div>
+
+        <div class="resp-card">
+          <div class="resp-icon">
+            <i class="ph-bold ph-package"></i>
+          </div>
+          <div class="resp-content">
+            <h4>Back-of-House Operations</h4>
+            <p>Be part of what happens behind the scenes, supporting event set-up, service preparation, logistics, equipment movement and operational coordination.</p>
+          </div>
+        </div>
+
+        <div class="resp-card">
+          <div class="resp-icon">
+            <i class="ph-bold ph-shield-check"></i>
+          </div>
+          <div class="resp-content">
+            <h4>Event & Hall Support</h4>
+            <p>Support guest movement, hall access and event operations while helping create a safe, organised and welcoming experience.</p>
           </div>
         </div>
       </div>
@@ -820,13 +1004,14 @@
         <h2>Convenient Campus Access</h2>
         <p>MITEC is strategically located in KL Metropolis, easily accessible via major highways and direct public transit links from major Klang Valley universities (UM, TAR UMT, Taylor's, Sunway, UiTM, KDU, and APU).</p>
         
+        <!-- Changed map locations to Phosphor icons -->
         <div class="location-card">
-          <h4><span class="material-symbols-outlined">departure_board</span> Direct Campus Shuttle Service</h4>
+          <h4><i class="ph-bold ph-bus"></i> Direct Campus Shuttle Service</h4>
           <p>Direct transportation service is provided to and from designated college partner hubs, ensuring hassle-free travel for all active student crew members.</p>
         </div>
 
         <div class="location-card">
-          <h4><span class="material-symbols-outlined">check_circle</span> Fast-Track Student Onboarding</h4>
+          <h4><i class="ph-bold ph-check-circle"></i> Fast-Track Student Onboarding</h4>
           <p>Register online through this portal, submit your student ID, complete a 15-minute digital briefing, and begin booking your preferred event shifts immediately.</p>
         </div>
       </div>
@@ -858,11 +1043,23 @@
       </div>
     </div>
 
+    <!-- Closing Remarks & Youth Impact Section -->
+    <div class="closing-card">
+      <h2>Learning Beyond the Classroom</h2>
+      <p>The MITEC Crew Programme supports our <strong>#myWorld</strong> commitment to creating positive impact through education, skills development and opportunities for the next generation.</p>
+      <div class="youth-tagline">WORK. EARN. LEARN. CONNECT. GROW.</div>
+      <a href="ambasform.html" class="cta-btn-dark">
+        <span>Apply Now</span>
+        <i class="ph-bold ph-arrow-right" style="font-size: 18px;"></i>
+      </a>
+    </div>
+
   </main>
 
   <footer class="footer">
     <div class="footer-brand">MITEC Student Ambassador & Crew Programme</div>
     <p>© 2026 Malaysia International Trade & Exhibition Centre. All Rights Reserved.</p>
+    <p class="footer-meta">Managed by METCO Sdn Bhd &nbsp;|&nbsp; Owned by MATRADE</p>
   </footer>
 
   <script>
