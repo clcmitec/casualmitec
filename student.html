@@ -421,36 +421,40 @@
     .leadership-card {
       background: var(--md-surface-container);
       border-radius: 24px;
-      padding: 44px;
+      padding: 32px 24px;
       display: flex;
-      gap: 40px;
-      align-items: flex-start;
+      flex-direction: column;
+      align-items: centre;
       box-shadow: 0 6px 20px rgba(0,0,0,0.02);
       border: 1px solid rgba(9, 34, 83, 0.04);
       margin-bottom: 54px;
     }
 
-.leader-photo {
-  width: 100%;
-  max-width: 240px;          /* Controls max size on desktop/mobile */
-  height: auto;              /* Keeps image aspect ratio intact */
-  aspect-ratio: 1 / 1;       /* Ensures square proportions */
-  border-radius: 24px;
-  background-color: var(--md-surface);
-  border: 2px solid var(--mitec-blue);
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-
-
-
-    .leader-message h2 {
-      font-size: 26px;
+    .leadership-card h2 {
+      width: 100%;
+      font-size: 24px;
       color: var(--mitec-blue);
       font-family: var(--brand-font);
       font-weight: 800;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .leader-photo {
+      width: 100%;
+      max-width: 260px;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      border-radius: 24px;
+      background-color: var(--md-surface);
+      border: 4px solid var(--mitec-blue);
+      object-fit: cover;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+    }
+
+    .leader-message {
+      width: 100%;
     }
 
     .leader-message p {
@@ -464,6 +468,7 @@
       color: var(--md-on-surface);
       font-weight: 400;
     }
+
 
     /* Youthful Closing Remarks Card Styling */
     .closing-card {
@@ -1021,12 +1026,13 @@
       </div>
     </div>
     
-    <!-- Step 2: CEO Welcome Message -->
+        <!-- Step 2: CEO Welcome Message -->
     <div class="leadership-card">
+      <h2>Empowering the Next Generation</h2>
+      
       <img src="https://mitec.com.my/media/media/leadership/1d49ebb4-c0dd-4e95-b480-240215aaa47d6829d231be.jpg" alt="Mala Dorasamy" class="leader-photo">
+      
       <div class="leader-message" style="text-align: left;">
-        <h2>Empowering the Next Generation</h2>
-        
         <p class="quote">“Young talent represents the future of Malaysia’s business events and hospitality industry. At MITEC, our Crew Programme is more than an opportunity to earn while you study, it is a chance to gain real-world experience, build confidence and develop skills beyond the classroom.</p>
         
         <p class="quote">Whether supporting international events, welcoming delegates, gaining culinary experience, serving guests or working behind the scenes in operations, you will have the opportunity to learn alongside industry professionals and experience first-hand what it takes to deliver world-class events.</p>
@@ -1042,6 +1048,7 @@
         </div>
       </div>
     </div>
+
 
     <!-- Closing Remarks & Youth Impact Section -->
     <div class="closing-card">
