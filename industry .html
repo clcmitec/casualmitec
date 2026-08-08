@@ -265,7 +265,9 @@
       visibility: visible;
     }
 
-    /* --- Luxurious Deep Sapphire Header --- */
+    /* =========================
+       SAPPHIRE HEADER CONTAINER
+       ========================= */
     .about-header {
       background-color: #0e3581;
       background-image: 
@@ -280,6 +282,7 @@
       box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.2);
     }
 
+    /* Header Badge Pill */
     .badge-pill {
       display: inline-block;
       background: rgba(255, 255, 255, 0.15);
@@ -294,6 +297,7 @@
       backdrop-filter: blur(6px);
     }
 
+    /* Header Title */
     .about-header h1 {
       font-family: var(--brand-font);
       font-size: 38px;
@@ -303,26 +307,41 @@
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
+    /* Header Paragraphs */
     .about-header p {
       font-size: 16px;
       opacity: 0.92;
       max-width: 780px;
-      margin: 0 auto;
+      margin: 0 auto 16px auto;
       line-height: 1.6;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      text-align: justify;      /* Justifies body text across full width */
+      text-align-last: left;    /* Aligns the final line to the left */
     }
 
-    /* --- Page Container --- */
+    .about-header p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* =========================
+       PAGE CONTENT LAYOUT
+       ========================= */
     .container {
-      padding: 50px 5%;
+      padding: 40px 5%;
       max-width: 1100px;
       margin: 0 auto;
       width: 100%;
+      position: relative;
+      z-index: 1;
     }
 
     .section-title-block {
       text-align: left;
-      margin-bottom: 30px;
+      margin-top: 24px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+      clear: both;
     }
 
     .section-title-block h2 {
@@ -331,6 +350,7 @@
       font-family: var(--brand-font);
       font-weight: 800;
       margin-bottom: 8px;
+      line-height: 1.3;
     }
 
     .section-title-block p {
@@ -350,6 +370,8 @@
       line-height: 1.7;
       color: var(--md-on-surface-variant);
       font-size: 15px;
+      position: relative;
+      z-index: 1;
     }
 
     .about-overview p {
@@ -490,7 +512,10 @@
       .header { padding: 14px 20px; }
       .about-header { padding: 48px 4% 44px; }
       .about-header h1 { font-size: 30px; }
-      .container { padding: 36px 4%; }
+      .container { padding: 24px 4%; }
+      .section-title-block { margin-top: 16px; margin-bottom: 16px; }
+      .section-title-block h2 { font-size: 24px; }
+      .about-overview { padding: 24px; margin-bottom: 36px; }
       .vote-banner-container { padding: 12px; }
     }
   </style>
@@ -501,32 +526,32 @@
   <div class="overlay" id="overlay"></div>
 
   <!-- SIDE NAVIGATION DRAWER -->
-<div class="side-nav" id="sideNav">
-  <button class="close-btn" id="closeBtn" aria-label="Close Navigation">
-    <span class="material-symbols-outlined">close</span>
-  </button>
+  <div class="side-nav" id="sideNav">
+    <button class="close-btn" id="closeBtn" aria-label="Close Navigation">
+      <span class="material-symbols-outlined">close</span>
+    </button>
 
-  <a href="industry .html" class="dropdown-item"><i class="ph-bold ph-info"></i> About MITEC</a>
-  <a href="calendar.html" class="dropdown-item"><i class="ph-bold ph-calendar-blank"></i> Event Calendar</a>
-  <a href="student.html" class="dropdown-item"><i class="ph-bold ph-student"></i> Student Ambassador Programme</a>
-  <a href="twuw.html" class="dropdown-item"><i class="ph-bold ph-map-pin-line"></i> How to Get to MITEC</a>
+    <a href="industry .html" class="dropdown-item"><i class="ph-bold ph-info"></i> About MITEC</a>
+    <a href="calendar.html" class="dropdown-item"><i class="ph-bold ph-calendar-blank"></i> Event Calendar</a>
+    <a href="student.html" class="dropdown-item"><i class="ph-bold ph-student"></i> Student Ambassador Programme</a>
+    <a href="twuw.html" class="dropdown-item"><i class="ph-bold ph-map-pin-line"></i> How to Get to MITEC</a>
 
-  <div class="dropdown-item" onclick="toggleQuickLinks()">
-    <i class="ph-bold ph-link-simple"></i> Quick Links 
-    <i class="ph-bold ph-caret-down" id="quickLinksCaret" style="margin-left: auto; font-size: 14px; transform: rotate(0deg); transition: transform 0.3s;"></i>
+    <div class="dropdown-item" onclick="toggleQuickLinks()">
+      <i class="ph-bold ph-link-simple"></i> Quick Links 
+      <i class="ph-bold ph-caret-down" id="quickLinksCaret" style="margin-left: auto; font-size: 14px; transform: rotate(0deg); transition: transform 0.3s;"></i>
+    </div>
+
+    <div id="quickLinksSubmenu" class="dropdown-submenu">
+      <div class="submenu-header">User Notice</div>
+      <a href="https://docs.google.com/document/d/1M5Q6ol49IeireDOHodFfg-dQaL5ZXEcW6uD-_CPR2GM/edit?usp=sharing" target="_blank" class="submenu-item"><i class="ph-bold ph-shield-check"></i> Privacy Policy</a>
+      <a href="https://docs.google.com/document/d/1S0ib_XFouz-HGwIMfo5uk7YVkuBLe1632WTDEriw404/edit?usp=drivesdk" target="_blank" class="submenu-item"><i class="ph-bold ph-file-text"></i> Terms of Use</a>
+
+      <div class="submenu-header">Official Sites</div>
+      <a href="https://www.mitec.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-globe-hemisphere-west"></i> MITEC</a>
+      <a href="https://www.qube.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-buildings"></i> Qube</a>
+      <a href="https://matrade.gov.my" target="_blank" class="submenu-item"><i class="ph-bold ph-briefcase"></i> MATRADE</a>
+    </div>
   </div>
-
-  <div id="quickLinksSubmenu" class="dropdown-submenu">
-    <div class="submenu-header">User Notice</div>
-    <a href="https://docs.google.com/document/d/1M5Q6ol49IeireDOHodFfg-dQaL5ZXEcW6uD-_CPR2GM/edit?usp=sharing" target="_blank" class="submenu-item"><i class="ph-bold ph-shield-check"></i> Privacy Policy</a>
-    <a href="https://docs.google.com/document/d/1S0ib_XFouz-HGwIMfo5uk7YVkuBLe1632WTDEriw404/edit?usp=drivesdk" target="_blank" class="submenu-item"><i class="ph-bold ph-file-text"></i> Terms of Use</a>
-
-    <div class="submenu-header">Official Sites</div>
-    <a href="https://www.mitec.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-globe-hemisphere-west"></i> MITEC</a>
-    <a href="https://www.qube.com.my" target="_blank" class="submenu-item"><i class="ph-bold ph-buildings"></i> Qube</a>
-    <a href="https://matrade.gov.my" target="_blank" class="submenu-item"><i class="ph-bold ph-briefcase"></i> MATRADE</a>
-  </div>
-</div>
 
   <!-- FIXED TOP HEADER -->
   <header class="header">
@@ -546,7 +571,9 @@
   <header class="about-header">
     <div class="badge-pill">Malaysia's Premier Venue</div>
     <h1>About MITEC</h1>
-    <p>Owned by MATRADE and managed by Qube Integrated Malaysia, MITEC as World's Leading Meetings & Conference Centre - One of the region's leading international business events venues.</p>
+    <p>Welcome to the Malaysia International Trade & Exhibition Centre (MITEC), one of the region’s leading international business events venues, owned by MATRADE and managed by METCO Sdn Bhd.</p>
+    <p>As part of the MITEC Crew, you are not just supporting events, you are becoming part of an environment that connects people, businesses and ideas from around the world.</p>
+    <p>By bringing world-class standards and warm Malaysian hospitality to every interaction on the floor, you enable us to think global and act local, empowering you to be the change you want to see in the world by turning everyday service into extraordinary international experiences right here at MITEC.</p>
   </header>
 
   <main class="container">
@@ -560,7 +587,6 @@
     <div class="about-overview">
       <p>Spanning 52,000 m² of exhibition and convention space across 11 expansive halls, the Malaysia International Trade and Exhibition Centre (MITEC) is the flagship development of KL Metropolis. Designed with architectural inspiration drawn from the rubber seed and traditional <i>songket</i> weave, MITEC stands as an iconic landmark for international commerce.</p>
       <p>As a key economic catalyst for Malaysia's business tourism, MITEC hosts hundreds of international and regional events annually, welcoming millions of delegates, trade buyers, and visitors to Kuala Lumpur.</p>
-
       <p>By bringing your energy, dedication, and talent to our show floors, you become the essential force behind our shared success. Connected by our core values and driven by cutting-edge workforce innovations, together we cultivate a culture of operational precision while striving every day to uphold and continuously elevate MITEC’s world-class reputation.</p>
     </div>
 
