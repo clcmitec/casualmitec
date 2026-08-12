@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITEC - Casual Labour Recruitment</title>
+    <style>
+        :root {
+            --primary-navy: #0f2a4a;
+            --primary-sapphire: #1e3a8a;
+            --accent-blue: #2563eb;
+            --card-bg: #ffffff;
+            --card-border: #cbd5e1;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --bg-main: #f8fafc;
+            --danger-red: #dc2626;
+            --radius-main: 12px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); padding: 16px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
+        .portal-container { 
+            width: 100%; 
+            max-width: 520px; 
+            background: var(--card-bg); 
+            border-radius: var(--radius-main); 
+            border: 1px solid var(--card-border); 
+            padding: 24px; 
+            box-shadow: 0 10px 25px -5px rgba(15, 42, 74, 0.08); 
+        }
+
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .header h2 { font-size: 1.35rem; font-weight: 700; color: var(--primary-navy); }
+        .header p { font-size: 0.85rem; color: var(--text-sub); margin-top: 2px; }
+        
+        .btn-logout { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 14px; border-radius: 8px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
+        .btn-logout:hover { background-color: #e2e8f0; }
+        
+        .tab-bar { display: flex; background-color: #f1f5f9; padding: 4px; border-radius: 10px; margin-bottom: 20px; gap: 4px; border: 1px solid #e2e8f0; }
+        .tab-btn { flex: 1; padding: 9px 4px; border: none; background: transparent; font-weight: 600; font-size: 0.8rem; color: var(--text-sub); cursor: pointer; border-radius: 8px; text-align: center; transition: all 0.2s; }
+        .tab-btn.active { background-color: var(--primary-navy); color: #ffffff; box-shadow: 0 2px 4px rgba(15, 42, 74, 0.15); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.72rem; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+        .input-field, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--card-border); background-color: #ffffff; font-size: 0.95rem; color: var(--text-main); outline: none; transition: border-color 0.2s; }
+        .input-field:focus, select:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        
+        .btn-primary { width: 100%; background: linear-gradient(135deg, var(--primary-navy), var(--primary-sapphire)); color: #ffffff; border: none; padding: 14px; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
+        .btn-primary:hover { opacity: 0.95; }
+
+        .btn-action { background-color: var(--accent-blue); color: #ffffff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        .btn-danger { background-color: var(--danger-red); color: #ffffff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
+        th { text-align: left; padding: 10px 8px; color: var(--text-sub); border-bottom: 2px solid var(--card-border); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        td { padding: 10px 8px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+        
+        .footer-brand { 
+            margin-top: 36px; 
+            font-family: 'Trebuchet MS', sans-serif; 
+            font-size: 0.72rem; 
+            font-weight: 700; 
+            color: #94a3b8; 
+            letter-spacing: 2px; 
+            text-align: center; 
+            text-transform: uppercase; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="portal-container">
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginView">
+        <div class="header">
+            <div>
+                <h2>Casual Labour Portal</h2>
+                <p>Enter your Doc No / NRIC to continue</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Doc No / NRIC</label>
+            <input type="text" id="loginDocNo" placeholder="e.g. 060109030073" class="input-field" />
+        </div>
+        <button class="btn-primary" onclick="handleLogin()">Log In</button>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="portalView" style="display: none;">
+        <div class="header">
+            <div>
+                <h2 id="welcomeText">Portal</h2>
+                <p id="userRoleDisplay" style="color: var(--accent-blue); font-weight: 700; text-transform: uppercase; font-size: 0.75rem;"></p>
+            </div>
+            <button class="btn-logout" onclick="logout()">Log Out</button>
+        </div>
+
+        <div id="tabBar" class="tab-bar"></div>
+        <div id="tabContainer"></div>
+    </div>
+
+</div>
+
+<div class="footer-brand">
+    MALAYSIA INTERNATIONAL TRADE AND EXHIBITION CENTRE
+</div>
+
+<script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbyiCOzwEAJ-AXuC0ou34ZwYDLwiwsPAyoPnrOixQrfzHyd99lY7uREz67kKw3NlfG10iw/exec"; 
+
+    let currentUser = null;
+    let cachedShifts = [];
+
+    window.onload = function() {
+        const saved = sessionStorage.getItem("currentUser");
+        if (saved) {
+            currentUser = JSON.parse(saved);
+            renderRoleDashboard();
+        }
+    };
+
+    function handleLogin() {
+        const docNoInput = document.getElementById("loginDocNo").value.trim();
+        if (!docNoInput) return alert("Please enter your Doc No / NRIC.");
+
+        fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "login", data: { docNo: docNoInput } })
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                currentUser = res;
+                sessionStorage.setItem("currentUser", JSON.stringify(res));
+                renderRoleDashboard();
+            } else {
+                alert(res.message);
+            }
+        });
+    }
+
+    function renderRoleDashboard() {
+        document.getElementById("loginView").style.display = "none";
+        document.getElementById("portalView").style.display = "block";
+        document.getElementById("welcomeText").textContent = currentUser.name || "Worker Portal";
+        document.getElementById("userRoleDisplay").textContent = "Role: " + (currentUser.role || "Worker");
+
+        const tabBar = document.getElementById("tabBar");
+        const tabContainer = document.getElementById("tabContainer");
+
+        if (currentUser.role === "superadmin") {
+            tabBar.innerHTML = `
+                <button class="tab-btn active" onclick="switchTab('adminShifts', this)">Shifts</button>
+                <button class="tab-btn" onclick="switchTab('adminApprovals', this)">Approvals</button>
+                <button class="tab-btn" onclick="switchTab('adminMaster', this)">Master DB</button>
+            `;
+            tabContainer.innerHTML = `
+                <div id="adminShifts" class="tab-content active">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <span style="font-size:0.85rem; color:var(--text-sub);">Manage event shifts</span>
+                        <button class="btn-action" onclick="openShiftForm()">+ Add Shift</button>
+                    </div>
+
+                    <div id="shiftTableContainer">
+                        <table>
+                            <thead><tr><th>Shift ID</th><th>Event</th><th>Actions</th></tr></thead>
+                            <tbody id="adminShiftsTableBody"><tr><td colspan="3">Loading...</td></tr></tbody>
+                        </table>
+                    </div>
+
+                    <div id="shiftFormContainer" style="display:none; margin-top:15px; border-top:1px solid var(--card-border); padding-top:15px;">
+                        <h3 id="shiftFormTitle" style="font-size:0.95rem; margin-bottom:10px; color:var(--primary-navy);">Create New Shift</h3>
+                        <input type="hidden" id="editShiftId">
+                        
+                        <div class="form-group">
+                            <label>Event Name</label>
+                            <input type="text" id="eventName" placeholder="e.g. F&N Annual Dinner" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Shift Date</label>
+                            <input type="date" id="shiftDate" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Start Time</label>
+                            <input type="text" id="startTime" placeholder="08:00 AM" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Hourly Rate / Pay (RM)</label>
+                            <input type="number" id="hourlyRate" placeholder="e.g. 100" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Total Pax Required</label>
+                            <input type="number" id="totalPax" placeholder="e.g. 50" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Method</label>
+                            <input type="text" id="paymentMethod" placeholder="e.g. Bank Transfer" class="input-field">
+                        </div>
+
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn-primary" style="flex:1;" onclick="saveShift()">Save Shift</button>
+                            <button class="btn-logout" onclick="closeShiftForm()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="adminApprovals" class="tab-content">
+                    <table>
+                        <thead><tr><th>Doc No</th><th>Group</th><th>Action</th></tr></thead>
+                        <tbody id="pendingList"><tr><td colspan="3">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+
+                <!-- UPDATED MASTER DB TABLE HEADERS -->
+                <div id="adminMaster" class="tab-content">
+                    <table>
+                        <!-- Table Header -->
+<thead><tr><th>Name</th><th>Phone</th><th>Date</th><th>Time</th><th>Group</th></tr></thead>
+
+                        <tbody id="masterBookingTable"><tr><td colspan="4">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            `;
+            loadAdminShiftsTable();
+            loadPendingApprovals();
+            loadMasterRecords();
+
+        } else if (currentUser.role === "recruiter") {
+            tabBar.innerHTML = `
+                <button class="tab-btn active" onclick="switchTab('recSquad', this)">My Squad</button>
+                <button class="tab-btn" onclick="switchTab('recBook', this)">Book Shift</button>
+            `;
+            // UPDATED MY SQUAD TABLE HEADERS
+            tabContainer.innerHTML = `
+                <div id="recSquad" class="tab-content active">
+                    <p style="font-size:0.85rem; margin-bottom:10px;"><strong>Group:</strong> ${currentUser.groupName || 'Squad'}</p>
+                    <table>
+                       <!-- Table Header -->
+<thead><tr><th>Worker Name</th><th>Phone</th><th>Date</th><th>Time</th></tr></thead>
+
+                        <tbody id="squadTable"><tr><td colspan="3">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+                <div id="recBook" class="tab-content"><div id="workerBookingUI"></div></div>
+            `;
+            loadSquadMembers();
+            renderWorkerBookingUI();
+
+        } else {
+            tabBar.innerHTML = `
+                <button class="tab-btn active" onclick="switchTab('workBook', this)">Book Shift</button>
+                <button class="tab-btn" onclick="switchTab('workHistory', this)">My Bookings</button>
+                <button class="tab-btn" onclick="switchTab('workApply', this)">Apply Recruiter</button>
+            `;
+            tabContainer.innerHTML = `
+                <div id="workBook" class="tab-content active"><div id="workerBookingUI"></div></div>
+                <div id="workHistory" class="tab-content">
+                    <table><thead><tr><th>Date</th><th>Time</th><th>Group</th><th>Status</th></tr></thead><tbody id="historyTableBody"><tr><td colspan="4">Loading...</td></tr></tbody></table>
+                </div>
+                <div id="workApply" class="tab-content">
+                    <div class="form-group"><label>Group Name</label><input type="text" id="appGroupName" placeholder="e.g. SQUAD1" class="input-field"></div>
+                    <div class="form-group"><label>Target Pax</label><input type="number" id="appTargetPax" placeholder="e.g. 10" class="input-field"></div>
+                    <button class="btn-primary" onclick="submitRecruiterApp()">Submit Application</button>
+                </div>
+            `;
+            renderWorkerBookingUI();
+            loadWorkerHistory();
+        }
+    }
+
+    function switchTab(tabId, btn) {
+        document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+        document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
+        document.getElementById(tabId).classList.add("active");
+        btn.classList.add("active");
+    }
+
+    function loadAdminShiftsTable() {
+        fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "getShifts" }) })
+        .then(r => r.json()).then(res => {
+            const tbody = document.getElementById("adminShiftsTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+            if (res.success && res.shifts && res.shifts.length > 0) {
+                cachedShifts = res.shifts;
+                res.shifts.forEach(s => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${s.shiftId}</strong></td>
+                            <td>${s.eventName}</td>
+                            <td style="white-space:nowrap;">
+                                <button class="btn-action" onclick="openShiftForm('${s.shiftId}')">Edit</button>
+                                <button class="btn-danger" onclick="deleteShift('${s.shiftId}')">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } else {
+                tbody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>No active shifts found.</td></tr>";
+            }
+        });
+    }
+
+    function openShiftForm(shiftId = null) {
+        document.getElementById("shiftFormContainer").style.display = "block";
+        if (shiftId) {
+            const shift = cachedShifts.find(s => s.shiftId === shiftId);
+            if (!shift) return;
+            document.getElementById("shiftFormTitle").textContent = "Edit Shift (" + shiftId + ")";
+            document.getElementById("editShiftId").value = shift.shiftId;
+            document.getElementById("eventName").value = shift.eventName || "";
+            document.getElementById("shiftDate").value = shift.date || "";
+            document.getElementById("startTime").value = shift.startTime || "";
+            document.getElementById("hourlyRate").value = shift.rate || "";
+            document.getElementById("totalPax").value = shift.totalPax || "";
+            document.getElementById("paymentMethod").value = shift.paymentMethod || "Bank Transfer";
+        } else {
+            document.getElementById("shiftFormTitle").textContent = "Create New Shift";
+            document.getElementById("editShiftId").value = "";
+            document.getElementById("eventName").value = "";
+            document.getElementById("shiftDate").value = "";
+            document.getElementById("startTime").value = "";
+            document.getElementById("hourlyRate").value = "";
+            document.getElementById("totalPax").value = "";
+            document.getElementById("paymentMethod").value = "Bank Transfer";
+        }
+    }
+
+    function closeShiftForm() {
+        document.getElementById("shiftFormContainer").style.display = "none";
+    }
+
+    function saveShift() {
+        const editId = document.getElementById("editShiftId").value;
+        const isUpdate = Boolean(editId);
+        
+        const payload = {
+            action: isUpdate ? "updateShift" : "createShift",
+            data: {
+                shiftId: editId,
+                eventName: document.getElementById("eventName").value.trim(),
+                shiftDate: document.getElementById("shiftDate").value,
+                startTime: document.getElementById("startTime").value.trim(),
+                totalPax: document.getElementById("totalPax").value.trim(),
+                rate: document.getElementById("hourlyRate").value.trim(),
+                paymentMethod: document.getElementById("paymentMethod").value.trim() || "Bank Transfer"
+            }
+        };
+
+        if (!payload.data.eventName || !payload.data.shiftDate) return alert("Please fill in Event Name and Date.");
+
+        fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })
+        .then(r => r.json()).then(res => {
+            alert(res.message);
+            if (res.success) {
+                closeShiftForm();
+                loadAdminShiftsTable();
+            }
+        });
+    }
+
+    function deleteShift(shiftId) {
+        if (!confirm("Are you sure you want to delete shift " + shiftId + "?")) return;
+        fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "deleteShift", data: { shiftId: shiftId } })
+        })
+        .then(r => r.json()).then(res => {
+            alert(res.message);
+            if (res.success) loadAdminShiftsTable();
+        });
+    }
+
+    function renderWorkerBookingUI() {
+        const container = document.getElementById("workerBookingUI");
+        if(!container) return;
+        container.innerHTML = `
+            <div class="form-group"><label>Select Active Shift</label><select id="shiftSelect" onchange="loadApprovedGroups()"><option value="">Loading...</option></select></div>
+            <div class="form-group"><label>Select Recruiter Group</label><select id="groupSelect"><option value="">Loading...</option></select></div>
+            <button class="btn-primary" onclick="submitBooking()">Confirm Shift Booking</button>
+        `;
+        loadShifts();
+    }
+
+    function loadShifts() {
+        fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "getShifts" }) })
+        .then(r => r.json()).then(res => {
+            const s = document.getElementById("shiftSelect");
+            if (!s) return;
+            s.innerHTML = "";
+            if (res.success && res.shifts && res.shifts.length > 0) {
+                res.shifts.forEach(shift => {
+                    s.innerHTML += `<option value="${shift.shiftId}">${shift.shiftId} - ${shift.eventName} (${shift.date})</option>`;
+                });
+                loadApprovedGroups();
+            } else {
+                s.innerHTML = '<option value="">No open shifts available</option>';
+            }
+        });
+    }
+
+    function loadApprovedGroups() {
+        const shiftId = document.getElementById("shiftSelect") ? document.getElementById("shiftSelect").value : "";
+        fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "getApprovedGroups", data: { shiftId: shiftId } }) })
+        .then(r => r.json()).then(res => {
+            const g = document.getElementById("groupSelect");
+            if (!g) return;
+            g.innerHTML = `<option value="INDIVIDUAL">INDIVIDUAL</option>`;
+            if (res.success && res.groups) {
+                res.groups.forEach(group => {
+                    if (group.groupName !== "INDIVIDUAL") {
+                        g.innerHTML += `<option value="${group.groupName}">${group.groupName}</option>`;
+                    }
+                });
+            }
+        });
+    }
+
+    function submitBooking() {
+        const shiftId = document.getElementById("shiftSelect").value;
+        const selectedGroup = document.getElementById("groupSelect").value;
+        if (!shiftId || !selectedGroup) return alert("Select both shift and group.");
+
+        fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "submitBooking", data: { docNo: currentUser.docNo, workerName: currentUser.name, shiftId: shiftId, selectedGroup: selectedGroup } })
+        }).then(r => r.json()).then(res => {
+            alert(res.message);
+            if(res.success && currentUser.role === 'worker') loadWorkerHistory();
+        });
+    }
+
+    function loadWorkerHistory() {
+        fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "getHistory", data: { userDocNo: currentUser.docNo, userRole: currentUser.role, groupName: "" } }) })
+        .then(r => r.json()).then(res => {
+            const tbody = document.getElementById("historyTableBody");
+            if(!tbody) return;
+            tbody.innerHTML = "";
+            if (res.success && res.records && res.records.length > 0) {
+                res.records.forEach(rec => {
+                    tbody.innerHTML += `<tr><td>${rec.shiftDate || 'N/A'}</td><td>${rec.shiftTime || 'N/A'}</td><td>${rec.group}</td><td>${rec.status || 'Confirmed'}</td></tr>`;
+                });
+            } else {
+                tbody.innerHTML = "<tr><td colspan='4' style='text-align:center;'>No bookings found.</td></tr>";
+            }
+        });
+    }
+
+    function submitRecruiterApp() {
+        const groupName = document.getElementById("appGroupName").value.trim();
+        const targetPax = document.getElementById("appTargetPax").value.trim();
+        if(!groupName || !targetPax) return alert("Fill in all fields.");
+
+        fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "requestRecruiterAccess", data: { docNo: currentUser.docNo, name: currentUser.name, targetPax: targetPax, groupName: groupName } })
+        }).then(r => r.json()).then(res => alert(res.message));
+    }
+
+    function loadPendingApprovals() {
+        fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "getPendingRecruiters" }) })
+        .then(r => r.json()).then(res => {
+            const tbody = document.getElementById("pendingList");
+            if(!tbody) return;
+            tbody.innerHTML = "";
+            if (res.success && res.pending && res.pending.length > 0) {
+                res.pending.forEach(p => {
+                    tbody.innerHTML += `<tr><td>${p.docNo}</td><td>${p.groupName}</td><td><button class="btn-action" onclick="approveRec('${p.docNo}', '${p.shiftId || ''}')">Approve</button></td></tr>`;
+                });
+            } else {
+                tbody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>No pending approvals.</td></tr>";
+            }
+        });
+    }
+
+    function approveRec(docNo, shiftId) {
+        fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "approveRecruiter", data: { docNo: docNo, shiftId: shiftId } }) })
+        .then(r => r.json()).then(res => { alert(res.message); loadPendingApprovals(); });
+    }
+
+    // UPDATED RENDER: MASTER DB TABLE
+    function loadMasterRecords() {
+        fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "getHistory", data: { userDocNo: currentUser.docNo, userRole: "superadmin", groupName: "" } }) })
+        .then(r => r.json()).then(res => {
+            const tbody = document.getElementById("masterBookingTable");
+            if(!tbody) return;
+            tbody.innerHTML = "";
+            if (res.success && res.records && res.records.length > 0) {
+                res.records.forEach(r => {
+                    tbody.innerHTML += `<tr><td>${r.name || r.docNo}</td><td>${r.shiftDate || 'N/A'}</td><td>${r.shiftTime || 'N/A'}</td><td>${r.group}</td></tr>`;
+                });
+            } else {
+                // loadMasterRecords() JavaScript loop
+tbody.innerHTML += `<tr><td>${r.name || r.docNo}</td><td>${r.phone || 'N/A'}</td><td>${r.shiftDate || 'N/A'}</td><td>${r.shiftTime || 'N/A'}</td><td>${r.group}</td></tr>`;
+
+            }
+        });
+    }
+
+    // UPDATED RENDER: MY SQUAD TABLE
+    function loadSquadMembers() {
+        fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "getHistory", data: { userDocNo: currentUser.docNo, userRole: "recruiter", groupName: currentUser.groupName } }) })
+        .then(r => r.json()).then(res => {
+            const tbody = document.getElementById("squadTable");
+            if(!tbody) return;
+            tbody.innerHTML = "";
+            if (res.success && res.records && res.records.length > 0) {
+                res.records.forEach(r => {
+                    // loadSquadMembers() JavaScript loop
+tbody.innerHTML += `<tr><td>${r.name || r.docNo}</td><td>${r.phone || 'N/A'}</td><td>${r.shiftDate || 'N/A'}</td><td>${r.shiftTime || 'N/A'}</td></tr>`;
+
+                });
+            } else {
+                tbody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>No squad members yet.</td></tr>";
+            }
+        });
+    }
+
+    function logout() {
+        sessionStorage.clear();
+        currentUser = null;
+        document.getElementById("portalView").style.display = "none";
+        document.getElementById("loginView").style.display = "block";
+        document.getElementById("loginDocNo").value = "";
+    }
+</script>
+</body>
+</html>
