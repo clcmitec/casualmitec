@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3RRBZB4NJ"></script>
+<!-- Defer Google Tag so it NEVER delays your Attendance Data -->
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      var gtagScript = document.createElement('script');
+      gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-S3RRBZB4NJ";
+      gtagScript.async = true;
+      document.head.appendChild(gtagScript);
 
-  gtag('config', 'G-S3RRBZB4NJ');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'G-S3RRBZB4NJ');
+    }, 1000); // ⚡ Waits 1 second AFTER the UI loads to send analytics
+  });
 </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Casual Labour Dashboard</title>
