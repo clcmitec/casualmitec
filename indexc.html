@@ -4,14 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>MITEC — Casual Labour Portal</title>
-  
+
+  <!-- ⚡ Speed Optimization: Pre-connect to Google Apps Script -->
+  <link rel="preconnect" href="https://script.google.com" crossorigin>
+  <link rel="dns-prefetch" href="https://script.google.com">
+
   <link class="icon" href="https://mitec.com.my/static/img/logos/logo-footer.png" type="image/png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  
+
   <!-- REAL-TIME QR DECODING ENGINE INTEGRATION -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
@@ -185,14 +189,14 @@
 
     /* Main Card Brand Header Area (Original Colors Maintained) */
     .brand { text-align: center; margin-bottom: 32px; padding-top: 10px; }
-    
+
     .brand img { 
       width: 210px; 
       height: auto; 
       margin-bottom: 14px;
       object-fit: contain;
     }
-    
+
     .sub { font-size: 12px; color: var(--text-muted); margin: 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
 
     /* Dual Mode Selector */
@@ -231,7 +235,7 @@
 
     /* Ergonomic Inputs */
     .input-group { position: relative; margin-bottom: 20px; }
-    
+
     .input-icon { 
       position: absolute; left: 16px; top: 17px; 
       font-size: 22px; color: var(--mitec-accent); z-index: 2; 
@@ -269,7 +273,7 @@
       transition: all 0.2s ease; margin-top: 4px;
       box-shadow: 0 8px 20px rgba(9, 34, 83, 0.15);
     }
-    
+
     .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
 
     /* Dynamic Quick Scanner Panel */
@@ -327,7 +331,7 @@
     .scanner-overlay.show { opacity: 1; pointer-events: auto; }
 
     .scanner-header { width: 100%; display: flex; justify-content: flex-end; }
-    
+
     .scanner-close {
       background: rgba(255, 255, 255, 0.15); border: none; border-radius: 50%;
       color: #ffffff; width: 44px; height: 44px; font-size: 22px;
@@ -364,24 +368,24 @@
 <body>
 
   <div id="navOverlay" class="nav-overlay" onclick="closeNavDrawer()"></div>
-  
+
   <div id="navDropdown" class="nav-dropdown">
     <div class="drawer-header">
       <div class="drawer-brand-wrapper">
         <!-- Elongated layout variant swapped here with clean CSS silvering filters -->
         <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Silver Logo" class="drawer-logo">
-        
+
       </div>
       <button class="drawer-close-btn" onclick="closeNavDrawer()" aria-label="Close Drawer">
         <i class="ph-bold ph-x"></i>
       </button>
     </div>
-    
+
     <a href="home.html" class="dropdown-item"><i class="ph-bold ph-info"></i> About MITEC</a>
     <a href="calendar.html" class="dropdown-item"><i class="ph-bold ph-calendar-blank"></i> Event Calendar</a>
     <div class="dropdown-item" onclick="openQRScanner()"><i class="ph-bold ph-qr-code"></i> QR Code Scanner</div>
     <a href="twuw.html" class="dropdown-item"><i class="ph-bold ph-map-pin-line"></i> How to Get to MITEC</a>
-    
+
     <!-- Quick Links setup to be open by default -->
     <div class="dropdown-item" onclick="toggleQuickLinks()">
       <i class="ph-bold ph-link-simple"></i> Quick Links 
@@ -474,7 +478,8 @@
   </div>
 
   <script>
-    const WEB_APP_URL = "Https://script.google.com/macros/s/AKfycbyBP0-dwtWZV-bxbg12bYTIUvkoBtdwnzjKFIj8hSc1my2g0gUHQ-xD2vW_rb8KT4JJSw/exec";
+    // 🔗 Live Active Web App Deployment URL
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBP0-dwtWZV-bxbg12bYTIUvkoBtdwnzjKFIj8hSc1my2g0gUHQ-xD2vW_rb8KT4JJSw/exec";
 
     const docInput = document.getElementById("docInput");
     const loginBtn = document.getElementById("loginBtn");
@@ -513,7 +518,7 @@
     }
 
     function openNavDrawer() { navDropdown.classList.add("show"); navOverlay.classList.add("show"); }
-    
+
     function closeNavDrawer() { 
       navDropdown.classList.remove("show"); 
       navOverlay.classList.remove("show"); 
@@ -533,17 +538,17 @@
       scannerOverlay.classList.add("show");
       scannerStatusDesc.textContent = "Position the official MITEC deployment code cleanly within the framing lines to authenticate.";
       viewfinder.classList.remove("success-flash");
-      
+
       try {
         const constraints = {
           video: { facingMode: "environment", width: { ideal: 640 }, height: { ideal: 640 } },
           audio: false
         };
-        
+
         localStream = await navigator.mediaDevices.getUserMedia(constraints);
         videoElement.srcObject = localStream;
         isScanningActive = true;
-        
+
         requestAnimationFrame(analyzeFrameLoop);
       } catch (err) {
         console.error("Camera hardware init failed: ", err);
@@ -559,7 +564,7 @@
         processingCanvas.height = videoElement.videoHeight;
         processingCanvas.width = videoElement.videoWidth;
         processingContext.drawImage(videoElement, 0, 0, processingCanvas.width, processingCanvas.height);
-        
+
         const imageData = processingContext.getImageData(0, 0, processingCanvas.width, processingCanvas.height);
         const decodedQR = jsQR(imageData.data, imageData.width, imageData.height, {
           inversionAttempts: "dontInvert",
@@ -571,7 +576,7 @@
           return;
         }
       }
-      
+
       if (isScanningActive) {
         requestAnimationFrame(analyzeFrameLoop);
       }
@@ -580,7 +585,7 @@
     function handleSuccessfulScan(scannedContent) {
       viewfinder.classList.add("success-flash");
       scannerStatusDesc.innerHTML = `<span style="color:#34c759; font-weight:800;">QR Decoded Successfully!</span>`;
-      
+
       setTimeout(() => {
         closeQRScanner();
         if (scannedContent.startsWith("http://") || scannedContent.startsWith("https://")) {
@@ -633,15 +638,17 @@
       showStatus("");
 
       try {
+        // ⚡ Fast direct query call with cache bypass
         const url = `${WEB_APP_URL}?action=check_existing&doc_no=${encodeURIComponent(docNo)}`;
-        const res = await fetch(url);
+        const res = await fetch(url, { method: "GET", cache: "no-cache" });
         const data = await res.json();
 
         if (data.ok && data.exists) {
           showStatus("Identity Verified. Entering...", false);
           localStorage.setItem("mitecWorkerRecord", JSON.stringify(data.record));
           localStorage.setItem("mcl_doc_no", docNo);
-          setTimeout(() => { window.location.href = "dashboard.html"; }, 800);
+          // ⚡ Snappier redirect delay
+          setTimeout(() => { window.location.href = "dashboard.html"; }, 200);
         } else {
           showStatus(data.message || "Record not found. Access denied.");
           loginBtn.disabled = false;
