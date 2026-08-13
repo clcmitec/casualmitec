@@ -4,7 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MITEC — Staff Duty Entry</title>
-  
+
+  <!-- ⚡ Speed Optimization: Pre-connect to Google Apps Script -->
+  <link rel="preconnect" href="https://script.google.com" crossorigin>
+  <link rel="dns-prefetch" href="https://script.google.com">
+
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     :root {
@@ -46,7 +50,7 @@
       border: 2px solid rgba(255,255,255,0.2); object-fit: cover; 
       background: rgba(255,255,255,0.1); 
     }
-    
+
     .profile-info { flex: 1; }
     .profile-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.8; margin-bottom: 4px; display: block; }
     .profile-name { font-size: 16px; font-weight: 600; margin: 0; }
@@ -78,7 +82,7 @@
       outline: none; transition: border 0.2s;
       appearance: none; color: var(--text-main);
     }
-    
+
     .input-field:focus, select:focus { border-color: var(--mitec-blue); }
 
     .btn-submit {
@@ -119,7 +123,7 @@
 
     <div class="form-card">
       <span class="section-title">Duty Registration</span>
-      
+
       <div class="field">
         <div class="input-wrapper">
           <i class="ph ph-hash input-icon"></i>
@@ -152,7 +156,7 @@
         </div>
       </div>
 
-<div class="field">
+      <div class="field">
         <div class="input-wrapper">
           <i class="ph ph-clock input-icon"></i>
           <select id="shift" required>
@@ -199,8 +203,8 @@
     <button id="closeBtn" class="btn-submit" style="display:none; margin-top:24px; max-width:200px;" onclick="window.location.href='dashboard.html'">Return to Home</button>
   </div>
 
-    <script>
-    // 🔗 Updated Live Web App URL
+  <script>
+    // 🔗 Live Active Web App Deployment URL
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBP0-dwtWZV-bxbg12bYTIUvkoBtdwnzjKFIj8hSc1my2g0gUHQ-xD2vW_rb8KT4JJSw/exec";
 
     function convertToDirectLink(url) {
@@ -248,9 +252,9 @@
       closeBtn.style.display = "none";
 
       try {
-        // Fixed: Lowercase action=signin to match Apps Script backend
+        // ⚡ Fast direct query call with cache bypass
         const url = `${WEB_APP_URL}?action=signin&doc_no=${encodeURIComponent(docNo)}&voucher=${encodeURIComponent(voucher)}&dept=${encodeURIComponent(dept)}&shift=${encodeURIComponent(shift)}`;
-        const res = await fetch(url);
+        const res = await fetch(url, { method: "GET", cache: "no-cache" });
         const data = await res.json();
 
         spinner.style.display = "none";
