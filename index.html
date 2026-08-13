@@ -4,7 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MITEC — Casual Labour Portal</title>
-  
+
+  <!-- ⚡ Speed Optimization: Pre-connect to Google Apps Script -->
+  <link rel="preconnect" href="https://script.google.com" crossorigin>
+  <link rel="dns-prefetch" href="https://script.google.com">
+
   <!-- Add this line for the Google Search Logo -->
   <link rel="icon" href="https://mitec.com.my/static/img/logos/logo-footer.png" type="image/png">
 
@@ -63,7 +67,7 @@
 
     /* Elegant Input Wrapper */
     .input-group { position: relative; margin-bottom: 28px; text-align: left; margin-top: 32px;}
-    
+
     .input-icon {
       position: absolute; left: 16px; top: 18px;
       font-size: 20px; color: var(--mitec-blue); z-index: 2;
@@ -112,7 +116,7 @@
       position: relative; overflow: hidden;
       box-shadow: 0 10px 25px rgba(9, 34, 83, 0.2);
     }
-    
+
     .btn-primary::before {
       content: ''; position: absolute; top:0; left:0; right:0; bottom:0;
       background: rgba(0,0,0,0.25); transition: opacity 0.2s;
@@ -194,7 +198,7 @@
     <div class="card">
       <div class="brand">
         <img src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC Logo">
-    
+
         <p class="sub">Casual Labour Portal</p>
       </div>
 
@@ -225,7 +229,8 @@
   </div>
 
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq0EucoCN7Y1O1k2mik8Ne7bZbPDfPonyJ9ac73UkzpBMCxsBBhVJ__0ZAC-Fr6OT5/exec";
+    // 🔗 Live Active Web App Deployment URL
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBP0-dwtWZV-bxbg12bYTIUvkoBtdwnzjKFIj8hSc1my2g0gUHQ-xD2vW_rb8KT4JJSw/exec";
 
     const docInput = document.getElementById("docInput");
     const loginBtn = document.getElementById("loginBtn");
@@ -263,15 +268,17 @@
       showStatus("");
 
       try {
+        // ⚡ Fast direct query call with cache bypass
         const url = `${WEB_APP_URL}?action=check_existing&doc_no=${encodeURIComponent(docNo)}`;
-        const res = await fetch(url);
+        const res = await fetch(url, { method: "GET", cache: "no-cache" });
         const data = await res.json();
 
         if (data.ok && data.exists) {
           showStatus("Identity Verified. Entering...", false);
           localStorage.setItem("mitecWorkerRecord", JSON.stringify(data.record));
           localStorage.setItem("mcl_doc_no", docNo);
-          setTimeout(() => { window.location.href = "dashboard.html"; }, 800);
+          // ⚡ Snappier redirect delay
+          setTimeout(() => { window.location.href = "dashboard.html"; }, 200);
         } else {
           showStatus(data.message || "Record not found. Access denied.");
           loginBtn.disabled = false;
