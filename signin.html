@@ -199,8 +199,9 @@
     <button id="closeBtn" class="btn-submit" style="display:none; margin-top:24px; max-width:200px;" onclick="window.location.href='dashboard.html'">Return to Home</button>
   </div>
 
-  <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq0EucoCN7Y1O1k2mik8Ne7bZbPDfPonyJ9ac73UkzpBMCxsBBhVJ__0ZAC-Fr6OT5/exec";
+    <script>
+    // 🔗 Updated Live Web App URL
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBP0-dwtWZV-bxbg12bYTIUvkoBtdwnzjKFIj8hSc1my2g0gUHQ-xD2vW_rb8KT4JJSw/exec";
 
     function convertToDirectLink(url) {
       if (!url) return "";
@@ -216,7 +217,7 @@
       const record = JSON.parse(localStorage.getItem("mitecWorkerRecord") || "{}");
       const nameEl = document.getElementById("workerName");
       const avatarEl = document.getElementById("workerAvatar");
-      nameEl.textContent = (record.name_mykad || record.full_name || "Staff Member");
+      nameEl.textContent = (record.name_mykad || record.nama_mykad || record.full_name || "Staff Member");
       if (record.photo_link) avatarEl.src = convertToDirectLink(record.photo_link);
     }
 
@@ -243,9 +244,12 @@
       const closeBtn = document.getElementById("closeBtn");
 
       overlay.style.display = "flex";
+      spinner.style.display = "block";
+      closeBtn.style.display = "none";
 
       try {
-        const url = `${WEB_APP_URL}?action=signIn&doc_no=${encodeURIComponent(docNo)}&voucher=${encodeURIComponent(voucher)}&dept=${encodeURIComponent(dept)}&shift=${encodeURIComponent(shift)}`;
+        // Fixed: Lowercase action=signin to match Apps Script backend
+        const url = `${WEB_APP_URL}?action=signin&doc_no=${encodeURIComponent(docNo)}&voucher=${encodeURIComponent(voucher)}&dept=${encodeURIComponent(dept)}&shift=${encodeURIComponent(shift)}`;
         const res = await fetch(url);
         const data = await res.json();
 
@@ -264,16 +268,13 @@
           closeBtn.textContent = "Return to Home";
           closeBtn.onclick = () => { window.location.href='dashboard.html' };
         } else {
-          // --- TARGET PART MODIFICATION START ---
-          if (data.message && data.message.includes("already signed in")) {
-            // Contextually handle Scenario B (Duplicate Attempt)
+          if (data.message && data.message.toLowerCase().includes("already signed in")) {
             title.textContent = "Already Signed In";
             title.style.color = "#dc3545";
-            msg.textContent = data.message; // Yields "You have already signed in today."
+            msg.textContent = data.message;
             closeBtn.textContent = "Go to Dashboard";
             closeBtn.onclick = () => { window.location.href='dashboard.html' };
           } else {
-            // Contextually handle Scenario C or administrative errors (e.g., Script Lock)
             title.textContent = "Submission Failed";
             title.style.color = "#dc3545";
             msg.textContent = data.message || "Registration Failed";
@@ -281,17 +282,15 @@
             closeBtn.onclick = () => { overlay.style.display = "none"; };
           }
           closeBtn.style.display = "flex";
-          // --- TARGET PART MODIFICATION END ---
         }
       } catch (err) {
-        // Handle Scenario E (Loss of mobile network connectivity / server timeout)
         spinner.style.display = "none";
         title.textContent = "System Error";
         title.style.color = "#dc3545";
         msg.textContent = "Unable to process request. Please check your internet connection and try again.";
         closeBtn.style.display = "flex";
         closeBtn.textContent = "Try Again";
-        closeBtn.onclick = () => { overlay.style.display="none"; };
+        closeBtn.onclick = () => { overlay.style.display = "none"; };
       }
     }
 
@@ -300,5 +299,6 @@
       else loadIdentity();
     });
   </script>
+
 </body>
 </html>
