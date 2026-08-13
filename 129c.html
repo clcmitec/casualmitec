@@ -19,7 +19,7 @@
       --md-on-surface: #1d1d1f;
       --md-on-surface-variant: #51525c;
       --md-outline: #e1e4ea; 
-      
+
       --mitec-blue: #1B365D;         
       --mitec-blue-hover: #2D68C4;   
       --mitec-accent: #0f4a82;
@@ -483,7 +483,7 @@
           <p>Casual Labour Registry</p>
         </div>
       </div>
-      <div class="chip" id="chipStep">1 / 6</div>
+      <div class="chip" id="chipStep">1 / 5</div>
     </div>
 
     <div class="card">
@@ -819,14 +819,10 @@
       <p>© 2026 Malaysia International Trade &amp; Exhibition Centre. All Rights Reserved.</p>
     </footer>
   </div>
-</body>
-</html>
-
-
-
 
   <script>
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq0EucoCN7Y1O1k2mik8Ne7bZbPDfPonyJ9ac73UkzpBMCxsBBhVJ__0ZAC-Fr6OT5/exec";
+  // 🔗 Updated Live Web App Deployment URL
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBP0-dwtWZV-bxbg12bYTIUvkoBtdwnzjKFIj8hSc1my2g0gUHQ-xD2vW_rb8KT4JJSw/exec";
 
   const form = document.getElementById("appForm");
   const steps = Array.from(document.querySelectorAll(".step"));
@@ -855,7 +851,7 @@
 
   let current = 0;
   let cameraStream = null;
-  let globalCachedRecord = null; // Local referential cache for data memory arrays
+  let globalCachedRecord = null;
 
   function stopCamera() {
     if (cameraStream) {
@@ -920,12 +916,11 @@
     steps.forEach((step, i) => step.classList.toggle("active", i === index));
     current = index;
     updateHeader();
-    
-    // Explicitly reassert form values from our memory reference cache upon entry
+
     if (current === 1 && formMode.value === "update" && globalCachedRecord) {
       fillRecord(globalCachedRecord);
     }
-    
+
     if (current === steps.length - 1) buildSummary();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -1011,7 +1006,9 @@
 
   function fillRecord(record) {
     if (!record) return;
-    if (record.name_mykad) document.getElementById("nameMykad").value = String(record.name_mykad).toUpperCase();
+    if (record.nama_mykad || record.name_mykad) {
+      document.getElementById("nameMykad").value = String(record.nama_mykad || record.name_mykad).toUpperCase();
+    }
     if (record.phone) document.getElementById("phoneNumber").value = normalizeDigitsOnly(record.phone);
     if (record.email) document.getElementById("email").value = record.email;
     if (record.mykad_passport_no) document.getElementById("docNumber").value = record.mykad_passport_no;
@@ -1021,22 +1018,23 @@
     if (record.nama_waris) document.getElementById("namaWaris").value = String(record.nama_waris).toUpperCase();
     if (record.hubungan) document.getElementById("hubungan").value = String(record.hubungan).toUpperCase();
     if (record.emergency_no) document.getElementById("emergencyNumber").value = normalizeDigitsOnly(record.emergency_no);
-    if (record.kebolehan) document.getElementById("kebolehan").value = record.kebolehan;
+    if (record.kemahiran || record.kebolehan) {
+      document.getElementById("kebolehan").value = record.kemahiran || record.kebolehan;
+    }
     if (record.bank) document.getElementById("bank").value = record.bank;
     if (record.account_no) document.getElementById("accountNo").value = record.account_no;
+    if (record.account_name) document.getElementById("accountName").value = String(record.account_name).toUpperCase();
 
-    // Fix 1: Restore Identity Document View configuration parameters dynamically
     if (record.doc_type) {
       fillRadio("doc_type", record.doc_type);
       updateDocTypeUI(record.doc_type); 
     }
 
-    // Fix 2: Evaluate medical administrative blocks and secure hidden fields safely
     if (record.sejarah) {
       fillRadio("sejarah", record.sejarah);
       const wrap = document.getElementById("sejarahOtherWrap");
       const otherInput = document.getElementById("sejarahOther");
-      
+
       if (record.sejarah === "OTHER") {
         wrap.style.display = "block";
         otherInput.setAttribute("required", "required");
@@ -1055,7 +1053,7 @@
     const photo = document.getElementById("lookupPreviewPhoto");
     if (!card) return;
 
-    document.getElementById("previewName").textContent = record?.name_mykad || record?.full_name || "-";
+    document.getElementById("previewName").textContent = record?.nama_mykad || record?.name_mykad || record?.full_name || "-";
     document.getElementById("previewDocNo").textContent = record?.mykad_passport_no || "-";
 
     if (record?.photo_link) {
@@ -1082,7 +1080,6 @@
     hideLookupPreview();
 
     try {
-      // Direct core execution straight to get_full_profile to extract comprehensive values mapping
       const url = `${WEB_APP_URL}?action=get_full_profile&doc_no=${encodeURIComponent(docNo)}`;
       const res = await fetch(url);
       const result = await res.json();
@@ -1090,7 +1087,7 @@
       document.getElementById("docNumber").value = docNo;
 
       if (result.ok && result.record) {
-        globalCachedRecord = result.record; // Bind verified variables into local reference reference arrays
+        globalCachedRecord = result.record;
         fillRecord(result.record);
         applyEntryMode("update");
         existingRow.value = "";
@@ -1210,7 +1207,7 @@
           labelText.style.borderColor = "var(--danger)";
         } else {
           labelText.style.color = "inherit";
-          labelText.style.borderColor = "var(--silver)";
+          labelText.style.borderColor = "var(--md-outline)";
         }
       });
     }
@@ -1386,6 +1383,7 @@
     if (icFile && icFile.size > MAX_SIZE) throw new Error("Document scan exceeds 5MB limit.");
 
     const payload = {
+      mode: formMode.value, // Added for dual-compatibility
       form_mode: formMode.value,
       existing_row: existingRow.value,
       name_mykad: safeVal("nameMykad"),
@@ -1399,6 +1397,7 @@
       nama_waris: safeVal("namaWaris"),
       hubungan: safeVal("hubungan"),
       emergency_no: safeVal("emergencyNumber"),
+      kemahiran: safeVal("kebolehan"), // Mapped directly to Google Sheet column 'kemahiran'
       kebolehan: safeVal("kebolehan"),
       typhoid: checkedText("typhoid"),
       transportation: checkedText("transportation"),
@@ -1445,8 +1444,10 @@
 
       if (result.ok) {
         showSubmitMessage(result.message || "Protocol completed successfully.", true);
-        
-        // --- SECURE ROUTING DECISION ON SUCCESS ---
+
+        // Store active session credentials so worker enters dashboard authenticated
+        localStorage.setItem("mcl_doc_no", safeVal("docNumber"));
+
         setTimeout(() => {
           if (formMode.value === "update") {
             window.location.href = "profile.html"; 
@@ -1454,7 +1455,6 @@
             window.location.href = "dashboard.html";
           }
         }, 1500);
-        // ------------------------------------------
 
       } else {
         showSubmitMessage("Transmission Failed: " + (result.message || "Unknown anomaly"));
