@@ -13,7 +13,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Casual Labour Dashboard</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -26,20 +26,20 @@
       --text-muted: #6B7C93;
       --border: #DCE6F2;
       --shadow-soft: 0 8px 24px rgba(35,74,155,.06);
-      
+
       --sapphire: #082567;
       --primary: #234A9B;
       --primary-2: #315FB3;
       --radius: 20px;
 
       --marble-texture: url('dark-blue-marble-plain-photo-wallpapers%20(1).jpg');
-      
+
       --chrome-border: linear-gradient(145deg, #ffffff 0%, #cbd5e1 25%, #64748b 50%, #e2e8f0 75%, #ffffff 100%);
       --chrome-glow: 0 16px 32px rgba(148, 163, 184, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
     }
 
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    
+
     body { 
       margin: 0; 
       padding: 12px 12px 100px; 
@@ -56,7 +56,7 @@
       background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,.25);
       border-radius: 22px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 4px; margin-bottom: 20px; box-shadow: var(--shadow-soft);
     }
-    
+
     .brand-img { height: 28px; width: auto; filter: brightness(0) invert(1); }
 
     .profile-trigger {
@@ -134,7 +134,7 @@
     .person-name { font-size: 12px; font-weight: 800; line-height: 1.2; letter-spacing: -0.01em; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
     .birthday-blessing-footer { text-align: center; font-family: 'Caveat', cursive; font-size: 18px; font-weight: 700; color: #ffffff; padding-top: 10px; margin-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.2); letter-spacing: 0.03em; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
 
-    /* FLOATING BOTTOM NAV MATRIX (FULL AREA SECTION FILL) */
+    /* FLOATING BOTTOM NAV MATRIX */
     .bottom-nav {
       position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 430px;
       height: 74px; 
@@ -155,14 +155,14 @@
     }
     .nav-item svg { width: 19px; height: 19px; stroke-width: 2; position: relative; z-index: 2; }
     .nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; z-index: 2; }
-    
-    /* Active & Hover Sectional Fill Styling */
+
+    /* Active & Hover Styling */
     .nav-item.active, .nav-item:hover { 
       background: rgba(255, 255, 255, 0.12);
       box-shadow: inset 0 0 16px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 0.15);
       filter: drop-shadow(0 0 6px rgba(255,255,255,0.4));
     }
-    
+
     .hub-spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: hubSpin 0.8s linear infinite; }
     @keyframes hubSpin { to { transform: rotate(360deg); } }
     @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -173,7 +173,7 @@
 <body>
 
   <div class="shell">
-    
+
     <header class="header">
       <img class="brand-img" src="https://mitec.com.my/static/img/logos/mitec-new-logo.png" alt="MITEC">
       <img id="headerPhoto" class="profile-trigger" src="https://via.placeholder.com/100" onclick="goToPage('profile.html')">
@@ -184,7 +184,7 @@
       <h1 class="worker-name" id="heroName">Syncing Profile...</h1>
     </div>
 
-    <!-- 1. COMPACT BRIEFINGS & UPDATES -->
+    <!-- 1. BRIEFINGS & UPDATES -->
     <div class="partition" style="margin-bottom: 12px;">
       <div class="section-head" style="margin-bottom: 6px;">
         <h3 class="section-title">Briefings & Updates</h3>
@@ -202,7 +202,7 @@
       <div class="carousel-dots" id="carouselDots"></div>
     </div>
 
-    <!-- 2. MERGED OPERATIONS SECTION -->
+    <!-- 2. SHIFT OPERATIONS SECTION -->
     <div class="partition">
       <div class="section-head">
         <h3 class="section-title">Shift Operations</h3>
@@ -210,7 +210,6 @@
       </div>
       <p class="section-desc">Track your daily hours and complete your gate verification below. A West Gate voucher number is required to clock in.</p>
 
-      <!-- Part A: Live Activity Data Grid -->
       <section class="summary-highlight" style="margin-bottom: 10px;">
         <div id="loaderState" class="loader-wrap">
           <div class="spinner-large"></div>
@@ -237,7 +236,6 @@
         </div>
       </section>
 
-      <!-- Part B: Action Clocking Panel -->
       <div class="action-card">
         <div class="action-grid">
           <button class="duty-btn" onclick="goToPage('signin.html')">Sign In</button>
@@ -246,7 +244,7 @@
       </div>
     </div>
 
-    <!-- 3. CELEBRATIONS COMPONENT -->
+    <!-- 3. TODAY'S CELEBRATIONS -->
     <div class="partition">
       <div class="section-head">
         <h3 class="section-title">Today's Celebrations</h3>
@@ -266,7 +264,6 @@
 
   </div>
 
-  <!-- FIXED SYSTEM NAVIGATION BAR WITH SYNCHRONIZED LAYOUT STATES -->
   <nav class="bottom-nav">
     <a href="dashboard.html" class="nav-item active">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -291,7 +288,8 @@
   </nav>
 
   <script>
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq0EucoCN7Y1O1k2mik8Ne7bZbPDfPonyJ9ac73UkzpBMCxsBBhVJ__0ZAC-Fr6OT5/exec";
+  // 🔗 Updated Live Web App URL
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBP0-dwtWZV-bxbg12bYTIUvkoBtdwnzjKFIj8hSc1my2g0gUHQ-xD2vW_rb8KT4JJSw/exec";
 
   function getStoredWorker() { return JSON.parse(localStorage.getItem("mitecWorkerRecord") || "{}"); }
   function toProperCase(str) { if (!str) return ""; return str.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()); }
@@ -300,8 +298,8 @@
     if (!url) return "";
     let stringUrl = String(url);
     if (stringUrl.includes("drive.google.com")) {
-      const match = stringUrl.match(/\/file\/d\/([^/?]+)/);
-      if (match && match[1]) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+      const match = stringUrl.match(/\/file\/d\/([^/?]+)/) || stringUrl.match(/id=([^&]+)/);
+      if (match && match[1]) return `https://drive.google.com/thumbnail?id=${match[1]}`;
     }
     return stringUrl;
   }
@@ -327,7 +325,7 @@
       const loaderState = document.getElementById("loaderState");
       const summaryGrid = document.getElementById("summaryGrid");
       const loaderText = document.getElementById("loaderText");
-      
+
       const inVal = document.getElementById("dashSignIn");
       const outVal = document.getElementById("dashSignOut");
       const vouchVal = document.getElementById("dashVoucher");
