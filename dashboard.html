@@ -14,6 +14,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Casual Labour Dashboard</title>
 
+  <!-- ⚡ Speed Optimization: Pre-connect to Google Apps Script -->
+  <link rel="preconnect" href="https://script.google.com" crossorigin>
+  <link rel="dns-prefetch" href="https://script.google.com">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -288,7 +292,7 @@
   </nav>
 
   <script>
-  // 🔗 Updated Live Web App URL
+  // 🔗 Live Active Web App Deployment URL
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBP0-dwtWZV-bxbg12bYTIUvkoBtdwnzjKFIj8hSc1my2g0gUHQ-xD2vW_rb8KT4JJSw/exec";
 
   function getStoredWorker() { return JSON.parse(localStorage.getItem("mitecWorkerRecord") || "{}"); }
@@ -315,7 +319,7 @@
   async function fillWorkerData() {
     const worker = getStoredWorker();
     const docNo = worker.mykad_passport_no || localStorage.getItem("mcl_doc_no"); 
-    const nameStr = worker.name_mykad || worker.full_name || "Worker";
+    const nameStr = worker.name_mykad || worker.nama_mykad || worker.full_name || "Worker";
     document.getElementById("heroName").textContent = toProperCase(nameStr);
 
     const photoUrl = worker.photo_link || "";
@@ -332,6 +336,7 @@
       const hoursVal = document.getElementById("dashHours");
 
       try {
+        // ⚡ Speed Optimization: Cache Bypass fetch request
         const res = await fetch(`${WEB_APP_URL}?action=get_today_summary&doc_no=${encodeURIComponent(docNo)}`, { cache: "no-cache" });
         const data = await res.json();
         loaderState.style.display = "none";
@@ -413,6 +418,7 @@
     if (!localStorage.getItem("mitecWorkerRecord")) {
       window.location.href = "indexc.html";
     } else {
+      // ⚡ Execute both background queries in parallel for instant display
       fillWorkerData();
       loadHubSpreadsheetData();
     }
