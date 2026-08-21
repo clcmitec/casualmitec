@@ -7,127 +7,139 @@
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     :root {
-      --admin-dark: #092253;
-      --admin-gradient: linear-gradient(135deg, #092253 0%, #153269 100%);
-      --bg-slate: #f8fafc;
+      
+      --mh-navy: #14467b;
+      --mh-navy-dark: #0e335b;
+      --mh-red: #d8232a;
+      --mh-red-hover: #b81c22;
+      --mh-gold: #d4af37;
+
+      --admin-dark: var(--mh-navy);
+      --admin-gradient: linear-gradient(135deg, var(--mh-navy) 0%, var(--mh-navy-dark) 100%);
+      --bg-slate: #f4f6f9;
       --card-bg: #ffffff;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border-thin: #e2e8f0;
-      
-      --pill-teal-bg: #f0f4f8;
-      --pill-teal-text: #092253;
-      --pill-teal-border: #d0dbe5;
-      
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border-thin: #e5e7eb;
+
+      --pill-teal-bg: #eef6ff;
+      --pill-teal-text: var(--mh-navy);
+      --pill-teal-border: #bfdbfe;
+
       --pill-amber-bg: #fffbeb;
       --pill-amber-text: #b45309;
       --pill-amber-border: #fef3c7;
 
-      --pill-red-bg: #fdf2f2;
-      --pill-red-text: #9b1c1c;
-      --pill-red-border: #fbd5d5;
+      --pill-red-bg: #fef2f2;
+      --pill-red-text: var(--mh-red);
+      --pill-red-border: #fecaca;
 
-      --accent-emerald: #092253;
-      --accent-warn: #9b1c1c;
-      --font-main: 'Trebuchet MS', sans-serif;
+      --accent-emerald: var(--mh-navy);
+      --accent-warn: var(--mh-red);
+      --font-main: 'Trebuchet MS', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
     body { margin: 0; background-color: var(--bg-slate); font-family: var(--font-main); color: var(--text-main); padding-bottom: 90px; }
-    
+
+    /* Header Navigation */
     .header { 
       position: sticky; 
       top: 0; 
       z-index: 1100; 
-      background: #fff; 
-      border-bottom: 1px solid var(--border-thin); 
-      height: 60px; 
+      background: var(--mh-navy); 
+      border-bottom: 3px solid var(--mh-red); 
+      height: 64px; 
       display: flex; 
       align-items: center; 
       justify-content: space-between; 
       padding: 0 16px; 
+      box-shadow: 0 4px 12px rgba(14, 51, 91, 0.15);
     }
-    .brand-img { height: 20px; width: auto; display: block; }
-    .user-profile-tag { font-size: 11px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; letter-spacing: 0.5px; background: #e2e8f0; padding: 5px 12px; border-radius: 6px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    
+    .brand-img { height: 24px; width: auto; display: block; filter: brightness(0) invert(1); }
+    .user-profile-tag { font-size: 11px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); padding: 5px 12px; border-radius: 6px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
     .container { max-width: 500px; margin: 0 auto; padding: 15px; }
 
+    /* Login Modal Overlay */
     #login-overlay { position: fixed; inset: 0; background: var(--bg-slate); z-index: 5500; display: none; align-items: center; justify-content: center; padding: 20px; }
-    .login-card { background: #fff; width: 100%; max-width: 400px; border-radius: 16px; padding: 32px 24px; border: 1px solid var(--border-thin); box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
-    .login-logo { font-size: 44px; color: var(--admin-dark); margin-bottom: 12px; }
+    .login-card { background: #fff; width: 100%; max-width: 400px; border-radius: 12px; padding: 32px 24px; border: 1px solid var(--border-thin); border-top: 5px solid var(--mh-navy); box-shadow: 0 10px 25px rgba(20, 70, 123, 0.1); text-align: center; }
+    .login-logo { font-size: 44px; color: var(--mh-navy); margin-bottom: 12px; }
 
-    .tab-bar { display: flex; background: #fff; border-bottom: 1px solid var(--border-thin); position: sticky; top: 60px; z-index: 900; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-    .tab-item { flex: 1; text-align: center; padding: 16px 0; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; cursor: pointer; letter-spacing: 0.5px; border-bottom: 3px solid transparent; }
-    .tab-item.active { color: var(--admin-dark); border-color: var(--admin-dark); }
+    /* Tabs Bar Styling */
+    .tab-bar { display: flex; background: #fff; border-bottom: 1px solid var(--border-thin); position: sticky; top: 64px; z-index: 900; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .tab-item { flex: 1; text-align: center; padding: 16px 0; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; cursor: pointer; letter-spacing: 0.5px; border-bottom: 3px solid transparent; transition: all 0.2s ease; }
+    .tab-item.active { color: var(--mh-navy); border-color: var(--mh-navy); background: #f8fafc; }
 
     .app-page { display: none; }
     .app-page.active { display: block; }
 
-    .section-label { font-size: 11px; font-weight: 800; color: var(--admin-dark); margin: 25px 0 12px 5px; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; }
+    .section-label { font-size: 11px; font-weight: 800; color: var(--mh-navy); margin: 25px 0 12px 5px; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; }
     .section-label::after { content: ""; flex: 1; height: 1px; background: var(--border-thin); }
 
     /* Dashboard Metrics Grid Elements */
     .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0 20px 0; }
-    .dash-tile { background: #fff; border: 1px solid var(--border-thin); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; transition: all 0.15s ease; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .dash-tile { background: #fff; border: 1px solid var(--border-thin); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; transition: all 0.15s ease; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
     .dash-tile:active { transform: scale(0.96); }
-    .dash-tile.selected { border-width: 2px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
-    
-    .dash-tile.tile-cap.selected { border-color: var(--admin-dark); color: var(--admin-dark); }
-    .dash-tile.tile-conf.selected { border-color: var(--admin-dark); color: var(--admin-dark); background: var(--pill-teal-bg); }
+    .dash-tile.selected { border-width: 2px; box-shadow: 0 4px 10px rgba(20, 70, 123, 0.12); }
+
+    .dash-tile.tile-cap.selected { border-color: var(--mh-navy); color: var(--mh-navy); }
+    .dash-tile.tile-conf.selected { border-color: var(--mh-navy); color: var(--mh-navy); background: var(--pill-teal-bg); }
     .dash-tile.tile-wait.selected { border-color: var(--pill-amber-text); color: var(--pill-amber-text); background: var(--pill-amber-bg); }
     .dash-tile.tile-drop.selected { border-color: var(--pill-red-text); color: var(--pill-red-text); background: var(--pill-red-bg); }
 
     .dash-tile span { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
-    .dash-tile h2 { margin: 0; font-size: 24px; font-weight: 800; color: var(--admin-dark); transition: color 0.2s; }
-    .matrix-title-badge { font-size: 9px; padding: 2px 6px; border-radius: 4px; background: #e2e8f0; color: var(--admin-dark); margin-left: 6px; vertical-align: middle; }
+    .dash-tile h2 { margin: 0; font-size: 24px; font-weight: 800; color: var(--mh-navy); transition: color 0.2s; }
+    .matrix-title-badge { font-size: 9px; padding: 2px 6px; border-radius: 4px; background: var(--pill-teal-bg); color: var(--mh-navy); border: 1px solid var(--pill-teal-border); margin-left: 6px; vertical-align: middle; }
 
     /* Calendar UI Elements */
-    .calendar-wrapper { background: #fff; border: 1px solid var(--border-thin); border-radius: 14px; padding: 16px; margin-bottom: 20px; box-shadow: 0 3px 8px rgba(0,0,0,0.03); }
+    .calendar-wrapper { background: #fff; border: 1px solid var(--border-thin); border-radius: 12px; padding: 16px; margin-bottom: 20px; box-shadow: 0 3px 8px rgba(0,0,0,0.03); }
     .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .cal-header h3 { margin: 0; font-size: 15px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; letter-spacing: 1px; }
-    .btn-cal-nav { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; color: var(--admin-dark); font-size: 16px; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: 0.15s; }
+    .cal-header h3 { margin: 0; font-size: 15px; font-weight: 800; color: var(--mh-navy); text-transform: uppercase; letter-spacing: 1px; }
+    .btn-cal-nav { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; color: var(--mh-navy); font-size: 16px; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: 0.15s; }
+    .btn-cal-nav:hover { background: var(--mh-navy); color: #fff; }
     .btn-cal-nav:active { transform: scale(0.9); }
-    
+
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
-    .cal-day-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
-    .cal-cell { aspect-ratio: 1; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--text-main); cursor: pointer; border: 1px solid transparent; transition: 0.2s; position: relative; }
+    .cal-day-label { font-size: 10px; font-weight: 800; color: var(--mh-navy); text-transform: uppercase; margin-bottom: 5px; }
+    .cal-cell { aspect-ratio: 1; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--text-main); cursor: pointer; border: 1px solid transparent; transition: 0.2s; position: relative; }
     .cal-cell:hover { background: #f8fafc; }
     .cal-cell.empty { background: transparent; cursor: default; }
-    .cal-cell.has-shifts { background: #f0f4f8; border-color: #d0dbe5; color: var(--admin-dark); }
-    .cal-cell.selected { background: var(--admin-dark); color: #fff; border-color: var(--admin-dark); box-shadow: 0 4px 10px rgba(9, 34, 83, 0.2); transform: scale(1.05); z-index: 2; }
-    
+    .cal-cell.has-shifts { background: var(--pill-teal-bg); border-color: var(--pill-teal-border); color: var(--mh-navy); }
+    .cal-cell.selected { background: var(--mh-navy); color: #fff; border-color: var(--mh-navy); box-shadow: 0 4px 10px rgba(20, 70, 123, 0.25); transform: scale(1.05); z-index: 2; }
+
     .cal-indicator { font-size: 9px; font-weight: 800; border-radius: 4px; padding: 1px 4px; margin-top: 2px; line-height: 1.2; }
     .cal-cell.selected .cal-indicator { background: rgba(255,255,255,0.2) !important; color: #fff !important; }
 
     /* Performance & Filtering Control Blocks */
-    .filter-panel-card { background: #fff; border: 1px solid var(--border-thin); border-radius: 14px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+    .filter-panel-card { background: #fff; border: 1px solid var(--border-thin); border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
 
     /* Pivot Interactive Accordion Styles */
     details.pivot-cat-card, details.pivot-date-block, details.pivot-dept-block, details.pivot-shift-item { display: block; width: 100%; }
     summary.pivot-summary { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; outline: none; list-style: none; }
     summary.pivot-summary::-webkit-details-marker { display: none; }
-    
+
     .pivot-chevron { font-size: 13px; color: var(--text-muted); transition: transform 0.2s ease; display: inline-block; }
     details[open] > summary.pivot-summary .pivot-chevron { transform: rotate(180deg); }
 
-    .pivot-cat-card { background: #fff; border: 1px solid var(--border-thin); border-radius: 14px; padding: 16px; margin-bottom: 16px; box-shadow: 0 3px 8px rgba(0,0,0,0.02); border-left: 5px solid var(--admin-dark); }
-    .pivot-cat-title { font-size: 14px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-thin); padding-bottom: 8px; margin-bottom: 12px; }
-    
+    .pivot-cat-card { background: #fff; border: 1px solid var(--border-thin); border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 3px 8px rgba(0,0,0,0.02); border-left: 5px solid var(--mh-navy); }
+    .pivot-cat-title { font-size: 14px; font-weight: 800; color: var(--mh-navy); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-thin); padding-bottom: 8px; margin-bottom: 12px; }
+
     .pivot-date-block { margin-bottom: 10px; padding-left: 4px; border-bottom: 1px dashed var(--border-thin); padding-bottom: 10px; }
     .pivot-date-block:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .pivot-date-title { font-size: 13px; font-weight: 800; color: #475569; padding: 4px 0; }
-    
+
     .pivot-dept-block { margin-left: 12px; border-left: 2px dashed #cbd5e1; padding-left: 12px; margin-top: 8px; margin-bottom: 8px; }
-    .pivot-dept-title { font-size: 12px; font-weight: 800; color: #0d9488; text-transform: uppercase; padding: 2px 0; }
-    
-    .pivot-shift-item { background: #f8fafc; border: 1px solid var(--border-thin); border-radius: 10px; padding: 0; margin-top: 8px; margin-bottom: 4px; }
-    .pivot-shift-header { font-size: 12px; font-weight: 700; color: var(--admin-dark); display: flex; width: 100%; justify-content: space-between; align-items: center; }
+    .pivot-dept-title { font-size: 12px; font-weight: 800; color: var(--mh-navy); text-transform: uppercase; padding: 2px 0; }
 
-    .stat-row-card { background: var(--card-bg); border: 1px solid var(--border-thin); border-radius: 14px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 8px rgba(0,0,0,0.03); cursor: pointer; transition: all 0.2s ease; }
+    .pivot-shift-item { background: #f8fafc; border: 1px solid var(--border-thin); border-radius: 8px; padding: 0; margin-top: 8px; margin-bottom: 4px; }
+    .pivot-shift-header { font-size: 12px; font-weight: 700; color: var(--mh-navy); display: flex; width: 100%; justify-content: space-between; align-items: center; }
+
+    .stat-row-card { background: var(--card-bg); border: 1px solid var(--border-thin); border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 8px rgba(0,0,0,0.03); cursor: pointer; transition: all 0.2s ease; }
     .stat-row-card:active { transform: scale(0.98); }
-    .stat-row-card.selected-card { border: 2px solid var(--admin-dark); box-shadow: 0 4px 12px rgba(9, 34, 83, 0.1); transform: scale(1.02); }
+    .stat-row-card.selected-card { border: 2px solid var(--mh-navy); box-shadow: 0 4px 12px rgba(20, 70, 123, 0.12); transform: scale(1.01); }
 
-    .stat-info h3 { margin: 0; font-size: 16px; font-weight: 800; color: var(--admin-dark); display: flex; align-items: center; gap: 8px; }
+    .stat-info h3 { margin: 0; font-size: 16px; font-weight: 800; color: var(--mh-navy); display: flex; align-items: center; gap: 8px; }
     .stat-info p { margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted); font-weight: 600; display: flex; flex-direction: column; gap: 3px; }
     .meta-data-line { display: flex; align-items: center; gap: 6px; }
 
@@ -135,16 +147,17 @@
     .mini-badge { font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; display: inline-block; text-align: center; min-width: 76px; }
 
     /* Worker Manager Card & Roster Layout */
-    .wm-card { background: #fff; border: 1px solid var(--border-thin); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .wm-card { background: #fff; border: 1px solid var(--border-thin); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
     .wm-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-    .wm-header-title { font-size: 24px; font-weight: 800; color: var(--admin-dark); margin: 0 0 10px 0; text-transform: uppercase; }
+    .wm-header-title { font-size: 24px; font-weight: 800; color: var(--mh-navy); margin: 0 0 10px 0; text-transform: uppercase; }
     .wm-meta-line { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
 
-    .btn-download-roster { background: #f1f5f9; color: var(--admin-dark); border: 1px solid var(--border-thin); border-radius: 8px; padding: 8px 12px; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 700; transition: 0.15s; }
-    .btn-download-roster:active { transform: scale(0.95); background: #e2e8f0; }
+    .btn-download-roster { background: #f1f5f9; color: var(--mh-navy); border: 1px solid var(--border-thin); border-radius: 6px; padding: 8px 12px; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 700; transition: 0.15s; }
+    .btn-download-roster:hover { background: var(--mh-navy); color: #ffffff; }
+    .btn-download-roster:active { transform: scale(0.95); }
 
     .wm-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; text-align: left; }
-    .wm-table th { background: #f8fafc; padding: 12px 8px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-thin); }
+    .wm-table th { background: #f8fafc; padding: 12px 8px; font-weight: 800; color: var(--mh-navy); text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-thin); }
     .wm-table td { padding: 14px 8px; border-bottom: 1px solid var(--border-thin); vertical-align: middle; }
 
     /* Worker Photo Layout */
@@ -154,49 +167,55 @@
     /* Status Custom Select Dropdown with Chevron Icon */
     .wm-status-select-wrapper { position: relative; display: inline-block; width: 100%; max-width: 135px; }
     .wm-status-select { width: 100%; padding: 8px 24px 8px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; appearance: none; -webkit-appearance: none; cursor: pointer; text-align: center; transition: all 0.15s ease; font-family: var(--font-main); }
-    .wm-status-select.status-confirmed { background-color: var(--admin-dark); color: #ffffff; border: 1px solid var(--admin-dark); }
+    .wm-status-select.status-confirmed { background-color: var(--mh-navy); color: #ffffff; border: 1px solid var(--mh-navy); }
     .wm-status-select.status-waitlist { background-color: var(--pill-amber-bg); color: var(--pill-amber-text); border: 1px solid var(--pill-amber-border); }
     .wm-status-chevron { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 12px; }
     .status-confirmed + .wm-status-chevron { color: #ffffff; }
     .status-waitlist + .wm-status-chevron { color: var(--pill-amber-text); }
 
     /* Call Action Button */
-    .btn-call-action { background: #fff; color: var(--admin-dark); border: 1.5px solid var(--admin-dark); font-size: 11px; font-weight: 800; padding: 6px 14px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: 0.15s; width: 100%; max-width: 100px; }
-    .btn-call-action:active { background: #f1f5f9; transform: scale(0.96); }
+    .btn-call-action { background: #fff; color: var(--mh-navy); border: 1.5px solid var(--mh-navy); font-size: 11px; font-weight: 800; padding: 6px 14px; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: 0.15s; width: 100%; max-width: 100px; }
+    .btn-call-action:hover { background: var(--mh-navy); color: #ffffff; }
+    .btn-call-action:active { transform: scale(0.96); }
 
-    .view-drawable-name { color: var(--admin-dark); font-weight: 700; cursor: pointer; display: inline-block; transition: all 0.2s ease; }
-    .view-drawable-name:hover { color: #0d9488; text-decoration: underline; }
+    .view-drawable-name { color: var(--mh-navy); font-weight: 700; cursor: pointer; display: inline-block; transition: all 0.2s ease; }
+    .view-drawable-name:hover { color: var(--mh-red); text-decoration: underline; }
 
     /* Drawers Overlays */
-    .drawer-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); z-index: 2000; display: none; align-items: flex-end; }
-    .drawer-content { background: #fff; width: 100%; max-height: 85vh; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px 20px; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); }
+    .drawer-overlay { position: fixed; inset: 0; background: rgba(14, 51, 91, 0.4); backdrop-filter: blur(2px); z-index: 2000; display: none; align-items: flex-end; }
+    .drawer-content { background: #fff; width: 100%; max-height: 85vh; border-top-left-radius: 16px; border-top-right-radius: 16px; padding: 24px 20px; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.15); border-top: 4px solid var(--mh-navy); }
     .drawer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid var(--border-thin); padding-bottom: 14px; }
-    .drawer-header h2 { font-size: 18px; margin: 0; color: var(--admin-dark); font-weight: 800; display: flex; flex-direction: column; gap: 4px; }
+    .drawer-header h2 { font-size: 18px; margin: 0; color: var(--mh-navy); font-weight: 800; display: flex; flex-direction: column; gap: 4px; }
     .drawer-meta-subtitle { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-top: 4px; display: flex; flex-direction: column; gap: 2px; }
     .btn-close-drawer { background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; padding: 4px; }
-    
+    .btn-close-drawer:hover { color: var(--mh-red); }
+
     .roster-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 13px; text-align: left; }
-    .roster-table th { background: #f8fafc; padding: 12px 10px; font-weight: 700; color: var(--admin-dark); text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-thin); }
+    .roster-table th { background: #f8fafc; padding: 12px 10px; font-weight: 700; color: var(--mh-navy); text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-thin); }
     .roster-table td { padding: 12px 10px; border-bottom: 1px solid var(--border-thin); vertical-align: middle; }
     .status-pill { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; display: inline-block; width: 95px; text-align: center; border: 1px solid transparent; }
-    
-    .pill-sub { background: var(--admin-dark); color: #ffffff; border: 1px solid var(--admin-dark); }
+
+    .pill-sub { background: var(--mh-navy); color: #ffffff; border: 1px solid var(--mh-navy); }
     .pill-wait { background: var(--pill-amber-bg); color: var(--pill-amber-text); border: 1px solid var(--pill-amber-border); }
     .pill-cancelled { background: var(--pill-red-bg); color: var(--pill-red-text); border: 1px solid var(--pill-red-border); }
 
     .form-group { margin-bottom: 16px; text-align: left; }
-    .form-group label { display: block; font-size: 11px; font-weight: 800; color: var(--admin-dark); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
-    
-    .form-control { width: 100%; height: 46px; border: 1px solid var(--border-thin); border-radius: 10px; padding: 0 14px; font-family: var(--font-main); font-size: 14px; color: var(--admin-dark); background: #fff; appearance: auto; }
-    .form-control:focus { outline: none; border-color: var(--admin-dark); box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.05); }
+    .form-group label { display: block; font-size: 11px; font-weight: 800; color: var(--mh-navy); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+
+    .form-control { width: 100%; height: 46px; border: 1px solid var(--border-thin); border-radius: 8px; padding: 0 14px; font-family: var(--font-main); font-size: 14px; color: var(--mh-navy); background: #fff; appearance: auto; }
+    .form-control:focus { outline: none; border-color: var(--mh-navy); box-shadow: 0 0 0 3px rgba(20, 70, 123, 0.1); }
     .form-control:disabled { background: #f1f5f9; color: var(--text-muted); cursor: not-allowed; }
     textarea.form-control { height: 80px; padding: 12px; resize: none; appearance: none; }
-    
-    .btn-submit-shift { width: 100%; height: 50px; background: var(--admin-dark); color: #fff; font-size: 14px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.15s; }
-    .btn-submit-shift:active { transform: scale(0.98); }
-    .btn-logout { background: none; border: 1px solid var(--pill-red-text); color: var(--pill-red-text); font-weight: 700; font-size: 11px; padding: 6px 12px; border-radius: 6px; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: 0.15s; }
 
-    #sync-loader { position: fixed; inset: 0; background: #ffffff; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--admin-dark); letter-spacing: 1px; }
+    /* Button Variations */
+    .btn-submit-shift { width: 100%; height: 50px; background: var(--mh-navy); color: #fff; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.15s; }
+    .btn-submit-shift:hover { background: var(--mh-navy-dark); }
+    .btn-submit-shift:active { transform: scale(0.98); }
+
+    .btn-logout { background: none; border: 1px solid var(--mh-red); color: var(--mh-red); font-weight: 700; font-size: 11px; padding: 8px 16px; border-radius: 6px; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: 0.15s; }
+    .btn-logout:hover { background: var(--mh-red); color: #ffffff; }
+
+    #sync-loader { position: fixed; inset: 0; background: #ffffff; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--mh-navy); letter-spacing: 1px; }
     .loader-text { margin-top: 12px; }
   </style>
 </head>
@@ -206,7 +225,7 @@
   <div id="login-overlay">
     <div class="login-card">
       <div class="login-logo"><i class="ph ph-shield-check"></i></div>
-      <h2 style="margin: 0 0 6px 0; font-size: 20px; color: var(--admin-dark);">Operations Console</h2>
+      <h2 style="margin: 0 0 6px 0; font-size: 20px; color: var(--mh-navy);">Operations Console</h2>
       <p style="margin: 0 0 24px 0; font-size: 13px; color: var(--text-muted);">Please provide credentials to scan matrix.</p>
       <form id="login-form" onsubmit="handleAdminLogin(event)">
         <div class="form-group">
@@ -220,7 +239,7 @@
 
   <!-- SYNC LOADER -->
   <div id="sync-loader">
-    <i class="ph ph-gear-six ph-spin" style="font-size: 40px; color: var(--admin-dark);"></i>
+    <i class="ph ph-gear-six ph-spin" style="font-size: 40px; color: var(--mh-navy);"></i>
     <div class="loader-text">LOADING MANAGEMENT PORTAL...</div>
   </div>
 
@@ -238,7 +257,7 @@
   </nav>
 
   <div class="container">
-    
+
     <!-- PAGE 1: STATISTICS & DEPLOYMENT -->
     <div id="page-1" class="app-page active">
       <div id="matrixFilterActiveLabel" class="section-label">Global Matrix <span class="matrix-title-badge">All Data</span></div>
@@ -260,7 +279,7 @@
           <h2 id="dash-txt-drop">0</h2>
         </div>
       </div>
-      
+
       <div id="stats-view-container"></div>
       <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px dashed var(--border-thin);">
         <button class="btn-logout" onclick="handleAdminLogout()">Exit Session (Logout)</button>
@@ -272,10 +291,10 @@
       <div id="pivot-roster-root-container"></div>
     </div>
 
-    <!-- PAGE 3: SHIFT MANAGER (MINI VERSION IMPLEMENTATION) -->
+    <!-- PAGE 3: SHIFT MANAGER -->
     <div id="page-3" class="app-page">
       <div class="section-label">Worker Manager</div>
-      
+
       <!-- Upcoming Shift Selector Card -->
       <div class="filter-panel-card">
         <div class="form-group" style="margin-bottom:0;">
@@ -396,11 +415,11 @@
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOQA9l1lpjs9eSOHwQmdZe4axc6OR6E9ohXmHQI3d9B-3apRtl6mFValUpepCorlqs/exec"; 
-    
+
     let activeAdminKey = null;
     let cachedShifts = [];
     let cachedBookings = [];
-    
+
     let currentActiveFilter = "ALL"; 
     let calSelectedDateStr = null;   
     let calSelectedShiftId = null;   
@@ -452,12 +471,11 @@
       }
     }
 
-    // Phone Number Formatter for tel: URIs (converts 60XXXXXXXXX to +60XXXXXXXXX)
     function formatPhoneForDialing(phone) {
       if (!phone) return '';
       let cleaned = String(phone).replace(/[^0-9+]/g, '');
       if (!cleaned) return '';
-      
+
       if (cleaned.startsWith('60')) {
         return '+' + cleaned;
       }
@@ -523,23 +541,23 @@
 
     function loadAdminDataSuite() {
       document.getElementById('sync-loader').style.display = 'flex';
-      
+
       fetch(`${SCRIPT_URL}?action=getAdminMasterData&userDocNo=${activeAdminKey}`)
         .then(r => r.json())
         .then(res => {
           if (res.ok && res.allShifts && res.allBookingsRaw) {
             try { localStorage.setItem("mitec_admin_key", activeAdminKey); } catch(e) {}
-            
+
             cachedShifts = (res.allShifts || []).map(s => ({ ...s, totalSlots: s.slots, Slots: s.slots }));
             cachedBookings = res.allBookingsRaw;
-            
+
             if (res.adminName) document.getElementById("adminUserDisplayTag").textContent = res.adminName.toUpperCase();
-            
+
             updateMatrixNumbers(calSelectedDateStr, calSelectedShiftId);
             renderStatisticsPage(); 
             renderPivotRostersPage();
             populateWorkerManagerShifts();
-            
+
             document.getElementById('sync-loader').style.display = 'none';
           } else {
             alert("Handshake Refused!");
@@ -581,7 +599,7 @@
       document.getElementById('dash-txt-conf').textContent = totalConf;
       document.getElementById('dash-txt-wait').textContent = totalWait;
       document.getElementById('dash-txt-drop').textContent = totalDrop;
-      
+
       document.getElementById("matrixFilterActiveLabel").innerHTML = `${labelScope} <span class="matrix-title-badge">${badgeScope}</span>`;
     }
 
@@ -626,7 +644,7 @@
       renderCalendarGrid();
       renderSelectedDateDetails();
     }
-    
+
     function selectShiftCard(shiftId) {
       calSelectedShiftId = (calSelectedShiftId === shiftId) ? null : shiftId;
       if (calSelectedShiftId) openEditShift(shiftId);
@@ -657,10 +675,10 @@
               let totalMetric = 0;
               if (currentActiveFilter === 'ALL') {
                    totalMetric = shiftsToday.reduce((sum, s) => sum + Number(s.slots || s.totalSlots || s.Slots || 0), 0);
-                   if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:#e2e8f0; color:var(--text-main);">Cap ${totalMetric}</div>`;
+                   if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:#eef6ff; color:var(--mh-navy);">Cap ${totalMetric}</div>`;
               } else if (currentActiveFilter === 'CONF') {
                    totalMetric = cachedBookings.filter(b => shiftsToday.some(s => s.id === b.shift_id) && (b.status === 'SUBMITTED' || b.status === 'CONFIRMED')).length;
-                   if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:var(--pill-teal-bg); color:var(--admin-dark);">+${totalMetric}</div>`;
+                   if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:var(--pill-teal-bg); color:var(--mh-navy);">+${totalMetric}</div>`;
               } else if (currentActiveFilter === 'WAIT') {
                    totalMetric = cachedBookings.filter(b => shiftsToday.some(s => s.id === b.shift_id) && (b.status === 'WAITLIST' || b.status === 'WAITING LIST')).length;
                    if(totalMetric > 0) indicatorHTML = `<div class="cal-indicator" style="background:var(--pill-amber-bg); color:var(--pill-amber-text);">+${totalMetric}</div>`;
@@ -685,7 +703,7 @@
 
       const shiftsToday = cachedShifts.filter(s => s.date === calSelectedDateStr);
       let detailsHTML = `<div class="section-label">Shift Details: ${calSelectedDateStr}</div>`;
-      
+
       if (shiftsToday.length === 0) {
           detailsHTML += `<p style="text-align:center; padding:10px; color:var(--text-muted); font-style:italic;">No shifts scheduled for this date.</p>`;
       } else {
@@ -716,7 +734,7 @@
                         </p>
                       </div>
                       <div class="metrics-pill-pack">
-                        <span class="mini-badge" style="background:#e2e8f0; color:#1e293b; border: 1px solid ${currentActiveFilter === 'ALL' ? 'var(--admin-dark)' : 'transparent'}">Cap: ${maxCapacitySlots}</span>
+                        <span class="mini-badge" style="background:#f1f5f9; color:var(--mh-navy); border: 1px solid ${currentActiveFilter === 'ALL' ? 'var(--mh-navy)' : 'transparent'}">Cap: ${maxCapacitySlots}</span>
                         <span class="mini-badge pill-sub" style="border-width: ${currentActiveFilter === 'CONF' ? '2px' : '1px'}">Conf: ${confirmedCount}</span>
                         <span class="mini-badge pill-wait" style="border-width: ${currentActiveFilter === 'WAIT' ? '2px' : '1px'}">Wait: ${waitlistCount}</span>
                         <span class="mini-badge pill-cancelled" style="border-width: ${currentActiveFilter === 'DROP' ? '2px' : '1px'}">Drop: ${cancelledCount}</span>
@@ -727,7 +745,7 @@
           if (visibleCards === 0) detailsHTML += `<p style="text-align:center; padding:10px; color:var(--text-muted); font-style:italic;">No shifts match filters.</p>`;
       }
       if (isFutureOrToday(calSelectedDateStr)) {
-          detailsHTML += `<button class="btn-submit-shift" style="margin-top: 15px; background: #f8fafc; color: var(--admin-dark); border: 2px dashed #cbd5e1;" onclick="openCreateShift()"><i class="ph ph-plus-circle" style="font-size: 18px;"></i> DEPLOY NEW SHIFT HERE</button>`;
+          detailsHTML += `<button class="btn-submit-shift" style="margin-top: 15px; background: #ffffff; color: var(--mh-navy); border: 2px dashed var(--mh-navy);" onclick="openCreateShift()"><i class="ph ph-plus-circle" style="font-size: 18px;"></i> DEPLOY NEW SHIFT HERE</button>`;
       }
       listContainer.innerHTML = detailsHTML;
     }
@@ -773,7 +791,7 @@
       let parts = shift.date.split('.');
       if (parts.length === 3) document.getElementById('form-date').value = `${parts[2]}-${parts[1]}-${parts[0]}`;
       document.getElementById('form-dept').value = shift.dept;
-      
+
       let vTime = formatAttendanceTime(shift.time).replace(":", "");
       let timeSelect = document.getElementById('form-time');
       if (Array.from(timeSelect.options).some(opt => opt.value === vTime)) timeSelect.value = vTime;
@@ -813,7 +831,7 @@
     function renderPivotRostersPage() {
       const container = document.getElementById('pivot-roster-root-container');
       container.innerHTML = '';
-      
+
       if(!cachedShifts || cachedShifts.length === 0) {
         container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">No pivot matrices discoverable.</p>';
         return;
@@ -830,12 +848,12 @@
 
         if (!pivotData[category][s.date]) pivotData[category][s.date] = {};
         if (!pivotData[category][s.date][s.dept]) pivotData[category][s.date][s.dept] = [];
-        
+
         pivotData[category][s.date][s.dept].push(s);
       });
 
       const catOrder = ["TODAY", "UPCOMING", "PAST"];
-      
+
       catOrder.forEach(cat => {
         let dateGroup = pivotData[cat];
         let dateKeys = Object.keys(dateGroup);
@@ -917,7 +935,7 @@
                       attDisplay = `<span style="color:var(--accent-warn); font-weight:800;">No Show</span>`;
                     }
                   } else {
-                    attDisplay = `<span style="color:var(--admin-dark); font-weight:700; font-family:monospace;">${formatFullTimestamp(attStamp)}</span>`;
+                    attDisplay = `<span style="color:var(--mh-navy); font-weight:700; font-family:monospace;">${formatFullTimestamp(attStamp)}</span>`;
                   }
 
                   catMarkup += `
@@ -942,14 +960,14 @@
       });
     }
 
-    /* Tab 3 Functions: Shift Manager (Mini Version Logic) */
+    /* Tab 3 Functions: Shift Manager */
     function populateWorkerManagerShifts() {
       const selectEl = document.getElementById('wm-shift-select');
       if (!selectEl) return;
 
       let today = new Date(); today.setHours(0,0,0,0);
       const upcomingShifts = cachedShifts.filter(s => getShiftDateObj(s.date) >= today);
-      
+
       if (upcomingShifts.length === 0) {
         selectEl.innerHTML = '<option value="">No upcoming shifts found</option>';
         document.getElementById('worker-manager-root').innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted); font-style:italic;">No upcoming shift parameters registered.</p>';
@@ -1032,7 +1050,7 @@
                 <div class="worker-profile-cell">
                   <img src="${photoUrl}" class="worker-avatar" alt="Photo" onerror="this.onerror=null; this.src='${defaultAvatar}';" />
                   <div>
-                    <div style="font-weight:800; color:var(--admin-dark); text-transform:uppercase; line-height:1.2;">${w.worker_name}</div>
+                    <div style="font-weight:800; color:var(--mh-navy); text-transform:uppercase; line-height:1.2;">${w.worker_name}</div>
                     <div style="font-size:10px; color:var(--text-muted); margin-top:3px; font-weight:600;">${w.user_id}</div>
                   </div>
                 </div>
@@ -1062,7 +1080,7 @@
     function downloadRosterCSV(shiftId) {
       const shift = cachedShifts.find(s => s.id === shiftId);
       const bookings = cachedBookings.filter(b => b.shift_id === shiftId && String(b.status).toUpperCase() !== 'CANCELLED');
-      
+
       if (!bookings || bookings.length === 0) {
         alert("No workers available to download.");
         return;
@@ -1088,10 +1106,10 @@
         : `Promote & Confirm registration for Worker ID: ${workerId}?`;
 
       if (!confirm(promptMsg)) return;
-      
+
       document.getElementById('sync-loader').querySelector('.loader-text').textContent = "SYNCHRONIZING STATUS TRANSACTION...";
       document.getElementById('sync-loader').style.display = 'flex';
-      
+
       fetch(`${SCRIPT_URL}?action=updateStatus&shiftId=${encodeURIComponent(shiftId)}&userDocNo=${encodeURIComponent(workerId)}&isWaitlist=${targetToWaitlist}&adminDocNo=${encodeURIComponent(activeAdminKey)}`)
         .then(r => r.json())
         .then(res => {
@@ -1129,12 +1147,12 @@
         let finalDisplayDept = b.dept || (matchingShift ? matchingShift.dept : "N/A");
 
         let statusPill = (rawStatus === 'CANCELLED') ? '<span class="status-pill pill-cancelled">Cancelled</span>' : ((rawStatus === 'WAITLIST' || rawStatus === 'WAITING LIST') ? '<span class="status-pill pill-wait">Waitlist</span>' : '<span class="status-pill pill-sub">Confirmed</span>');
-        let attendanceDisplay = (rawStatus === 'CANCELLED' || rawStatus === 'WAITLIST' || rawStatus === 'WAITING LIST') ? `<span style="color:var(--text-muted); font-weight:700;">-</span>` : ((attendanceStr === "no show" || attendanceStr === "" || attendanceStr === "0") ? `<span style="color:var(--accent-warn); font-weight:800; text-transform:uppercase;">No Show</span>` : `<span style="color:var(--admin-dark); font-weight:800; font-family:monospace;">${formatFullTimestamp(b.attendance)}</span>`);
+        let attendanceDisplay = (rawStatus === 'CANCELLED' || rawStatus === 'WAITLIST' || rawStatus === 'WAITING LIST') ? `<span style="color:var(--text-muted); font-weight:700;">-</span>` : ((attendanceStr === "no show" || attendanceStr === "" || attendanceStr === "0") ? `<span style="color:var(--accent-warn); font-weight:800; text-transform:uppercase;">No Show</span>` : `<span style="color:var(--mh-navy); font-weight:800; font-family:monospace;">${formatFullTimestamp(b.attendance)}</span>`);
 
         profileRowsMarkup += `
           <tr>
             <td>
-              <div style="font-weight:700; color:var(--admin-dark);">${finalDisplayDate}</div>
+              <div style="font-weight:700; color:var(--mh-navy);">${finalDisplayDate}</div>
               <div style="font-size:11px; color:var(--text-muted); font-weight:600; margin-top:2px;">${finalDisplayDept}</div>
             </td>
             <td style="text-align:center;">${statusPill}</td>
