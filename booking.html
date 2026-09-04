@@ -86,7 +86,7 @@
 
     .container { max-width: 480px; margin: 0 auto; padding: 15px; }
 
-    /* Deep Sapphire Mesh Gradient Profile Card */
+    /* Deep Sapphire Profile Card */
     .profile-card { 
       background: var(--mitec-gradient); 
       border-radius: 18px; 
@@ -169,8 +169,7 @@
       border-color: #f1f5f9;
     }
     .card.full-shift .card-header,
-    .card.full-shift .card-meta,
-    .card.full-shift .capacity-container {
+    .card.full-shift .card-meta {
       opacity: 0.55;
       filter: grayscale(0.2);
     }
@@ -228,16 +227,8 @@
     .pill-full { background: #fff1f2; color: var(--accent-red); border: 1px solid #fecdd3; }
     .pill-wait { background: #fffbeb; color: var(--accent-amber); border: 1px solid #fef3c7; }
 
-    .card-meta { font-size: 13px; color: var(--text-muted); display: grid; gap: 8px; margin-bottom: 14px; }
+    .card-meta { font-size: 13px; color: var(--text-muted); display: grid; gap: 8px; margin-bottom: 16px; }
     .meta-row { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-
-    /* Capacity Progress Bar */
-    .capacity-container { margin-bottom: 16px; }
-    .capacity-labels { display: flex; justify-content: space-between; font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
-    .capacity-bar-bg { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
-    .capacity-bar-fill { height: 100%; background: var(--mitec-blue); border-radius: 10px; transition: width 0.4s ease; }
-    .capacity-bar-fill.warning { background: var(--accent-gold); }
-    .capacity-bar-fill.danger { background: var(--accent-red); }
 
     .btn-exec { 
       width: 100%; height: 48px; border-radius: 12px; 
@@ -561,15 +552,6 @@
 
           let displayTime = formatAttendanceTime(s.time);
 
-          // Capacity calculation for progress bar
-          const totalCapacity = s.slots || 1;
-          const filledSlots = Math.max(0, totalCapacity - Math.max(0, s.slotsLeft));
-          const fillPercentage = Math.min(100, Math.round((filledSlots / totalCapacity) * 100));
-
-          let barColorClass = '';
-          if (fillPercentage >= 100) barColorClass = 'danger';
-          else if (fillPercentage >= 75) barColorClass = 'warning';
-
           let spotlightHtml = '';
           if (hasSpotlight && !isMyShift && !isLockedByPolicy) {
             spotlightHtml = `
@@ -588,17 +570,6 @@
               </div>
               <div class="card-meta">
                 <div class="meta-row"><i class="ph ph-clock"></i> ${displayTime}</div>
-              </div>
-
-              <!-- Capacity Progress Bar -->
-              <div class="capacity-container">
-                <div class="capacity-labels">
-                  <span>Capacity Filled</span>
-                  <span>${filledSlots} / ${totalCapacity} (${fillPercentage}%)</span>
-                </div>
-                <div class="capacity-bar-bg">
-                  <div class="capacity-bar-fill ${barColorClass}" style="width: ${fillPercentage}%"></div>
-                </div>
               </div>
 
               ${isMyShift ? 
